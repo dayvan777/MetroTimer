@@ -19,10 +19,16 @@ final class AlertService: ObservableObject {
     private static let pollInterval: TimeInterval = 60
     private static let notificationId = "kyiv.airAlert"
 
+    // Скільки поспіль невдалих спроб терпимо, перш ніж сказати про це вголос.
+    // Мовчазний відмова гірша за відсутність функції: «банера немає» читалося б
+    // як «тривоги немає», хоча насправді ми просто не знаємо.
+    private static let failuresBeforeUnavailable = 3
+
     enum State: Equatable {
-        case unknown        // ще не питали або мережа недоступна
+        case unknown        // ще не питали
         case quiet
         case alert
+        case unavailable    // джерело не відповідає — ми НЕ знаємо, чи є тривога
     }
 
     @Published private(set) var state: State = .unknown
@@ -30,6 +36,7 @@ final class AlertService: ObservableObject {
 
     private var timer: Timer?
     private var isFetching = false
+    private var consecutiveFailures = 0
 
     var isEnabled: Bool { UserDefaults.standard.bool(forKey: Self.enabledKey) }
 
@@ -38,6 +45,20 @@ final class AlertService: ObservableObject {
     // MARK: - Життєвий цикл опитування
 
     func startIfEnabled() {
+        #if DEBUG
+        // Тривоги трапляються рідко, а відмова джерела — ще рідше. Щоб перевірити
+        // вигляд обох станів: simctl launch ... -MTForceAlert 1 | -MTForceAlertFail 1
+        let defaults = UserDefaults.standard
+        if defaults.string(forKey: "MTForceAlert") != nil {
+            state = .alert
+            updatedAt = Date()
+            return
+        }
+        if defaults.string(forKey: "MTForceAlertFail") != nil {
+            state = .unavailable
+            return
+        }
+        #endif
         guard isEnabled else { stop(); return }
         guard timer == nil else { return }
         let timer = Timer(timeInterval: Self.pollInterval, repeats: true) { [weak self] _ in
@@ -62,6 +83,7 @@ final class AlertService: ObservableObject {
             stop()
             state = .unknown
             updatedAt = nil
+            consecutiveFailures = 0
             UNUserNotificationCenter.current()
                 .removePendingNotificationRequests(withIdentifiers: [Self.notificationId])
         }
@@ -76,7 +98,17 @@ final class AlertService: ObservableObject {
             let fetched = await Self.fetchKyivAlert()
             guard let self else { return }
             self.isFetching = false
-            guard let fetched else { return }        // мережа недоступна — лишаємо як було
+            guard let fetched else {
+                // Джерело не відповіло. Кілька спроб тримаємо останній відомий
+                // стан (мережа в метро зникає постійно), далі — чесно кажемо,
+                // що не знаємо, замість того щоб мовчки показувати «тривоги немає».
+                self.consecutiveFailures += 1
+                if self.consecutiveFailures >= Self.failuresBeforeUnavailable {
+                    self.state = .unavailable
+                }
+                return
+            }
+            self.consecutiveFailures = 0
             let newState: State = fetched ? .alert : .quiet
             let wasQuiet = self.state == .quiet
             self.state = newState

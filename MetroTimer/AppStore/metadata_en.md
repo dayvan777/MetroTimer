@@ -20,8 +20,8 @@ Reading, dozing off or listening to music on the metro? Metro Timer keeps track 
 
 Pick your departure station and your destination, tap “Start” the moment the train pulls out — and a countdown to your station appears on the Lock Screen and in the Dynamic Island, with the number of stops left. One station before yours the phone vibrates: “Next stop: Khreshchatyk. Get ready to exit.”
 
-WORKS FULLY OFFLINE
-There is no GPS underground — and none is needed. The app works out the train’s position from the official Kyiv Metro timetable (running times for every section, to the second). No internet, no servers, no ads.
+WORKS OFFLINE
+There is no GPS underground — and none is needed. The app works out the train’s position from the official Kyiv Metro timetable (running times for every section, to the second). No servers, no ads, no analytics. Exactly one feature needs the internet — showing air-raid alerts — and it is off by default: you turn it on yourself.
 
 DYNAMIC ISLAND AND LOCK SCREEN
 The countdown lives in the Dynamic Island (iPhone 14 Pro and newer) and on the Lock Screen (any iPhone with iOS 16.1+). You can close the app — the timer and notifications keep working.

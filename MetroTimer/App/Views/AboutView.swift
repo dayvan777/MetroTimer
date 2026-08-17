@@ -4,9 +4,29 @@ import SwiftUI
 // (полный текст политики офлайн), удаление локальных данных, контакт.
 struct AboutView: View {
     @Environment(\.dismiss) private var dismiss
+    @ObservedObject private var alerts = AlertService.shared
+    @AppStorage(AlertService.enabledKey) private var alertsEnabled = false
     @State private var pendingDeletion: Deletion?
     @State private var journalCount = TripLogStore.shared.entries.count
     @State private var calibrationCount = CalibrationStore.shared.calibratedSegmentCount
+
+    // Состояние проверки словами: «тривоги немає» и «не змогли перевірити» —
+    // это разные вещи, и пассажир должен видеть разницу.
+    private var alertsStatus: String {
+        let time = alerts.updatedAt.map { Self.timeFormatter.string(from: $0) }
+        switch alerts.state {
+        case .alert: return L10n.alertsActive
+        case .quiet: return time.map { "\(L10n.alertsQuiet) · \(L10n.alertsUpdated($0))" } ?? L10n.alertsQuiet
+        case .unavailable: return L10n.alertsUnavailable
+        case .unknown: return L10n.alertsUnknown
+        }
+    }
+
+    private static let timeFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        return formatter
+    }()
 
     private enum Deletion: Identifiable {
         case journal, calibration
@@ -50,6 +70,27 @@ struct AboutView: View {
                     Text(L10n.aboutDataBody).font(.subheadline)
                     Link(L10n.aboutOSMLink, destination: Self.osmCopyright)
                         .font(.subheadline)
+                }
+
+                Section {
+                    Toggle(L10n.alertsToggle, isOn: Binding(
+                        get: { alertsEnabled },
+                        set: { alertsEnabled = $0; alerts.setEnabled($0) }))
+                    if alertsEnabled {
+                        Text(alertsStatus)
+                            .font(.footnote)
+                            .foregroundColor(alerts.state == .unavailable ? .orange : .secondary)
+                    }
+                } header: {
+                    Text(L10n.alertsTitle)
+                } footer: {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text(L10n.alertsToggleNote)
+                        // Джерело неофіційне — на ньому не можна будувати рішення
+                        // про безпеку, і сказати про це треба до вмикання.
+                        Text(L10n.alertsSourceWarning)
+                    }
+                    .font(.footnote)
                 }
 
                 Section(L10n.aboutPrivacyTitle) {
@@ -133,13 +174,15 @@ struct PrivacyPolicyView: View {
     }
 }
 
-// Плашка активной тревоги — одинаковая на экране выбора и в поездке.
+// Плашка тревоги — одинаковая на экране выбора и в поездке. Второй вид,
+// приглушённый: источник не ответил, и мы честно не знаем, есть тревога или нет.
 struct AirAlertBanner: View {
     let text: String
+    var muted = false
 
     var body: some View {
         HStack(spacing: 8) {
-            Image(systemName: "exclamationmark.triangle.fill")
+            Image(systemName: muted ? "wifi.exclamationmark" : "exclamationmark.triangle.fill")
                 .accessibilityHidden(true)
             Text(text)
                 .font(.footnote.weight(.medium))
@@ -149,6 +192,6 @@ struct AirAlertBanner: View {
         .foregroundColor(.white)
         .padding(10)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.red.opacity(0.85))
+        .background(muted ? Color.gray.opacity(0.45) : Color.red.opacity(0.85))
     }
 }

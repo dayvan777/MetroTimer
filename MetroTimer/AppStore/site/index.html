@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Метро-таймер: Київ — політика конфіденційності та підтримка</title>
-<meta name="description" content="Політика конфіденційності та підтримка застосунку «Метро-таймер: Київ». Застосунок працює повністю офлайн і не збирає жодних даних.">
+<meta name="description" content="Політика конфіденційності та підтримка застосунку «Метро-таймер: Київ». Застосунок працює офлайн і не збирає жодних даних.">
 <link rel="icon" href="favicon.png" type="image/png">
 <style>
   :root {
@@ -89,8 +89,21 @@
       Усе, що застосунок зберігає, залишається на вашому пристрої.</p>
 
     <h3>Мережа</h3>
-    <p>Застосунок працює повністю офлайн і не робить жодних мережевих запитів.
-      У ньому немає реклами, аналітики, трекерів і сторонніх SDK.</p>
+    <p>За замовчуванням застосунок працює повністю офлайн і не робить жодних
+      мережевих запитів. Єдиний виняток — перемикач «Показувати тривоги в Києві»
+      (вимкнений за замовчуванням): якщо ви його увімкнете, застосунок раз на
+      хвилину — і лише поки відкритий — запитує публічний фід статусів повітряних
+      тривог по областях.</p>
+    <p>Це звичайний запит без параметрів: ні ваших даних, ні ідентифікаторів, ні
+      маршрутів застосунок не надсилає. Як і при відкритті будь-якого сайту,
+      серверу фіду видно вашу IP-адресу і час запиту — ми цим не керуємо і нічого
+      звідти не отримуємо.</p>
+    <p><b>Джерело неофіційне</b>: це публічний фід, а не офіційний канал
+      оповіщення. Він може відставати, помилятися або бути недоступним. Якщо
+      перевірити не вдалося, застосунок прямо показує «не вдалося перевірити»,
+      а не мовчить. Не покладайтеся на цей застосунок у питаннях безпеки —
+      користуйтеся офіційними застосунками тривог і сиренами.</p>
+    <p>Реклами, аналітики, трекерів і сторонніх SDK немає.</p>
 
     <h3>Геолокація</h3>
     <p>Використовується лише коли застосунок відкритий (дозвіл «Під час використання»):</p>
@@ -112,9 +125,12 @@
     <p>Плануються локально на пристрої, щоб попередити вас за одну зупинку до виходу.</p>
 
     <h3>Журнал поїздок і калібрування</h3>
-    <p>Зберігаються локально у сховищі застосунку. Файли залишають пристрій лише
-      якщо ви самі експортуєте їх кнопкою «Експортувати» (експортований файл
-      калібрування містить трек поїздки з часом).</p>
+    <p>Зберігаються локально у сховищі застосунку з файловим шифруванням і
+      <b>навмисно виключені з резервних копій iCloud та iTunes</b> — вони живуть
+      тільки на цьому пристрої (тому при переїзді на новий телефон не
+      переносяться). Файли залишають пристрій лише якщо ви самі експортуєте їх
+      кнопкою «Експортувати»; перед експортом ви бачите список сесій і розмір
+      кожної (файл калібрування містить трек поїздки з часом).</p>
     <p>Видалити дані можна кнопками на екрані «Про застосунок» або видаливши
       застосунок; відкликати доступ до геолокації — у Параметрах iOS.</p>
 
@@ -167,8 +183,17 @@
     <p class="lead">Metro Timer does not collect or transmit any of your data.
       Everything the app stores stays on your device.</p>
     <ul>
-      <li><b>Network.</b> The app is fully offline and makes no network requests.
-        No ads, analytics, trackers or third-party SDKs.</li>
+      <li><b>Network.</b> By default the app is fully offline and makes no network
+        requests. The only exception is the “Show air-raid alerts in Kyiv” switch
+        (off by default): when enabled, the app queries a public feed of regional
+        air-raid statuses once a minute, and only while the app is open. It is a
+        plain request with no parameters — the app sends none of your data,
+        identifiers or routes. As when you open any website, the feed's server sees
+        your IP address and the time of the request; we do not control that and
+        receive nothing from it. The source is a public feed, not an official alert
+        channel: it can lag, be wrong, or be unavailable. When a check fails the app
+        says “could not check” outright rather than staying silent. Do not rely on
+        this app for safety decisions. No ads, analytics, trackers or third-party SDKs.</li>
       <li><b>Location.</b> Used only while the app is open (“While Using”). During a
         trip — only on above-ground metro sections, to refine the train's estimated
         position; coordinates are processed on device and not stored. In the manually
@@ -179,10 +204,13 @@
       <li><b>Motion data.</b> The accelerometer is recorded only in Calibration mode;
         the files stay on the device.</li>
       <li><b>Notifications.</b> Scheduled locally to warn you one stop before you get off.</li>
-      <li><b>Trip journal and calibration.</b> Stored locally. Files leave the device only
-        if you export them yourself with the “Export” button (an exported calibration
-        file contains a timestamped ride track). You can delete the data from the
-        “About” screen or by deleting the app; location access can be revoked in iOS Settings.</li>
+      <li><b>Trip journal and calibration.</b> Stored locally with file encryption and
+        <b>deliberately excluded from iCloud and iTunes backups</b> — they live on this
+        device only (so they do not carry over to a new phone). Files leave the device
+        only if you export them yourself with the “Export” button; before exporting you
+        see the list of sessions and the size of each (a calibration file contains a
+        timestamped ride track). You can delete the data from the “About” screen or by
+        deleting the app; location access can be revoked in iOS Settings.</li>
       <li><b>Children.</b> The app collects no data from anyone, including children.</li>
     </ul>
     <p>Support and questions:

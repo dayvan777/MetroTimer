@@ -86,6 +86,10 @@ final class CalibrationViewModel: ObservableObject {
         let stamp = Self.sessionFormatter.string(from: Date())
         let dir = Self.calibrationDir.appendingPathComponent("session_\(stamp)", isDirectory: true)
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        // Сессия — это трек поездки с координатами и временем. Ни в резервную
+        // копию, ни в руки тому, кто нашёл выключенный телефон, он попадать не должен.
+        FileManager.default.protectAsLocalOnly(Self.calibrationDir)
+        FileManager.default.protectAsLocalOnly(dir)
 
         FileManager.default.createFile(atPath: dir.appendingPathComponent("events.csv").path, contents: nil)
         eventsHandle = try? FileHandle(forWritingTo: dir.appendingPathComponent("events.csv"))
@@ -93,6 +97,9 @@ final class CalibrationViewModel: ObservableObject {
 
         motion.start(fileURL: dir.appendingPathComponent("motion.csv"))
         location.start(fileURL: dir.appendingPathComponent("location.csv"))
+        for name in ["events.csv", "motion.csv", "location.csv"] {
+            FileManager.default.protectAsLocalOnly(dir.appendingPathComponent(name))
+        }
 
         nextIndex = 1
         lastStopIndex = 0

@@ -28,6 +28,9 @@ struct SelectionView: View {
             VStack(spacing: 0) {
                 if alertService.state == .alert {
                     AirAlertBanner(text: L10n.alertsActive)
+                } else if alertService.state == .unavailable {
+                    // Мовчання читалося б як «тривоги немає» — кажемо прямо.
+                    AirAlertBanner(text: L10n.alertsUnavailable, muted: true)
                 }
                 lineTabs
                 stationList

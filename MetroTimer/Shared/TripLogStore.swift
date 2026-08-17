@@ -71,6 +71,7 @@ final class TripLogStore {
         encoder.dateEncodingStrategy = .iso8601
         if let data = try? encoder.encode(entries) {
             try? data.write(to: Self.fileURL, options: .atomic)
+            FileManager.default.protectAsLocalOnly(Self.fileURL)
         }
     }
 }

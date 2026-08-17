@@ -32,6 +32,9 @@ struct TripView: View {
         return VStack(spacing: 0) {
             if alertService.state == .alert {
                 AirAlertBanner(text: L10n.alertsActiveTrip)
+            } else if alertService.state == .unavailable {
+                // Мовчання читалося б як «тривоги немає» — кажемо прямо.
+                AirAlertBanner(text: L10n.alertsUnavailable, muted: true)
             }
             if engine.notificationsDenied {
                 notificationsBanner

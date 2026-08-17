@@ -5,6 +5,21 @@ extension FileManager {
     func fileSize(at url: URL) -> Int64? {
         (try? url.resourceValues(forKeys: [.fileSizeKey]).fileSize).flatMap { $0 }.map(Int64.init)
     }
+
+    // Всё, что пишет приложение, — это данные о поездках и трек с координатами.
+    // Политика обещает, что они не покидают устройство, поэтому:
+    // 1) шифруем строже стандартного (доступ только пока устройство разблокировано
+    //    или файл уже открыт) — украденный выключенный телефон их не отдаст;
+    // 2) исключаем из резервных копий iCloud/iTunes, иначе «залишається на вашому
+    //    пристрої» было бы неправдой.
+    func protectAsLocalOnly(_ url: URL) {
+        try? setAttributes([.protectionKey: FileProtectionType.completeUnlessOpen],
+                           ofItemAtPath: url.path)
+        var url = url
+        var values = URLResourceValues()
+        values.isExcludedFromBackup = true
+        try? url.setResourceValues(values)
+    }
 }
 
 // Усреднённые замеры по направленному перегону, ключ Segment.key.
@@ -77,6 +92,7 @@ final class CalibrationStore {
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
         if let data = try? encoder.encode(records) {
             try? data.write(to: Self.fileURL, options: .atomic)
+            FileManager.default.protectAsLocalOnly(Self.fileURL)
         }
     }
 }

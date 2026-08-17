@@ -63,8 +63,17 @@ enum L10n {
     static var alertsTitle: String { tr("Повітряні тривоги", "Air-raid alerts") }
     static var alertsToggle: String { tr("Показувати тривоги в Києві", "Show air-raid alerts in Kyiv") }
     static var alertsToggleNote: String {
-        tr("Єдина функція, якій потрібен інтернет: застосунок раз на хвилину перевіряє статус тривоги в Києві, поки відкритий. Нічого про вас не передається.",
-           "The only feature that needs the internet: while open, the app checks the Kyiv alert status once a minute. Nothing about you is sent.")
+        tr("Єдина функція, якій потрібен інтернет: застосунок раз на хвилину перевіряє статус тривоги в Києві, поки відкритий. Це звичайний запит без параметрів — ні маршрут, ні будь-які ваші дані не передаються. Як і будь-якому сайту, серверу видно вашу IP-адресу.",
+           "The only feature that needs the internet: while open, the app checks the Kyiv alert status once a minute. It is a plain request with no parameters — neither your route nor any of your data is sent. As with any website, the server sees your IP address.")
+    }
+    // Джерело неофіційне: сказати про це треба до того, як людина почне
+    // покладатися на банер у питанні власної безпеки.
+    static var alertsSourceWarning: String {
+        tr("Джерело — публічний фід, не офіційний канал оповіщення. Він може відставати, помилятися або бути недоступним. Не покладайтеся на цей застосунок у питаннях безпеки: користуйтеся офіційними застосунками тривог і сиренами.",
+           "The source is a public feed, not an official alert channel. It can lag, be wrong, or be unavailable. Do not rely on this app for safety decisions: use the official alert apps and sirens.")
+    }
+    static var alertsUnavailable: String {
+        tr("Не вдалося перевірити: статус невідомий", "Could not check: status unknown")
     }
     static var alertsActive: String { tr("Повітряна тривога в Києві", "Air-raid alert in Kyiv") }
     static var alertsActiveTrip: String {
@@ -176,8 +185,8 @@ enum L10n {
     static let aboutOSMLink = "openstreetmap.org/copyright"
     static var aboutPrivacyTitle: String { tr("Конфіденційність", "Privacy") }
     static var aboutPrivacyBody: String {
-        tr("За замовчуванням застосунок працює повністю офлайн: жодних мережевих запитів, реклами, аналітики та сторонніх SDK (єдиний виняток — увімкнені вами тривоги). Усе, що він зберігає (журнал поїздок, калібрування, у режимі калібрування — записи акселерометра й геопозиції), лежить лише на вашому пристрої і залишає його тільки через кнопку «Експортувати» за вашим рішенням. Геолокація використовується лише коли застосунок відкритий. Повний текст політики — нижче.",
-           "By default the app works fully offline: no network requests, ads, analytics or third-party SDKs (the only exception is air-raid alerts, if you turn them on). Everything it stores (trip journal, calibration, and in Calibration mode accelerometer and location recordings) stays on your device and leaves it only through the “Export” button, at your decision. Location is used only while the app is open. The full policy is below.")
+        tr("За замовчуванням застосунок працює повністю офлайн: жодних мережевих запитів, реклами, аналітики та сторонніх SDK (єдиний виняток — увімкнені вами тривоги). Усе, що він зберігає (журнал поїздок, калібрування, у режимі калібрування — записи акселерометра й геопозиції), лежить лише на вашому пристрої і залишає його тільки через кнопку «Експортувати» за вашим рішенням. Геолокація використовується лише коли застосунок відкритий. Дані не потрапляють у резервні копії. Повний текст політики — нижче.",
+           "By default the app works fully offline: no network requests, ads, analytics or third-party SDKs (the only exception is air-raid alerts, if you turn them on). Everything it stores (trip journal, calibration, and in Calibration mode accelerometer and location recordings) stays on your device and leaves it only through the “Export” button, at your decision. Location is used only while the app is open. The data is kept out of backups. The full policy is below.")
     }
     static var aboutPrivacyFull: String { tr("Політика конфіденційності", "Privacy Policy") }
     static var aboutDeleteJournal: String { tr("Видалити журнал поїздок", "Delete trip journal") }
@@ -199,8 +208,8 @@ enum L10n {
              tr("«Метро-таймер» не збирає і не передає жодних ваших даних. Усе, що застосунок зберігає, залишається на вашому пристрої.",
                 "Metro Timer does not collect or transmit any of your data. Everything the app stores stays on your device.")),
             (tr("Мережа", "Network"),
-             tr("За замовчуванням застосунок працює повністю офлайн і не робить жодних мережевих запитів. Єдиний виняток — перемикач «Показувати тривоги в Києві» (вимкнений за замовчуванням): якщо ви його увімкнете, застосунок раз на хвилину — і лише поки відкритий — запитує публічний фід статусів повітряних тривог по областях. Це звичайний запит без параметрів: жодних ваших даних, ідентифікаторів чи маршрутів не передається. Реклами, аналітики, трекерів і сторонніх SDK немає.",
-                "By default the app is fully offline and makes no network requests. The only exception is the “Show air-raid alerts in Kyiv” switch (off by default): when enabled, the app queries a public feed of regional air-raid statuses once a minute, and only while the app is open. It is a plain request with no parameters — none of your data, identifiers or routes are sent. No ads, analytics, trackers or third-party SDKs.")),
+             tr("За замовчуванням застосунок працює повністю офлайн і не робить жодних мережевих запитів. Єдиний виняток — перемикач «Показувати тривоги в Києві» (вимкнений за замовчуванням): якщо ви його увімкнете, застосунок раз на хвилину — і лише поки відкритий — запитує публічний фід статусів повітряних тривог по областях. Це звичайний запит без параметрів: ні ваших даних, ні ідентифікаторів, ні маршрутів застосунок не надсилає. Як і при відкритті будь-якого сайту, серверу фіду видно вашу IP-адресу і час запиту — ми цим не керуємо і нічого звідти не отримуємо. Джерело неофіційне і може бути недоступним; тоді застосунок прямо каже «не вдалося перевірити», а не мовчить. Реклами, аналітики, трекерів і сторонніх SDK немає.",
+                "By default the app is fully offline and makes no network requests. The only exception is the “Show air-raid alerts in Kyiv” switch (off by default): when enabled, the app queries a public feed of regional air-raid statuses once a minute, and only while the app is open. It is a plain request with no parameters — the app sends none of your data, identifiers or routes. As when you open any website, the feed’s server sees your IP address and the time of the request — we do not control that and receive nothing from it. The source is unofficial and can be unavailable; in that case the app says “could not check” outright instead of staying silent. No ads, analytics, trackers or third-party SDKs.")),
             (tr("Геолокація", "Location"),
              tr("Використовується лише коли застосунок відкритий (дозвіл «Під час використання»). Під час поїздки — тільки на наземних ділянках метро, щоб уточнити розрахункове положення поїзда; координати обробляються на пристрої і не зберігаються. У режимі калібрування, який ви вмикаєте вручну, усі отримані координати (у тому числі приблизні, під землею) записуються у файл на пристрої разом із часом — це трек вашої поїздки. У фоні геолокація не використовується. Без дозволу на геолокацію застосунок повністю функціональний.",
                 "Used only while the app is open (“While Using” permission). During a trip — only on above-ground metro sections, to refine the train’s estimated position; coordinates are processed on device and not stored. In the manually enabled Calibration mode, all received coordinates (including approximate ones underground) are written to a file on the device together with timestamps — a track of your ride. Location is never used in the background. The app is fully functional without location permission.")),
@@ -211,8 +220,8 @@ enum L10n {
              tr("Плануються локально на пристрої для попередження про вихід.",
                 "Scheduled locally on the device to warn you before your stop.")),
             (tr("Журнал поїздок і калібрування", "Trip journal and calibration"),
-             tr("Зберігаються локально у сховищі застосунку. Файли залишають пристрій лише якщо ви самі експортуєте їх кнопкою «Експортувати» (експортований файл калібрування містить трек поїздки з часом). Видалити дані можна кнопками на екрані «Про застосунок» або видаливши застосунок; відкликати доступ до геолокації — у Параметрах iOS.",
-                "Stored locally. Files leave the device only if you export them yourself with the “Export” button (an exported calibration file contains a timestamped ride track). You can delete the data from the “About” screen or by deleting the app; location access can be revoked in iOS Settings.")),
+             tr("Зберігаються локально у сховищі застосунку і навмисно виключені з резервних копій iCloud та iTunes — вони живуть тільки на цьому пристрої (тому при переїзді на новий телефон не переносяться). Файли залишають пристрій лише якщо ви самі експортуєте їх кнопкою «Експортувати», і ви бачите список та розмір того, що експортуєте (файл калібрування містить трек поїздки з часом). Видалити дані можна кнопками на екрані «Про застосунок» або видаливши застосунок; відкликати доступ до геолокації — у Параметрах iOS.",
+                "Stored locally and deliberately excluded from iCloud and iTunes backups — they live on this device only (so they do not carry over to a new phone). Files leave the device only if you export them yourself with the “Export” button, and you see the list and size of what you export (a calibration file contains a timestamped ride track). You can delete the data from the “About” screen or by deleting the app; location access can be revoked in iOS Settings.")),
             (tr("Діти", "Children"),
              tr("Застосунок не збирає даних ні від кого, включно з дітьми.",
                 "The app collects no data from anyone, including children.")),

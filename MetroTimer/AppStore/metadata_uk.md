@@ -15,8 +15,8 @@
 
 Обери станцію відправлення і станцію призначення, натисни «Поїхали» — і на екрані блокування та в Dynamic Island з'явиться зворотний відлік до твоєї станції з кількістю зупинок, що залишилися. За одну станцію до виходу телефон завібрує: «Наступна — твоя. Готуйся до виходу».
 
-ПРАЦЮЄ ПОВНІСТЮ ОФЛАЙН
-Під землею немає зв'язку — і він не потрібен. Застосунок розраховує положення поїзда за часами перегонів, звіреними з реальними поїздками. Жодного інтернету, жодних серверів, жодної реклами.
+ПРАЦЮЄ ОФЛАЙН
+Під землею немає зв'язку — і він не потрібен. Застосунок розраховує положення поїзда за офіційним графіком метрополітену. Жодних серверів, жодної реклами, жодної аналітики. Інтернет потрібен рівно одній функції — показу повітряних тривог, і вона вимкнена за замовчуванням: вмикаєте ви самі.
 
 DYNAMIC ISLAND І ЕКРАН БЛОКУВАННЯ
 Відлік часу та лічильник зупинок живуть у Dynamic Island (iPhone 14 Pro і новіші) та на екрані блокування (будь-який iPhone з iOS 16.1+). Застосунок можна закрити — таймер і сповіщення працюватимуть далі.
@@ -64,13 +64,31 @@ DYNAMIC ISLAND І ЕКРАН БЛОКУВАННЯ
 5. `store_5_offline.png` — «Нуль реклами. Нуль трекінгу. Нуль мережі.»
 
 ## Нотатки для рев'ювера (англійською — для App Review)
-Metro Timer is a fully offline countdown timer for the Kyiv metro. To test
-without being in Kyiv: pick any departure and destination station, tap
-«Поїхали» (Go), allow notifications — a Live Activity appears with a countdown
-computed from per-segment travel times. Notifications fire one stop before
-arrival and at arrival. Location permission is optional: it is used only in
-foreground on above-ground segments to auto-correct the estimate; the app is
-fully functional if denied. No account, no network calls, no data collection.
+Metro Timer is an offline countdown timer for the Kyiv metro. To test without
+being in Kyiv: pick any departure and destination station, tap «Поїхали» (Go),
+allow notifications — a Live Activity appears with a countdown computed from
+per-segment travel times taken from the operator's official open-data timetable.
+Notifications fire one stop before arrival and at arrival.
+
+No account and no data collection. Location permission is optional: it is used
+only in the foreground on above-ground segments to auto-correct the estimate;
+the app is fully functional if denied.
+
+NETWORK: the app makes exactly one kind of network request, and only if the user
+turns on the "Показувати тривоги в Києві" (Show air-raid alerts in Kyiv) switch
+in the About screen — it is OFF by default, so the reviewer will see no network
+traffic unless it is enabled. When on, the app performs a parameterless GET to a
+public feed of regional air-raid statuses (ubilling.net.ua/aerialalerts/) once a
+minute while the app is in the foreground, and shows a banner if Kyiv is under
+alert. Nothing is uploaded: no identifiers, no routes, no user data. There is no
+background mode, no push, no server of ours. The About screen states plainly that
+the feed is unofficial and must not be relied on for safety, and when the feed is
+unreachable the app displays "не вдалося перевірити" ("could not check") instead
+of implying that there is no alert.
+
+App Privacy is declared as "Data Not Collected": nothing the app sends can
+identify the user, and nothing is stored off device. Local files (trip journal,
+calibration) are encrypted and excluded from iCloud/iTunes backups.
 
 ## Перед відправленням (чек-лист)
 - [ ] Платний акаунт Apple Developer Program ($99/рік) — Personal Team не публікує в App Store
