@@ -9,6 +9,9 @@ struct MetroActivityAttributes: ActivityAttributes {
         var nextStationName: String
         // Цвет текущего этапа: после пересадки остров перекрашивается в новую линию.
         var lineColorHex: String?
+        // Пассажир на пересадке и ещё не подтвердил посадку. Опциональное поле:
+        // активность, созданная прошлой версией, декодируется без него.
+        var isChangingLines: Bool?
     }
 
     let destinationName: String
@@ -26,6 +29,7 @@ extension MetroActivityAttributes.ContentState {
                   alertDate: trip.alertDate,
                   stopsRemaining: trip.stopsRemaining(at: now),
                   nextStationName: trip.nextStop(at: now)?.displayName ?? trip.destinationName,
-                  lineColorHex: repo.line(id: legLine)?.colorHex)
+                  lineColorHex: repo.line(id: legLine)?.colorHex,
+                  isChangingLines: trip.isChangingLines(at: now))
     }
 }

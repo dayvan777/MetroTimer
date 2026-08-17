@@ -61,21 +61,33 @@ struct MetroActivityWidget: Widget {
                     VStack(spacing: 8) {
                         stopsProgress(context, tint: accent)
                         if #available(iOS 17.0, *) {
-                            HStack(spacing: 24) {
-                                Button(intent: AdjustTripIntent(delta: -1)) {
-                                    Text(L10n.islandMinus).font(.subheadline.bold())
+                            if isChangingLines(context) {
+                                // Момент посадки — єдине, чого модель не знає.
+                                // Один тап тут прибирає всю невизначеність.
+                                Button(intent: BoardedTransferIntent()) {
+                                    Text(L10n.transferBoarded)
+                                        .font(.subheadline.bold())
+                                        .frame(maxWidth: .infinity)
                                 }
-                                .buttonStyle(.bordered)
+                                .buttonStyle(.borderedProminent)
                                 .tint(accent)
-                                .accessibilityLabel(L10n.minusStop)
-                                .accessibilityHint(L10n.a11yMinusHint)
-                                Button(intent: AdjustTripIntent(delta: 1)) {
-                                    Text(L10n.islandPlus).font(.subheadline.bold())
+                            } else {
+                                HStack(spacing: 24) {
+                                    Button(intent: AdjustTripIntent(delta: -1)) {
+                                        Text(L10n.islandMinus).font(.subheadline.bold())
+                                    }
+                                    .buttonStyle(.bordered)
+                                    .tint(accent)
+                                    .accessibilityLabel(L10n.minusStop)
+                                    .accessibilityHint(L10n.a11yMinusHint)
+                                    Button(intent: AdjustTripIntent(delta: 1)) {
+                                        Text(L10n.islandPlus).font(.subheadline.bold())
+                                    }
+                                    .buttonStyle(.bordered)
+                                    .tint(accent)
+                                    .accessibilityLabel(L10n.plusStop)
+                                    .accessibilityHint(L10n.a11yPlusHint)
                                 }
-                                .buttonStyle(.bordered)
-                                .tint(accent)
-                                .accessibilityLabel(L10n.plusStop)
-                                .accessibilityHint(L10n.a11yPlusHint)
                             }
                         }
                     }
@@ -115,6 +127,11 @@ struct MetroActivityWidget: Widget {
             .keylineTint(accent)
         }
     }
+}
+
+// Пасажир на пересадці й ще не підтвердив посадку.
+private func isChangingLines(_ context: ActivityViewContext<MetroActivityAttributes>) -> Bool {
+    context.state.isChangingLines == true
 }
 
 // Поездка доехала по модели: отсчёт и счётчик зупинок больше не несут смысла.
@@ -216,6 +233,15 @@ private struct LockScreenView: View {
                 }
             }
             stopsProgress(context, tint: accent)
+            if #available(iOS 17.0, *), isChangingLines(context) {
+                Button(intent: BoardedTransferIntent()) {
+                    Text(L10n.transferBoarded)
+                        .font(.subheadline.bold())
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(accent)
+            }
         }
         .padding(14)
         .activityBackgroundTint(Color.black.opacity(0.75))

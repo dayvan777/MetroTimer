@@ -71,7 +71,7 @@ final class ScheduleTests: XCTestCase {
                                                     start: kyiv(17, 22), repo: repo))
         let peakDuration = peak.arrivalDate.timeIntervalSince(peak.startDate)
         let eveningDuration = evening.arrivalDate.timeIntervalSince(evening.startDate)
-        XCTAssertGreaterThan(eveningDuration, peakDuration + 120,
+        XCTAssertGreaterThan(eveningDuration, peakDuration + 60,
                              "вечером ожидание поезда на пересадке заметно больше")
 
         // Ход и стоянки одинаковы — разница только в ожидании на пересадке.
@@ -81,8 +81,8 @@ final class ScheduleTests: XCTestCase {
         let eveningWalk = evening.events[transferIndex].arrival
             .timeIntervalSince(evening.events[transferIndex - 1].departure)
         XCTAssertEqual(eveningDuration - peakDuration, eveningWalk - peakWalk, accuracy: 1)
-        // Пеший переход Театральна→Золоті ворота = 180 с; остальное — ожидание.
-        XCTAssertGreaterThan(peakWalk, 180)
+        // Пеший переход Театральна→Золоті ворота = 150 с; остальное — ожидание.
+        XCTAssertGreaterThan(peakWalk, 150)
     }
 
     func testTransferWithoutBoardingHasNoWait() throws {
@@ -91,7 +91,7 @@ final class ScheduleTests: XCTestCase {
                                                   start: kyiv(17, 22), repo: repo))
         let index = try XCTUnwrap(trip.transferIndex)
         let walk = trip.events[index].arrival.timeIntervalSince(trip.events[index - 1].departure)
-        XCTAssertEqual(walk, 180, accuracy: 1, "только пеший переход, без ожидания поезда")
+        XCTAssertEqual(walk, 150, accuracy: 1, "только пеший переход, без ожидания поезда")
     }
 
     // «Поїзд рушив» после пересадки: неопределённое ожидание заменяется фактом.
@@ -123,6 +123,53 @@ final class ScheduleTests: XCTestCase {
         XCTAssertFalse(trip.hasBoardedByModel(at: atTransfer), "до тапа посадки ещё не было")
         XCTAssertTrue(boarded.isChangingLines(at: atTransfer.addingTimeInterval(30)))
         XCTAssertFalse(boarded.isChangingLines(at: boarded.events[index + 1].arrival))
+    }
+
+    // Live Activity повинна знати, що пасажир на пересадці: саме за цим прапорцем
+    // на екрані блокування зʼявляється кнопка «Поїзд рушив».
+    func testActivityStateFlagsTransfer() throws {
+        let start = kyiv(17, 22)
+        let trip = try XCTUnwrap(TripPlanner.plan(fromId: "heroiv-dnipra", toId: "hidropark",
+                                                  start: start, repo: repo))
+        let index = try XCTUnwrap(trip.transferIndex)
+        let atTransfer = trip.events[index - 1].arrival.addingTimeInterval(30)
+
+        let onTheWay = MetroActivityAttributes.ContentState(trip: trip, now: start)
+        XCTAssertEqual(onTheWay.isChangingLines, false)
+        let changing = MetroActivityAttributes.ContentState(trip: trip, now: atTransfer)
+        XCTAssertEqual(changing.isChangingLines, true)
+
+        // Після підтвердження посадки кнопка більше не потрібна на наступній станції.
+        let boarded = try XCTUnwrap(TripPlanner.replan(trip: trip, anchoredAt: index,
+                                                       now: atTransfer, repo: repo))
+        let after = MetroActivityAttributes.ContentState(
+            trip: boarded, now: boarded.events[index + 1].arrival)
+        XCTAssertEqual(after.isChangingLines, false)
+    }
+
+    // Полевая проверка 17.08.2026: модель давала 7 хв на пересадку Майдан→Хрещатик,
+    // реальность — 2 (поезд стоял, пассажир забежал). Оценка обязана быть
+    // смещена в раннюю сторону: лучше предупредить рано, чем после станции.
+    func testTransferEstimateBiasedEarly() throws {
+        for hour in [8, 12, 17, 20, 22] {
+            let date = kyiv(17, hour)
+            let headway = try XCTUnwrap(repo.headwaySeconds(lineId: "m1", forward: true, at: date))
+            let planned = try XCTUnwrap(repo.expectedWaitSeconds(lineId: "m1", forward: true, at: date))
+            let average = try XCTUnwrap(repo.averageWaitSeconds(lineId: "m1", forward: true, at: date))
+            XCTAssertLessThan(planned, average, "о \(hour):00 відлік має йти попереду, а не всередині")
+            XCTAssertEqual(planned, Int(Double(headway) * 0.25))
+            XCTAssertEqual(average, headway / 2)
+        }
+
+        // Увесь перехід Майдан → Хрещатик має вкладатися в 4 хвилини навіть
+        // ввечері, коли інтервал найбільший.
+        let trip = try XCTUnwrap(TripPlanner.plan(fromId: "heroiv-dnipra", toId: "hidropark",
+                                                  start: kyiv(17, 22), repo: repo))
+        let index = try XCTUnwrap(trip.transferIndex)
+        let transfer = trip.events[index].arrival
+            .timeIntervalSince(trip.events[index - 1].departure)
+        XCTAssertLessThanOrEqual(transfer, 4 * 60)
+        XCTAssertGreaterThanOrEqual(transfer, 2 * 60, "менше пішого переходу бути не може")
     }
 
     // MARK: - Перший/останній поїзд

@@ -23,3 +23,22 @@ struct AdjustTripIntent: LiveActivityIntent {
         return .result()
     }
 }
+
+// «Поїзд рушив» прямо з екрана блокування — головна поправка на маршруті
+// з пересадкою. Очікування поїзда на новій лінії неможливо вгадати (полева
+// перевірка: модель давала 7 хв, реальність — 2), і єдине точне джерело —
+// сам пасажир у момент відправлення. Тому кнопка має бути там, де людина
+// вже дивиться на телефон: у Live Activity, без розблокування й відкриття.
+@available(iOS 17.0, *)
+struct BoardedTransferIntent: LiveActivityIntent {
+    static var title: LocalizedStringResource { "Поїзд рушив" }
+    static var isDiscoverable: Bool { false }
+
+    init() {}
+
+    @MainActor
+    func perform() async throws -> some IntentResult {
+        await TripEngine.shared.boardedAfterTransfer()
+        return .result()
+    }
+}

@@ -891,21 +891,21 @@
     {
       "fromId": "teatralna",
       "toId": "zoloti-vorota",
-      "travelSeconds": 180,
+      "travelSeconds": 150,
       "dwellSeconds": 0,
       "isSuspended": false
     },
     {
       "fromId": "khreshchatyk",
       "toId": "maidan-nezalezhnosti",
-      "travelSeconds": 240,
+      "travelSeconds": 120,
       "dwellSeconds": 0,
       "isSuspended": false
     },
     {
       "fromId": "ploshcha-ukrainskykh-heroiv",
       "toId": "palats-sportu",
-      "travelSeconds": 180,
+      "travelSeconds": 150,
       "dwellSeconds": 0,
       "isSuspended": false
     }
@@ -914,17 +914,17 @@
     {
       "fromId": "teatralna",
       "toId": "zoloti-vorota",
-      "walkSeconds": 180
+      "walkSeconds": 150
     },
     {
       "fromId": "khreshchatyk",
       "toId": "maidan-nezalezhnosti",
-      "walkSeconds": 240
+      "walkSeconds": 120
     },
     {
       "fromId": "ploshcha-ukrainskykh-heroiv",
       "toId": "palats-sportu",
-      "walkSeconds": 180
+      "walkSeconds": 150
     }
   ],
   "headways": [
