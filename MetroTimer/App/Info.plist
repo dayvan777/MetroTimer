@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>ua.vlad.MetroTimer</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>metrotimer</string>
+			</array>
+		</dict>
+	</array>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>uk</string>
+	<!-- Обидві мови оголошені явно: за цим списком App Store показує локалізації,
+	     а preferredLocalizations вирішує, якою мовою запускати застосунок. -->
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>uk</string>
+		<string>en</string>
+	</array>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Геолокація потрібна лише коли застосунок відкритий: під час поїздки — щоб на наземних ділянках метро уточнювати положення поїзда; у режимі калібрування, який ви вмикаєте вручну, — щоб зберегти трек поїздки у файл на вашому пристрої. У фоні геолокація не використовується і нікуди не передається.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Акселерометр записується лише в режимі калібрування, який ви вмикаєте вручну; дані зберігаються тільки на вашому пристрої.</string>
+	<key>NSSupportsLiveActivities</key>
+	<true/>
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIColorName</key>
+		<string>LaunchBackground</string>
+	</dict>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+</dict>
+</plist>

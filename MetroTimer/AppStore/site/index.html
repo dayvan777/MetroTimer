@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Метро-таймер: Київ — політика конфіденційності та підтримка</title>
+<meta name="description" content="Політика конфіденційності та підтримка застосунку «Метро-таймер: Київ». Застосунок працює повністю офлайн і не збирає жодних даних.">
+<link rel="icon" href="favicon.png" type="image/png">
+<style>
+  :root {
+    --bg: #101114;
+    --card: #1a1c21;
+    --line: #2a2d34;
+    --text: #f4f5f7;
+    --dim: #a2a7b3;
+    --red: #ed1c24;
+    --blue: #0072bc;
+    --green: #00a651;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-text-size-adjust: 100%;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 32px 20px 72px; }
+  header { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
+  header img { width: 72px; height: 72px; border-radius: 17px; }
+  h1 { font-size: 26px; line-height: 1.25; margin: 0 0 2px; }
+  .sub { color: var(--dim); font-size: 15px; }
+  .stripes { display: flex; gap: 6px; margin: 24px 0 28px; }
+  .stripes span { height: 6px; border-radius: 3px; }
+  .stripes span:nth-child(1) { width: 90px; background: var(--red); }
+  .stripes span:nth-child(2) { width: 60px; background: var(--blue); }
+  .stripes span:nth-child(3) { width: 34px; background: var(--green); }
+  nav { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 28px; }
+  nav a {
+    color: var(--text); text-decoration: none; font-size: 14px;
+    border: 1px solid var(--line); border-radius: 999px; padding: 8px 16px;
+  }
+  nav a:hover { border-color: var(--dim); }
+  section { background: var(--card); border-radius: 16px; padding: 22px 22px 6px; margin-bottom: 18px; }
+  h2 { font-size: 20px; margin: 0 0 14px; }
+  h3 { font-size: 16px; margin: 22px 0 6px; }
+  p, li { color: var(--text); }
+  .note { color: var(--dim); font-size: 15px; }
+  ul { padding-left: 22px; }
+  li { margin-bottom: 8px; }
+  a { color: #7fb6ff; }
+  .lead {
+    border-left: 3px solid var(--green); padding-left: 14px;
+    font-size: 18px; margin: 0 0 18px;
+  }
+  footer { color: var(--dim); font-size: 14px; text-align: center; margin-top: 34px; }
+  code { background: #24262d; padding: 2px 6px; border-radius: 5px; font-size: 14px; }
+  @media (prefers-color-scheme: light) {
+    :root { --bg: #ffffff; --card: #f5f6f8; --line: #dcdfe5; --text: #14161a; --dim: #5b616e; }
+    a { color: #0a63c9; }
+    code { background: #e8eaee; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <img src="icon.png" alt="Іконка застосунку «Метро-таймер»">
+    <div>
+      <h1>Метро-таймер: Київ</h1>
+      <div class="sub">Політика конфіденційності та підтримка</div>
+    </div>
+  </header>
+
+  <div class="stripes"><span></span><span></span><span></span></div>
+
+  <nav>
+    <a href="#privacy">Конфіденційність</a>
+    <a href="#support">Підтримка</a>
+    <a href="#faq">Питання</a>
+    <a href="#en">English</a>
+  </nav>
+
+  <section id="privacy">
+    <h2>Політика конфіденційності</h2>
+    <p class="note">Оновлено: серпень 2026. Розробник: Владислав Домоцький.</p>
+    <p class="lead">«Метро-таймер» не збирає і не передає жодних ваших даних.
+      Усе, що застосунок зберігає, залишається на вашому пристрої.</p>
+
+    <h3>Мережа</h3>
+    <p>Застосунок працює повністю офлайн і не робить жодних мережевих запитів.
+      У ньому немає реклами, аналітики, трекерів і сторонніх SDK.</p>
+
+    <h3>Геолокація</h3>
+    <p>Використовується лише коли застосунок відкритий (дозвіл «Під час використання»):</p>
+    <ul>
+      <li>під час поїздки — тільки на наземних ділянках метро, щоб уточнити
+        розрахункове положення поїзда; координати обробляються на пристрої і не зберігаються;</li>
+      <li>у режимі калібрування, який ви вмикаєте вручну, — усі отримані координати
+        (у тому числі приблизні, під землею) записуються у файл на пристрої разом
+        із часом. Це трек вашої поїздки.</li>
+    </ul>
+    <p>У фоні геолокація не використовується. Без дозволу на геолокацію застосунок
+      повністю функціональний.</p>
+
+    <h3>Дані руху (акселерометр)</h3>
+    <p>Записуються лише в режимі калібрування. Записи зберігаються у файлах
+      застосунку на пристрої.</p>
+
+    <h3>Сповіщення</h3>
+    <p>Плануються локально на пристрої, щоб попередити вас за одну зупинку до виходу.</p>
+
+    <h3>Журнал поїздок і калібрування</h3>
+    <p>Зберігаються локально у сховищі застосунку. Файли залишають пристрій лише
+      якщо ви самі експортуєте їх кнопкою «Експортувати» (експортований файл
+      калібрування містить трек поїздки з часом).</p>
+    <p>Видалити дані можна кнопками на екрані «Про застосунок» або видаливши
+      застосунок; відкликати доступ до геолокації — у Параметрах iOS.</p>
+
+    <h3>Діти</h3>
+    <p>Застосунок не збирає даних ні від кого, включно з дітьми.</p>
+
+    <h3>Зміни політики</h3>
+    <p>У разі змін оновлена політика публікуватиметься за цією ж адресою і в застосунку.</p>
+  </section>
+
+  <section id="support">
+    <h2>Підтримка</h2>
+    <p>Питання, помилка в даних станцій, ідея — пишіть:
+      <a href="mailto:vladdomotsky@gmail.com">vladdomotsky@gmail.com</a>.
+      Відповідаю українською або англійською.</p>
+    <p class="note">Якщо повідомляєте про неточність розрахунку, вкажіть станції,
+      напрямок і приблизний час поїздки — це допомагає знайти причину.</p>
+  </section>
+
+  <section id="faq">
+    <h2>Часті питання</h2>
+
+    <h3>Коли натискати «Поїхали»?</h3>
+    <p>У момент, коли поїзд рушає зі станції, — не раніше. Саме від цієї миті
+      застосунок рахує час до кожної зупинки.</p>
+
+    <h3>Як воно працює без інтернету?</h3>
+    <p>Часи всіх перегонів зашиті в застосунок (офіційний графік руху КП
+      «Київський метрополітен» із Порталу відкритих даних Києва). Під землею
+      зв'язок не потрібен: відлік веде сам пристрій.</p>
+
+    <h3>Розрахунок трохи розійшовся з реальністю</h3>
+    <p>Так буває: поїзд міг довше стояти. Натисніть «+1 зупинка», якщо ви ще
+      їдете, або «−1 зупинка», якщо поїзд випереджає розрахунок — маршрут
+      перерахується. Ці ж кнопки є у Dynamic Island.</p>
+
+    <h3>Чому лічильник зупинок у Dynamic Island іноді «завмирає»?</h3>
+    <p>Застосунок не працює у фоні (це свідома умова: жодних фонових режимів і
+      витрати батареї). Таймер продовжує йти, а лічильник оновиться, щойно ви
+      відкриєте застосунок або натиснете «−1»/«+1».</p>
+
+    <h3>Повітряна тривога</h3>
+    <p>Під час тривоги поїзди не курсують наземними ділянками, тож відлік на таких
+      маршрутах може відставати — застосунок попереджає про це заздалегідь.</p>
+  </section>
+
+  <section id="en">
+    <h2>Privacy Policy (English)</h2>
+    <p class="note">Updated: August 2026. Developer: Vladyslav Domotskyi.</p>
+    <p class="lead">Metro Timer does not collect or transmit any of your data.
+      Everything the app stores stays on your device.</p>
+    <ul>
+      <li><b>Network.</b> The app is fully offline and makes no network requests.
+        No ads, analytics, trackers or third-party SDKs.</li>
+      <li><b>Location.</b> Used only while the app is open (“While Using”). During a
+        trip — only on above-ground metro sections, to refine the train's estimated
+        position; coordinates are processed on device and not stored. In the manually
+        enabled Calibration mode, all received coordinates (including approximate ones
+        underground) are written to a file on the device together with timestamps —
+        a track of your ride. Location is never used in the background. The app is
+        fully functional without location permission.</li>
+      <li><b>Motion data.</b> The accelerometer is recorded only in Calibration mode;
+        the files stay on the device.</li>
+      <li><b>Notifications.</b> Scheduled locally to warn you one stop before you get off.</li>
+      <li><b>Trip journal and calibration.</b> Stored locally. Files leave the device only
+        if you export them yourself with the “Export” button (an exported calibration
+        file contains a timestamped ride track). You can delete the data from the
+        “About” screen or by deleting the app; location access can be revoked in iOS Settings.</li>
+      <li><b>Children.</b> The app collects no data from anyone, including children.</li>
+    </ul>
+    <p>Support and questions:
+      <a href="mailto:vladdomotsky@gmail.com">vladdomotsky@gmail.com</a></p>
+  </section>
+
+  <footer>
+    Неофіційний застосунок. Не пов'язаний з КП «Київський метрополітен» та КМДА.<br>
+    Дані: Портал відкритих даних Києва · координати станцій —
+    <a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a> (ODbL).
+  </footer>
+
+</div>
+</body>
+</html>

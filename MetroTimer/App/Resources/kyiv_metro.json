@@ -1,0 +1,2216 @@
+{
+  "lines": [
+    {
+      "id": "m1",
+      "nameUk": "Святошинсько-Броварська",
+      "colorHex": "#ED1C24",
+      "stationIds": [
+        "akademmistechko",
+        "zhytomyrska",
+        "sviatoshyn",
+        "nyvky",
+        "beresteiska",
+        "shuliavska",
+        "politekhnichnyi-instytut",
+        "vokzalna",
+        "universytet",
+        "teatralna",
+        "khreshchatyk",
+        "arsenalna",
+        "dnipro",
+        "hidropark",
+        "livoberezhna",
+        "darnytsia",
+        "chernihivska",
+        "lisova"
+      ]
+    },
+    {
+      "id": "m2",
+      "nameUk": "Оболонсько-Теремківська",
+      "colorHex": "#0072BC",
+      "stationIds": [
+        "heroiv-dnipra",
+        "minska",
+        "obolon",
+        "pochaina",
+        "tarasa-shevchenka",
+        "kontraktova-ploshcha",
+        "poshtova-ploshcha",
+        "maidan-nezalezhnosti",
+        "ploshcha-ukrainskykh-heroiv",
+        "olimpiiska",
+        "palats-ukraina",
+        "lybidska",
+        "demiivska",
+        "holosiivska",
+        "vasylkivska",
+        "vystavkovyi-tsentr",
+        "ipodrom",
+        "teremky"
+      ]
+    },
+    {
+      "id": "m3",
+      "nameUk": "Сирецько-Печерська",
+      "colorHex": "#00A651",
+      "stationIds": [
+        "syrets",
+        "dorohozhychi",
+        "lukianivska",
+        "zoloti-vorota",
+        "palats-sportu",
+        "klovska",
+        "pecherska",
+        "zvirynetska",
+        "vydubychi",
+        "slavutych",
+        "osokorky",
+        "pozniaky",
+        "kharkivska",
+        "vyrlytsia",
+        "boryspilska",
+        "chervonyi-khutir"
+      ]
+    }
+  ],
+  "stations": [
+    {
+      "id": "akademmistechko",
+      "nameUk": "Академмістечко",
+      "nameEn": "Akademmistechko",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.46464,
+      "lon": 30.35519
+    },
+    {
+      "id": "zhytomyrska",
+      "nameUk": "Житомирська",
+      "nameEn": "Zhytomyrska",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.45608,
+      "lon": 30.36567
+    },
+    {
+      "id": "sviatoshyn",
+      "nameUk": "Святошин",
+      "nameEn": "Sviatoshyn",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.4578,
+      "lon": 30.39096
+    },
+    {
+      "id": "nyvky",
+      "nameUk": "Нивки",
+      "nameEn": "Nyvky",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.45857,
+      "lon": 30.40384
+    },
+    {
+      "id": "beresteiska",
+      "nameUk": "Берестейська",
+      "nameEn": "Beresteiska",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.45855,
+      "lon": 30.42237
+    },
+    {
+      "id": "shuliavska",
+      "nameUk": "Шулявська",
+      "nameEn": "Shuliavska",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.45514,
+      "lon": 30.44546
+    },
+    {
+      "id": "politekhnichnyi-instytut",
+      "nameUk": "Політехнічний інститут",
+      "nameEn": "Politekhnichnyi Instytut",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.45077,
+      "lon": 30.46612
+    },
+    {
+      "id": "vokzalna",
+      "nameUk": "Вокзальна",
+      "nameEn": "Vokzalna",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.44166,
+      "lon": 30.48824
+    },
+    {
+      "id": "universytet",
+      "nameUk": "Університет",
+      "nameEn": "Universytet",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.44432,
+      "lon": 30.50556
+    },
+    {
+      "id": "teatralna",
+      "nameUk": "Театральна",
+      "nameEn": "Teatralna",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.44534,
+      "lon": 30.51797
+    },
+    {
+      "id": "khreshchatyk",
+      "nameUk": "Хрещатик",
+      "nameEn": "Khreshchatyk",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.44736,
+      "lon": 30.52255
+    },
+    {
+      "id": "arsenalna",
+      "nameUk": "Арсенальна",
+      "nameEn": "Arsenalna",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.44443,
+      "lon": 30.5455
+    },
+    {
+      "id": "dnipro",
+      "nameUk": "Дніпро",
+      "nameEn": "Dnipro",
+      "isClosed": false,
+      "isSurface": true,
+      "lat": 50.44119,
+      "lon": 30.55901
+    },
+    {
+      "id": "hidropark",
+      "nameUk": "Гідропарк",
+      "nameEn": "Hidropark",
+      "isClosed": false,
+      "isSurface": true,
+      "lat": 50.44599,
+      "lon": 30.57703
+    },
+    {
+      "id": "livoberezhna",
+      "nameUk": "Лівобережна",
+      "nameEn": "Livoberezhna",
+      "isClosed": false,
+      "isSurface": true,
+      "lat": 50.45186,
+      "lon": 30.59817
+    },
+    {
+      "id": "darnytsia",
+      "nameUk": "Дарниця",
+      "nameEn": "Darnytsia",
+      "isClosed": false,
+      "isSurface": true,
+      "lat": 50.45594,
+      "lon": 30.61284
+    },
+    {
+      "id": "chernihivska",
+      "nameUk": "Чернігівська",
+      "nameEn": "Chernihivska",
+      "isClosed": false,
+      "isSurface": true,
+      "lat": 50.45989,
+      "lon": 30.63031
+    },
+    {
+      "id": "lisova",
+      "nameUk": "Лісова",
+      "nameEn": "Lisova",
+      "isClosed": false,
+      "isSurface": true,
+      "lat": 50.46451,
+      "lon": 30.64548
+    },
+    {
+      "id": "heroiv-dnipra",
+      "nameUk": "Героїв Дніпра",
+      "nameEn": "Heroiv Dnipra",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.52281,
+      "lon": 30.49897
+    },
+    {
+      "id": "minska",
+      "nameUk": "Мінська",
+      "nameEn": "Minska",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.51222,
+      "lon": 30.49876
+    },
+    {
+      "id": "obolon",
+      "nameUk": "Оболонь",
+      "nameEn": "Obolon",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.50136,
+      "lon": 30.49824
+    },
+    {
+      "id": "pochaina",
+      "nameUk": "Почайна",
+      "nameEn": "Pochaina",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.48611,
+      "lon": 30.49829
+    },
+    {
+      "id": "tarasa-shevchenka",
+      "nameUk": "Тараса Шевченка",
+      "nameEn": "Tarasa Shevchenka",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.47328,
+      "lon": 30.5051
+    },
+    {
+      "id": "kontraktova-ploshcha",
+      "nameUk": "Контрактова площа",
+      "nameEn": "Kontraktova Ploshcha",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.46577,
+      "lon": 30.51482
+    },
+    {
+      "id": "poshtova-ploshcha",
+      "nameUk": "Поштова площа",
+      "nameEn": "Poshtova Ploshcha",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.45878,
+      "lon": 30.52489
+    },
+    {
+      "id": "maidan-nezalezhnosti",
+      "nameUk": "Майдан Незалежності",
+      "nameEn": "Maidan Nezalezhnosti",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.45001,
+      "lon": 30.52397
+    },
+    {
+      "id": "ploshcha-ukrainskykh-heroiv",
+      "nameUk": "Площа Українських Героїв",
+      "nameEn": "Ploshcha Ukrainskykh Heroiv",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.4394,
+      "lon": 30.51648
+    },
+    {
+      "id": "olimpiiska",
+      "nameUk": "Олімпійська",
+      "nameEn": "Olimpiiska",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.43195,
+      "lon": 30.51636
+    },
+    {
+      "id": "palats-ukraina",
+      "nameUk": "Палац «Україна»",
+      "nameEn": "Palats Ukraina",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.42088,
+      "lon": 30.52098
+    },
+    {
+      "id": "lybidska",
+      "nameUk": "Либідська",
+      "nameEn": "Lybidska",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.41288,
+      "lon": 30.52489
+    },
+    {
+      "id": "demiivska",
+      "nameUk": "Деміївська",
+      "nameEn": "Demiivska",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.40474,
+      "lon": 30.51673
+    },
+    {
+      "id": "holosiivska",
+      "nameUk": "Голосіївська",
+      "nameEn": "Holosiivska",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.39743,
+      "lon": 30.50861
+    },
+    {
+      "id": "vasylkivska",
+      "nameUk": "Васильківська",
+      "nameEn": "Vasylkivska",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.39333,
+      "lon": 30.4878
+    },
+    {
+      "id": "vystavkovyi-tsentr",
+      "nameUk": "Виставковий центр",
+      "nameEn": "Vystavkovyi Tsentr",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.38213,
+      "lon": 30.47764
+    },
+    {
+      "id": "ipodrom",
+      "nameUk": "Іподром",
+      "nameEn": "Ipodrom",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.37687,
+      "lon": 30.46861
+    },
+    {
+      "id": "teremky",
+      "nameUk": "Теремки",
+      "nameEn": "Teremky",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.36672,
+      "lon": 30.4544
+    },
+    {
+      "id": "syrets",
+      "nameUk": "Сирець",
+      "nameEn": "Syrets",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.47646,
+      "lon": 30.43081
+    },
+    {
+      "id": "dorohozhychi",
+      "nameUk": "Дорогожичі",
+      "nameEn": "Dorohozhychi",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.47358,
+      "lon": 30.44946
+    },
+    {
+      "id": "lukianivska",
+      "nameUk": "Лукʼянівська",
+      "nameEn": "Lukianivska",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.46236,
+      "lon": 30.4818
+    },
+    {
+      "id": "zoloti-vorota",
+      "nameUk": "Золоті ворота",
+      "nameEn": "Zoloti Vorota",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.44856,
+      "lon": 30.51343
+    },
+    {
+      "id": "palats-sportu",
+      "nameUk": "Палац спорту",
+      "nameEn": "Palats Sportu",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.43823,
+      "lon": 30.52106
+    },
+    {
+      "id": "klovska",
+      "nameUk": "Кловська",
+      "nameEn": "Klovska",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.43679,
+      "lon": 30.53272
+    },
+    {
+      "id": "pecherska",
+      "nameUk": "Печерська",
+      "nameEn": "Pecherska",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.42768,
+      "lon": 30.53884
+    },
+    {
+      "id": "zvirynetska",
+      "nameUk": "Звіринецька",
+      "nameEn": "Zvirynetska",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.41825,
+      "lon": 30.54503
+    },
+    {
+      "id": "vydubychi",
+      "nameUk": "Видубичі",
+      "nameEn": "Vydubychi",
+      "isClosed": false,
+      "isSurface": true,
+      "lat": 50.4017,
+      "lon": 30.56117
+    },
+    {
+      "id": "slavutych",
+      "nameUk": "Славутич",
+      "nameEn": "Slavutych",
+      "isClosed": false,
+      "isSurface": true,
+      "lat": 50.39408,
+      "lon": 30.60477
+    },
+    {
+      "id": "osokorky",
+      "nameUk": "Осокорки",
+      "nameEn": "Osokorky",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.39525,
+      "lon": 30.61619
+    },
+    {
+      "id": "pozniaky",
+      "nameUk": "Позняки",
+      "nameEn": "Pozniaky",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.39802,
+      "lon": 30.63428
+    },
+    {
+      "id": "kharkivska",
+      "nameUk": "Харківська",
+      "nameEn": "Kharkivska",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.40103,
+      "lon": 30.65197
+    },
+    {
+      "id": "vyrlytsia",
+      "nameUk": "Вирлиця",
+      "nameEn": "Vyrlytsia",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.40318,
+      "lon": 30.66611
+    },
+    {
+      "id": "boryspilska",
+      "nameUk": "Бориспільська",
+      "nameEn": "Boryspilska",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.40316,
+      "lon": 30.68292
+    },
+    {
+      "id": "chervonyi-khutir",
+      "nameUk": "Червоний хутір",
+      "nameEn": "Chervonyi Khutir",
+      "isClosed": false,
+      "isSurface": false,
+      "lat": 50.40953,
+      "lon": 30.69395
+    }
+  ],
+  "segments": [
+    {
+      "fromId": "akademmistechko",
+      "toId": "zhytomyrska",
+      "travelSeconds": 120,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "zhytomyrska",
+      "toId": "sviatoshyn",
+      "travelSeconds": 140,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "sviatoshyn",
+      "toId": "nyvky",
+      "travelSeconds": 85,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "nyvky",
+      "toId": "beresteiska",
+      "travelSeconds": 83,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "beresteiska",
+      "toId": "shuliavska",
+      "travelSeconds": 155,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "shuliavska",
+      "toId": "politekhnichnyi-instytut",
+      "travelSeconds": 93,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "politekhnichnyi-instytut",
+      "toId": "vokzalna",
+      "travelSeconds": 163,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "vokzalna",
+      "toId": "universytet",
+      "travelSeconds": 93,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "universytet",
+      "toId": "teatralna",
+      "travelSeconds": 87,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "teatralna",
+      "toId": "khreshchatyk",
+      "travelSeconds": 90,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "khreshchatyk",
+      "toId": "arsenalna",
+      "travelSeconds": 133,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "arsenalna",
+      "toId": "dnipro",
+      "travelSeconds": 87,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "dnipro",
+      "toId": "hidropark",
+      "travelSeconds": 143,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "hidropark",
+      "toId": "livoberezhna",
+      "travelSeconds": 133,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "livoberezhna",
+      "toId": "darnytsia",
+      "travelSeconds": 115,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "darnytsia",
+      "toId": "chernihivska",
+      "travelSeconds": 117,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "chernihivska",
+      "toId": "lisova",
+      "travelSeconds": 103,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "heroiv-dnipra",
+      "toId": "minska",
+      "travelSeconds": 113,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "minska",
+      "toId": "obolon",
+      "travelSeconds": 93,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "obolon",
+      "toId": "pochaina",
+      "travelSeconds": 127,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "pochaina",
+      "toId": "tarasa-shevchenka",
+      "travelSeconds": 167,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "tarasa-shevchenka",
+      "toId": "kontraktova-ploshcha",
+      "travelSeconds": 110,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "kontraktova-ploshcha",
+      "toId": "poshtova-ploshcha",
+      "travelSeconds": 80,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "poshtova-ploshcha",
+      "toId": "maidan-nezalezhnosti",
+      "travelSeconds": 110,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "maidan-nezalezhnosti",
+      "toId": "ploshcha-ukrainskykh-heroiv",
+      "travelSeconds": 90,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "ploshcha-ukrainskykh-heroiv",
+      "toId": "olimpiiska",
+      "travelSeconds": 87,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "olimpiiska",
+      "toId": "palats-ukraina",
+      "travelSeconds": 87,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "palats-ukraina",
+      "toId": "lybidska",
+      "travelSeconds": 70,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "lybidska",
+      "toId": "demiivska",
+      "travelSeconds": 85,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "demiivska",
+      "toId": "holosiivska",
+      "travelSeconds": 75,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "holosiivska",
+      "toId": "vasylkivska",
+      "travelSeconds": 115,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "vasylkivska",
+      "toId": "vystavkovyi-tsentr",
+      "travelSeconds": 170,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "vystavkovyi-tsentr",
+      "toId": "ipodrom",
+      "travelSeconds": 73,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "ipodrom",
+      "toId": "teremky",
+      "travelSeconds": 115,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "syrets",
+      "toId": "dorohozhychi",
+      "travelSeconds": 125,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "dorohozhychi",
+      "toId": "lukianivska",
+      "travelSeconds": 187,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "lukianivska",
+      "toId": "zoloti-vorota",
+      "travelSeconds": 287,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "zoloti-vorota",
+      "toId": "palats-sportu",
+      "travelSeconds": 100,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "palats-sportu",
+      "toId": "klovska",
+      "travelSeconds": 100,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "klovska",
+      "toId": "pecherska",
+      "travelSeconds": 105,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "pecherska",
+      "toId": "zvirynetska",
+      "travelSeconds": 93,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "zvirynetska",
+      "toId": "vydubychi",
+      "travelSeconds": 137,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "vydubychi",
+      "toId": "slavutych",
+      "travelSeconds": 275,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "slavutych",
+      "toId": "osokorky",
+      "travelSeconds": 75,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "osokorky",
+      "toId": "pozniaky",
+      "travelSeconds": 157,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "pozniaky",
+      "toId": "kharkivska",
+      "travelSeconds": 193,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "kharkivska",
+      "toId": "vyrlytsia",
+      "travelSeconds": 115,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "vyrlytsia",
+      "toId": "boryspilska",
+      "travelSeconds": 150,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "boryspilska",
+      "toId": "chervonyi-khutir",
+      "travelSeconds": 150,
+      "dwellSeconds": 25,
+      "isSuspended": false
+    },
+    {
+      "fromId": "teatralna",
+      "toId": "zoloti-vorota",
+      "travelSeconds": 180,
+      "dwellSeconds": 0,
+      "isSuspended": false
+    },
+    {
+      "fromId": "khreshchatyk",
+      "toId": "maidan-nezalezhnosti",
+      "travelSeconds": 240,
+      "dwellSeconds": 0,
+      "isSuspended": false
+    },
+    {
+      "fromId": "ploshcha-ukrainskykh-heroiv",
+      "toId": "palats-sportu",
+      "travelSeconds": 180,
+      "dwellSeconds": 0,
+      "isSuspended": false
+    }
+  ],
+  "transfers": [
+    {
+      "fromId": "teatralna",
+      "toId": "zoloti-vorota",
+      "walkSeconds": 180
+    },
+    {
+      "fromId": "khreshchatyk",
+      "toId": "maidan-nezalezhnosti",
+      "walkSeconds": 240
+    },
+    {
+      "fromId": "ploshcha-ukrainskykh-heroiv",
+      "toId": "palats-sportu",
+      "walkSeconds": 180
+    }
+  ],
+  "headways": [
+    {
+      "lineId": "m1",
+      "hour": 6,
+      "isHoliday": false,
+      "forwardStart": 540,
+      "forwardEnd": 240,
+      "backwardStart": 495,
+      "backwardEnd": 210
+    },
+    {
+      "lineId": "m1",
+      "hour": 7,
+      "isHoliday": false,
+      "forwardStart": 300,
+      "forwardEnd": 180,
+      "backwardStart": 240,
+      "backwardEnd": 165
+    },
+    {
+      "lineId": "m1",
+      "hour": 8,
+      "isHoliday": false,
+      "forwardStart": 210,
+      "forwardEnd": 165,
+      "backwardStart": 180,
+      "backwardEnd": 165
+    },
+    {
+      "lineId": "m1",
+      "hour": 9,
+      "isHoliday": false,
+      "forwardStart": 165,
+      "forwardEnd": 225,
+      "backwardStart": 165,
+      "backwardEnd": 300
+    },
+    {
+      "lineId": "m1",
+      "hour": 10,
+      "isHoliday": false,
+      "forwardStart": 210,
+      "forwardEnd": 330,
+      "backwardStart": 240,
+      "backwardEnd": 330
+    },
+    {
+      "lineId": "m1",
+      "hour": 11,
+      "isHoliday": false,
+      "forwardStart": 300,
+      "forwardEnd": 330,
+      "backwardStart": 330,
+      "backwardEnd": 300
+    },
+    {
+      "lineId": "m1",
+      "hour": 12,
+      "isHoliday": false,
+      "forwardStart": 330,
+      "forwardEnd": 300,
+      "backwardStart": 330,
+      "backwardEnd": 300
+    },
+    {
+      "lineId": "m1",
+      "hour": 13,
+      "isHoliday": false,
+      "forwardStart": 330,
+      "forwardEnd": 300,
+      "backwardStart": 330,
+      "backwardEnd": 300
+    },
+    {
+      "lineId": "m1",
+      "hour": 14,
+      "isHoliday": false,
+      "forwardStart": 330,
+      "forwardEnd": 255,
+      "backwardStart": 330,
+      "backwardEnd": 255
+    },
+    {
+      "lineId": "m1",
+      "hour": 15,
+      "isHoliday": false,
+      "forwardStart": 330,
+      "forwardEnd": 225,
+      "backwardStart": 255,
+      "backwardEnd": 225
+    },
+    {
+      "lineId": "m1",
+      "hour": 16,
+      "isHoliday": false,
+      "forwardStart": 255,
+      "forwardEnd": 210,
+      "backwardStart": 225,
+      "backwardEnd": 180
+    },
+    {
+      "lineId": "m1",
+      "hour": 17,
+      "isHoliday": false,
+      "forwardStart": 210,
+      "forwardEnd": 180,
+      "backwardStart": 210,
+      "backwardEnd": 180
+    },
+    {
+      "lineId": "m1",
+      "hour": 18,
+      "isHoliday": false,
+      "forwardStart": 180,
+      "forwardEnd": 180,
+      "backwardStart": 180,
+      "backwardEnd": 240
+    },
+    {
+      "lineId": "m1",
+      "hour": 19,
+      "isHoliday": false,
+      "forwardStart": 180,
+      "forwardEnd": 330,
+      "backwardStart": 180,
+      "backwardEnd": 360
+    },
+    {
+      "lineId": "m1",
+      "hour": 20,
+      "isHoliday": false,
+      "forwardStart": 300,
+      "forwardEnd": 390,
+      "backwardStart": 360,
+      "backwardEnd": 390
+    },
+    {
+      "lineId": "m1",
+      "hour": 21,
+      "isHoliday": false,
+      "forwardStart": 360,
+      "forwardEnd": 420,
+      "backwardStart": 360,
+      "backwardEnd": 450
+    },
+    {
+      "lineId": "m1",
+      "hour": 22,
+      "isHoliday": false,
+      "forwardStart": 420,
+      "forwardEnd": 540,
+      "backwardStart": 405,
+      "backwardEnd": 600
+    },
+    {
+      "lineId": "m1",
+      "hour": 6,
+      "isHoliday": true,
+      "forwardStart": 540,
+      "forwardEnd": 450,
+      "backwardStart": 600,
+      "backwardEnd": 360
+    },
+    {
+      "lineId": "m1",
+      "hour": 7,
+      "isHoliday": true,
+      "forwardStart": 450,
+      "forwardEnd": 360,
+      "backwardStart": 390,
+      "backwardEnd": 360
+    },
+    {
+      "lineId": "m1",
+      "hour": 8,
+      "isHoliday": true,
+      "forwardStart": 390,
+      "forwardEnd": 360,
+      "backwardStart": 360,
+      "backwardEnd": 390
+    },
+    {
+      "lineId": "m1",
+      "hour": 9,
+      "isHoliday": true,
+      "forwardStart": 360,
+      "forwardEnd": 390,
+      "backwardStart": 360,
+      "backwardEnd": 390
+    },
+    {
+      "lineId": "m1",
+      "hour": 10,
+      "isHoliday": true,
+      "forwardStart": 360,
+      "forwardEnd": 390,
+      "backwardStart": 390,
+      "backwardEnd": 360
+    },
+    {
+      "lineId": "m1",
+      "hour": 11,
+      "isHoliday": true,
+      "forwardStart": 390,
+      "forwardEnd": 360,
+      "backwardStart": 360,
+      "backwardEnd": 390
+    },
+    {
+      "lineId": "m1",
+      "hour": 12,
+      "isHoliday": true,
+      "forwardStart": 360,
+      "forwardEnd": 390,
+      "backwardStart": 390,
+      "backwardEnd": 360
+    },
+    {
+      "lineId": "m1",
+      "hour": 13,
+      "isHoliday": true,
+      "forwardStart": 390,
+      "forwardEnd": 360,
+      "backwardStart": 390,
+      "backwardEnd": 360
+    },
+    {
+      "lineId": "m1",
+      "hour": 14,
+      "isHoliday": true,
+      "forwardStart": 360,
+      "forwardEnd": 390,
+      "backwardStart": 360,
+      "backwardEnd": 390
+    },
+    {
+      "lineId": "m1",
+      "hour": 15,
+      "isHoliday": true,
+      "forwardStart": 390,
+      "forwardEnd": 360,
+      "backwardStart": 390,
+      "backwardEnd": 360
+    },
+    {
+      "lineId": "m1",
+      "hour": 16,
+      "isHoliday": true,
+      "forwardStart": 390,
+      "forwardEnd": 360,
+      "backwardStart": 360,
+      "backwardEnd": 390
+    },
+    {
+      "lineId": "m1",
+      "hour": 17,
+      "isHoliday": true,
+      "forwardStart": 360,
+      "forwardEnd": 390,
+      "backwardStart": 390,
+      "backwardEnd": 360
+    },
+    {
+      "lineId": "m1",
+      "hour": 18,
+      "isHoliday": true,
+      "forwardStart": 390,
+      "forwardEnd": 360,
+      "backwardStart": 390,
+      "backwardEnd": 360
+    },
+    {
+      "lineId": "m1",
+      "hour": 19,
+      "isHoliday": true,
+      "forwardStart": 360,
+      "forwardEnd": 390,
+      "backwardStart": 360,
+      "backwardEnd": 390
+    },
+    {
+      "lineId": "m1",
+      "hour": 20,
+      "isHoliday": true,
+      "forwardStart": 360,
+      "forwardEnd": 420,
+      "backwardStart": 360,
+      "backwardEnd": 450
+    },
+    {
+      "lineId": "m1",
+      "hour": 21,
+      "isHoliday": true,
+      "forwardStart": 390,
+      "forwardEnd": 450,
+      "backwardStart": 420,
+      "backwardEnd": 540
+    },
+    {
+      "lineId": "m1",
+      "hour": 22,
+      "isHoliday": true,
+      "forwardStart": 450,
+      "forwardEnd": 600,
+      "backwardStart": 480,
+      "backwardEnd": 630
+    },
+    {
+      "lineId": "m2",
+      "hour": 6,
+      "isHoliday": false,
+      "forwardStart": 390,
+      "forwardEnd": 210,
+      "backwardStart": 450,
+      "backwardEnd": 300
+    },
+    {
+      "lineId": "m2",
+      "hour": 7,
+      "isHoliday": false,
+      "forwardStart": 270,
+      "forwardEnd": 180,
+      "backwardStart": 390,
+      "backwardEnd": 210
+    },
+    {
+      "lineId": "m2",
+      "hour": 8,
+      "isHoliday": false,
+      "forwardStart": 180,
+      "forwardEnd": 165,
+      "backwardStart": 210,
+      "backwardEnd": 180
+    },
+    {
+      "lineId": "m2",
+      "hour": 9,
+      "isHoliday": false,
+      "forwardStart": 165,
+      "forwardEnd": 270,
+      "backwardStart": 165,
+      "backwardEnd": 240
+    },
+    {
+      "lineId": "m2",
+      "hour": 10,
+      "isHoliday": false,
+      "forwardStart": 240,
+      "forwardEnd": 300,
+      "backwardStart": 210,
+      "backwardEnd": 300
+    },
+    {
+      "lineId": "m2",
+      "hour": 11,
+      "isHoliday": false,
+      "forwardStart": 270,
+      "forwardEnd": 390,
+      "backwardStart": 270,
+      "backwardEnd": 360
+    },
+    {
+      "lineId": "m2",
+      "hour": 12,
+      "isHoliday": false,
+      "forwardStart": 360,
+      "forwardEnd": 390,
+      "backwardStart": 300,
+      "backwardEnd": 390
+    },
+    {
+      "lineId": "m2",
+      "hour": 13,
+      "isHoliday": false,
+      "forwardStart": 360,
+      "forwardEnd": 390,
+      "backwardStart": 390,
+      "backwardEnd": 360
+    },
+    {
+      "lineId": "m2",
+      "hour": 14,
+      "isHoliday": false,
+      "forwardStart": 390,
+      "forwardEnd": 270,
+      "backwardStart": 390,
+      "backwardEnd": 360
+    },
+    {
+      "lineId": "m2",
+      "hour": 15,
+      "isHoliday": false,
+      "forwardStart": 300,
+      "forwardEnd": 240,
+      "backwardStart": 360,
+      "backwardEnd": 270
+    },
+    {
+      "lineId": "m2",
+      "hour": 16,
+      "isHoliday": false,
+      "forwardStart": 240,
+      "forwardEnd": 210,
+      "backwardStart": 300,
+      "backwardEnd": 225
+    },
+    {
+      "lineId": "m2",
+      "hour": 17,
+      "isHoliday": false,
+      "forwardStart": 225,
+      "forwardEnd": 180,
+      "backwardStart": 240,
+      "backwardEnd": 210
+    },
+    {
+      "lineId": "m2",
+      "hour": 18,
+      "isHoliday": false,
+      "forwardStart": 180,
+      "forwardEnd": 270,
+      "backwardStart": 225,
+      "backwardEnd": 180
+    },
+    {
+      "lineId": "m2",
+      "hour": 19,
+      "isHoliday": false,
+      "forwardStart": 180,
+      "forwardEnd": 390,
+      "backwardStart": 180,
+      "backwardEnd": 300
+    },
+    {
+      "lineId": "m2",
+      "hour": 20,
+      "isHoliday": false,
+      "forwardStart": 300,
+      "forwardEnd": 450,
+      "backwardStart": 270,
+      "backwardEnd": 390
+    },
+    {
+      "lineId": "m2",
+      "hour": 21,
+      "isHoliday": false,
+      "forwardStart": 300,
+      "forwardEnd": 510,
+      "backwardStart": 390,
+      "backwardEnd": 450
+    },
+    {
+      "lineId": "m2",
+      "hour": 22,
+      "isHoliday": false,
+      "forwardStart": 510,
+      "forwardEnd": 660,
+      "backwardStart": 450,
+      "backwardEnd": 615
+    },
+    {
+      "lineId": "m2",
+      "hour": 6,
+      "isHoliday": true,
+      "forwardStart": 420,
+      "forwardEnd": 390,
+      "backwardStart": 450,
+      "backwardEnd": 435
+    },
+    {
+      "lineId": "m2",
+      "hour": 7,
+      "isHoliday": true,
+      "forwardStart": 420,
+      "forwardEnd": 360,
+      "backwardStart": 450,
+      "backwardEnd": 390
+    },
+    {
+      "lineId": "m2",
+      "hour": 8,
+      "isHoliday": true,
+      "forwardStart": 360,
+      "forwardEnd": 390,
+      "backwardStart": 390,
+      "backwardEnd": 360
+    },
+    {
+      "lineId": "m2",
+      "hour": 9,
+      "isHoliday": true,
+      "forwardStart": 360,
+      "forwardEnd": 390,
+      "backwardStart": 360,
+      "backwardEnd": 390
+    },
+    {
+      "lineId": "m2",
+      "hour": 10,
+      "isHoliday": true,
+      "forwardStart": 390,
+      "forwardEnd": 360,
+      "backwardStart": 360,
+      "backwardEnd": 390
+    },
+    {
+      "lineId": "m2",
+      "hour": 11,
+      "isHoliday": true,
+      "forwardStart": 360,
+      "forwardEnd": 390,
+      "backwardStart": 390,
+      "backwardEnd": 360
+    },
+    {
+      "lineId": "m2",
+      "hour": 12,
+      "isHoliday": true,
+      "forwardStart": 390,
+      "forwardEnd": 360,
+      "backwardStart": 360,
+      "backwardEnd": 390
+    },
+    {
+      "lineId": "m2",
+      "hour": 13,
+      "isHoliday": true,
+      "forwardStart": 390,
+      "forwardEnd": 360,
+      "backwardStart": 390,
+      "backwardEnd": 360
+    },
+    {
+      "lineId": "m2",
+      "hour": 14,
+      "isHoliday": true,
+      "forwardStart": 360,
+      "forwardEnd": 390,
+      "backwardStart": 360,
+      "backwardEnd": 390
+    },
+    {
+      "lineId": "m2",
+      "hour": 15,
+      "isHoliday": true,
+      "forwardStart": 390,
+      "forwardEnd": 360,
+      "backwardStart": 390,
+      "backwardEnd": 360
+    },
+    {
+      "lineId": "m2",
+      "hour": 16,
+      "isHoliday": true,
+      "forwardStart": 360,
+      "forwardEnd": 390,
+      "backwardStart": 390,
+      "backwardEnd": 360
+    },
+    {
+      "lineId": "m2",
+      "hour": 17,
+      "isHoliday": true,
+      "forwardStart": 390,
+      "forwardEnd": 360,
+      "backwardStart": 360,
+      "backwardEnd": 390
+    },
+    {
+      "lineId": "m2",
+      "hour": 18,
+      "isHoliday": true,
+      "forwardStart": 390,
+      "forwardEnd": 360,
+      "backwardStart": 390,
+      "backwardEnd": 360
+    },
+    {
+      "lineId": "m2",
+      "hour": 19,
+      "isHoliday": true,
+      "forwardStart": 360,
+      "forwardEnd": 390,
+      "backwardStart": 360,
+      "backwardEnd": 390
+    },
+    {
+      "lineId": "m2",
+      "hour": 20,
+      "isHoliday": true,
+      "forwardStart": 390,
+      "forwardEnd": 450,
+      "backwardStart": 390,
+      "backwardEnd": 420
+    },
+    {
+      "lineId": "m2",
+      "hour": 21,
+      "isHoliday": true,
+      "forwardStart": 450,
+      "forwardEnd": 615,
+      "backwardStart": 420,
+      "backwardEnd": 600
+    },
+    {
+      "lineId": "m2",
+      "hour": 22,
+      "isHoliday": true,
+      "forwardStart": 615,
+      "forwardEnd": 660,
+      "backwardStart": 600,
+      "backwardEnd": 615
+    },
+    {
+      "lineId": "m3",
+      "hour": 6,
+      "isHoliday": false,
+      "forwardStart": 450,
+      "forwardEnd": 330,
+      "backwardStart": 525,
+      "backwardEnd": 225
+    },
+    {
+      "lineId": "m3",
+      "hour": 7,
+      "isHoliday": false,
+      "forwardStart": 360,
+      "forwardEnd": 210,
+      "backwardStart": 270,
+      "backwardEnd": 180
+    },
+    {
+      "lineId": "m3",
+      "hour": 8,
+      "isHoliday": false,
+      "forwardStart": 225,
+      "forwardEnd": 165,
+      "backwardStart": 165,
+      "backwardEnd": 210
+    },
+    {
+      "lineId": "m3",
+      "hour": 9,
+      "isHoliday": false,
+      "forwardStart": 165,
+      "forwardEnd": 240,
+      "backwardStart": 180,
+      "backwardEnd": 285
+    },
+    {
+      "lineId": "m3",
+      "hour": 10,
+      "isHoliday": false,
+      "forwardStart": 210,
+      "forwardEnd": 360,
+      "backwardStart": 270,
+      "backwardEnd": 360
+    },
+    {
+      "lineId": "m3",
+      "hour": 11,
+      "isHoliday": false,
+      "forwardStart": 270,
+      "forwardEnd": 360,
+      "backwardStart": 330,
+      "backwardEnd": 360
+    },
+    {
+      "lineId": "m3",
+      "hour": 12,
+      "isHoliday": false,
+      "forwardStart": 360,
+      "forwardEnd": 330,
+      "backwardStart": 360,
+      "backwardEnd": 330
+    },
+    {
+      "lineId": "m3",
+      "hour": 13,
+      "isHoliday": false,
+      "forwardStart": 330,
+      "forwardEnd": 360,
+      "backwardStart": 360,
+      "backwardEnd": 330
+    },
+    {
+      "lineId": "m3",
+      "hour": 14,
+      "isHoliday": false,
+      "forwardStart": 360,
+      "forwardEnd": 330,
+      "backwardStart": 330,
+      "backwardEnd": 360
+    },
+    {
+      "lineId": "m3",
+      "hour": 15,
+      "isHoliday": false,
+      "forwardStart": 330,
+      "forwardEnd": 360,
+      "backwardStart": 360,
+      "backwardEnd": 270
+    },
+    {
+      "lineId": "m3",
+      "hour": 16,
+      "isHoliday": false,
+      "forwardStart": 360,
+      "forwardEnd": 240,
+      "backwardStart": 270,
+      "backwardEnd": 225
+    },
+    {
+      "lineId": "m3",
+      "hour": 17,
+      "isHoliday": false,
+      "forwardStart": 270,
+      "forwardEnd": 180,
+      "backwardStart": 225,
+      "backwardEnd": 180
+    },
+    {
+      "lineId": "m3",
+      "hour": 18,
+      "isHoliday": false,
+      "forwardStart": 180,
+      "forwardEnd": 240,
+      "backwardStart": 195,
+      "backwardEnd": 300
+    },
+    {
+      "lineId": "m3",
+      "hour": 19,
+      "isHoliday": false,
+      "forwardStart": 225,
+      "forwardEnd": 330,
+      "backwardStart": 255,
+      "backwardEnd": 360
+    },
+    {
+      "lineId": "m3",
+      "hour": 20,
+      "isHoliday": false,
+      "forwardStart": 300,
+      "forwardEnd": 420,
+      "backwardStart": 360,
+      "backwardEnd": 450
+    },
+    {
+      "lineId": "m3",
+      "hour": 21,
+      "isHoliday": false,
+      "forwardStart": 360,
+      "forwardEnd": 450,
+      "backwardStart": 450,
+      "backwardEnd": 540
+    },
+    {
+      "lineId": "m3",
+      "hour": 22,
+      "isHoliday": false,
+      "forwardStart": 450,
+      "forwardEnd": 540,
+      "backwardStart": 450,
+      "backwardEnd": 660
+    },
+    {
+      "lineId": "m3",
+      "hour": 6,
+      "isHoliday": true,
+      "forwardStart": 555,
+      "forwardEnd": 390,
+      "backwardStart": 660,
+      "backwardEnd": 450
+    },
+    {
+      "lineId": "m3",
+      "hour": 7,
+      "isHoliday": true,
+      "forwardStart": 450,
+      "forwardEnd": 420,
+      "backwardStart": 450,
+      "backwardEnd": 420
+    },
+    {
+      "lineId": "m3",
+      "hour": 8,
+      "isHoliday": true,
+      "forwardStart": 450,
+      "forwardEnd": 420,
+      "backwardStart": 420,
+      "backwardEnd": 450
+    },
+    {
+      "lineId": "m3",
+      "hour": 9,
+      "isHoliday": true,
+      "forwardStart": 420,
+      "forwardEnd": 450,
+      "backwardStart": 450,
+      "backwardEnd": 360
+    },
+    {
+      "lineId": "m3",
+      "hour": 10,
+      "isHoliday": true,
+      "forwardStart": 450,
+      "forwardEnd": 420,
+      "backwardStart": 450,
+      "backwardEnd": 330
+    },
+    {
+      "lineId": "m3",
+      "hour": 11,
+      "isHoliday": true,
+      "forwardStart": 450,
+      "forwardEnd": 330,
+      "backwardStart": 360,
+      "backwardEnd": 330
+    },
+    {
+      "lineId": "m3",
+      "hour": 12,
+      "isHoliday": true,
+      "forwardStart": 330,
+      "forwardEnd": 360,
+      "backwardStart": 360,
+      "backwardEnd": 330
+    },
+    {
+      "lineId": "m3",
+      "hour": 13,
+      "isHoliday": true,
+      "forwardStart": 360,
+      "forwardEnd": 330,
+      "backwardStart": 360,
+      "backwardEnd": 330
+    },
+    {
+      "lineId": "m3",
+      "hour": 14,
+      "isHoliday": true,
+      "forwardStart": 330,
+      "forwardEnd": 360,
+      "backwardStart": 360,
+      "backwardEnd": 330
+    },
+    {
+      "lineId": "m3",
+      "hour": 15,
+      "isHoliday": true,
+      "forwardStart": 360,
+      "forwardEnd": 330,
+      "backwardStart": 360,
+      "backwardEnd": 330
+    },
+    {
+      "lineId": "m3",
+      "hour": 16,
+      "isHoliday": true,
+      "forwardStart": 360,
+      "forwardEnd": 330,
+      "backwardStart": 360,
+      "backwardEnd": 330
+    },
+    {
+      "lineId": "m3",
+      "hour": 17,
+      "isHoliday": true,
+      "forwardStart": 360,
+      "forwardEnd": 330,
+      "backwardStart": 360,
+      "backwardEnd": 330
+    },
+    {
+      "lineId": "m3",
+      "hour": 18,
+      "isHoliday": true,
+      "forwardStart": 330,
+      "forwardEnd": 360,
+      "backwardStart": 330,
+      "backwardEnd": 360
+    },
+    {
+      "lineId": "m3",
+      "hour": 19,
+      "isHoliday": true,
+      "forwardStart": 360,
+      "forwardEnd": 420,
+      "backwardStart": 330,
+      "backwardEnd": 450
+    },
+    {
+      "lineId": "m3",
+      "hour": 20,
+      "isHoliday": true,
+      "forwardStart": 360,
+      "forwardEnd": 450,
+      "backwardStart": 360,
+      "backwardEnd": 480
+    },
+    {
+      "lineId": "m3",
+      "hour": 21,
+      "isHoliday": true,
+      "forwardStart": 420,
+      "forwardEnd": 480,
+      "backwardStart": 480,
+      "backwardEnd": 600
+    },
+    {
+      "lineId": "m3",
+      "hour": 22,
+      "isHoliday": true,
+      "forwardStart": 480,
+      "forwardEnd": 600,
+      "backwardStart": 480,
+      "backwardEnd": 660
+    }
+  ],
+  "serviceHours": [
+    {
+      "stationId": "akademmistechko",
+      "forwardFirst": 21060,
+      "forwardLast": 81000,
+      "backwardFirst": null,
+      "backwardLast": null
+    },
+    {
+      "stationId": "zhytomyrska",
+      "forwardFirst": 21205,
+      "forwardLast": 81145,
+      "backwardFirst": 22380,
+      "backwardLast": 83170
+    },
+    {
+      "stationId": "sviatoshyn",
+      "forwardFirst": 20415,
+      "forwardLast": 81300,
+      "backwardFirst": 22210,
+      "backwardLast": 83005
+    },
+    {
+      "stationId": "nyvky",
+      "forwardFirst": 20525,
+      "forwardLast": 81405,
+      "backwardFirst": 22090,
+      "backwardLast": 82895
+    },
+    {
+      "stationId": "beresteiska",
+      "forwardFirst": 20630,
+      "forwardLast": 81510,
+      "backwardFirst": 21975,
+      "backwardLast": 82785
+    },
+    {
+      "stationId": "shuliavska",
+      "forwardFirst": 20820,
+      "forwardLast": 81685,
+      "backwardFirst": 21790,
+      "backwardLast": 82610
+    },
+    {
+      "stationId": "politekhnichnyi-instytut",
+      "forwardFirst": 20940,
+      "forwardLast": 81800,
+      "backwardFirst": 21670,
+      "backwardLast": 82495
+    },
+    {
+      "stationId": "vokzalna",
+      "forwardFirst": 21130,
+      "forwardLast": 81980,
+      "backwardFirst": 21470,
+      "backwardLast": 82310
+    },
+    {
+      "stationId": "universytet",
+      "forwardFirst": 21250,
+      "forwardLast": 82095,
+      "backwardFirst": 21350,
+      "backwardLast": 82195
+    },
+    {
+      "stationId": "teatralna",
+      "forwardFirst": 21370,
+      "forwardLast": 82210,
+      "backwardFirst": 21240,
+      "backwardLast": 82090
+    },
+    {
+      "stationId": "khreshchatyk",
+      "forwardFirst": 21495,
+      "forwardLast": 82325,
+      "backwardFirst": 21125,
+      "backwardLast": 81980
+    },
+    {
+      "stationId": "arsenalna",
+      "forwardFirst": 21650,
+      "forwardLast": 82475,
+      "backwardFirst": 20950,
+      "backwardLast": 81820
+    },
+    {
+      "stationId": "dnipro",
+      "forwardFirst": 21765,
+      "forwardLast": 82585,
+      "backwardFirst": 20835,
+      "backwardLast": 81710
+    },
+    {
+      "stationId": "hidropark",
+      "forwardFirst": 21940,
+      "forwardLast": 82755,
+      "backwardFirst": 20670,
+      "backwardLast": 81555
+    },
+    {
+      "stationId": "livoberezhna",
+      "forwardFirst": 22110,
+      "forwardLast": 82910,
+      "backwardFirst": 20510,
+      "backwardLast": 81400
+    },
+    {
+      "stationId": "darnytsia",
+      "forwardFirst": 21060,
+      "forwardLast": 83050,
+      "backwardFirst": 20355,
+      "backwardLast": 81260
+    },
+    {
+      "stationId": "chernihivska",
+      "forwardFirst": 21205,
+      "forwardLast": 83195,
+      "backwardFirst": 20215,
+      "backwardLast": 81125
+    },
+    {
+      "stationId": "lisova",
+      "forwardFirst": null,
+      "forwardLast": null,
+      "backwardFirst": 20085,
+      "backwardLast": 81000
+    },
+    {
+      "stationId": "heroiv-dnipra",
+      "forwardFirst": 19800,
+      "forwardLast": 81000,
+      "backwardFirst": null,
+      "backwardLast": null
+    },
+    {
+      "stationId": "minska",
+      "forwardFirst": 19940,
+      "forwardLast": 81135,
+      "backwardFirst": 21745,
+      "backwardLast": 83035
+    },
+    {
+      "stationId": "obolon",
+      "forwardFirst": 20065,
+      "forwardLast": 81255,
+      "backwardFirst": 21630,
+      "backwardLast": 82925
+    },
+    {
+      "stationId": "pochaina",
+      "forwardFirst": 20225,
+      "forwardLast": 81405,
+      "backwardFirst": 21475,
+      "backwardLast": 82790
+    },
+    {
+      "stationId": "tarasa-shevchenka",
+      "forwardFirst": 20415,
+      "forwardLast": 81585,
+      "backwardFirst": 21265,
+      "backwardLast": 82595
+    },
+    {
+      "stationId": "kontraktova-ploshcha",
+      "forwardFirst": 20540,
+      "forwardLast": 81705,
+      "backwardFirst": 21110,
+      "backwardLast": 82450
+    },
+    {
+      "stationId": "poshtova-ploshcha",
+      "forwardFirst": 20645,
+      "forwardLast": 81805,
+      "backwardFirst": 20990,
+      "backwardLast": 82345
+    },
+    {
+      "stationId": "maidan-nezalezhnosti",
+      "forwardFirst": 20805,
+      "forwardLast": 81950,
+      "backwardFirst": 20865,
+      "backwardLast": 82230
+    },
+    {
+      "stationId": "ploshcha-ukrainskykh-heroiv",
+      "forwardFirst": 20920,
+      "forwardLast": 82060,
+      "backwardFirst": 20735,
+      "backwardLast": 82115
+    },
+    {
+      "stationId": "olimpiiska",
+      "forwardFirst": 21030,
+      "forwardLast": 82170,
+      "backwardFirst": 20615,
+      "backwardLast": 82000
+    },
+    {
+      "stationId": "palats-ukraina",
+      "forwardFirst": 21145,
+      "forwardLast": 82275,
+      "backwardFirst": 20495,
+      "backwardLast": 81890
+    },
+    {
+      "stationId": "lybidska",
+      "forwardFirst": 21250,
+      "forwardLast": 82370,
+      "backwardFirst": 21420,
+      "backwardLast": 81795
+    },
+    {
+      "stationId": "demiivska",
+      "forwardFirst": 21360,
+      "forwardLast": 82475,
+      "backwardFirst": 21720,
+      "backwardLast": 81670
+    },
+    {
+      "stationId": "holosiivska",
+      "forwardFirst": 21460,
+      "forwardLast": 82575,
+      "backwardFirst": 21615,
+      "backwardLast": 81570
+    },
+    {
+      "stationId": "vasylkivska",
+      "forwardFirst": 21615,
+      "forwardLast": 82720,
+      "backwardFirst": 21480,
+      "backwardLast": 81435
+    },
+    {
+      "stationId": "vystavkovyi-tsentr",
+      "forwardFirst": 21810,
+      "forwardLast": 82905,
+      "backwardFirst": 21690,
+      "backwardLast": 81235
+    },
+    {
+      "stationId": "ipodrom",
+      "forwardFirst": 21915,
+      "forwardLast": 83000,
+      "backwardFirst": 21590,
+      "backwardLast": 81140
+    },
+    {
+      "stationId": "teremky",
+      "forwardFirst": null,
+      "forwardLast": null,
+      "backwardFirst": 21450,
+      "backwardLast": 81000
+    },
+    {
+      "stationId": "syrets",
+      "forwardFirst": 21600,
+      "forwardLast": 81000,
+      "backwardFirst": null,
+      "backwardLast": null
+    },
+    {
+      "stationId": "dorohozhychi",
+      "forwardFirst": 20385,
+      "forwardLast": 81150,
+      "backwardFirst": 22155,
+      "backwardLast": 83060
+    },
+    {
+      "stationId": "lukianivska",
+      "forwardFirst": 20610,
+      "forwardLast": 81365,
+      "backwardFirst": 21945,
+      "backwardLast": 82860
+    },
+    {
+      "stationId": "zoloti-vorota",
+      "forwardFirst": 20940,
+      "forwardLast": 81675,
+      "backwardFirst": 21630,
+      "backwardLast": 82565
+    },
+    {
+      "stationId": "palats-sportu",
+      "forwardFirst": 21080,
+      "forwardLast": 81810,
+      "backwardFirst": 21515,
+      "backwardLast": 82455
+    },
+    {
+      "stationId": "klovska",
+      "forwardFirst": 21200,
+      "forwardLast": 81925,
+      "backwardFirst": 21380,
+      "backwardLast": 82325
+    },
+    {
+      "stationId": "pecherska",
+      "forwardFirst": 21335,
+      "forwardLast": 82055,
+      "backwardFirst": 21250,
+      "backwardLast": 82200
+    },
+    {
+      "stationId": "zvirynetska",
+      "forwardFirst": 21465,
+      "forwardLast": 82175,
+      "backwardFirst": 21135,
+      "backwardLast": 82090
+    },
+    {
+      "stationId": "vydubychi",
+      "forwardFirst": 21630,
+      "forwardLast": 82335,
+      "backwardFirst": 20965,
+      "backwardLast": 81930
+    },
+    {
+      "stationId": "slavutych",
+      "forwardFirst": 21925,
+      "forwardLast": 82620,
+      "backwardFirst": 20645,
+      "backwardLast": 81625
+    },
+    {
+      "stationId": "osokorky",
+      "forwardFirst": 22035,
+      "forwardLast": 82725,
+      "backwardFirst": 20550,
+      "backwardLast": 81530
+    },
+    {
+      "stationId": "pozniaky",
+      "forwardFirst": 22230,
+      "forwardLast": 82910,
+      "backwardFirst": 20370,
+      "backwardLast": 81360
+    },
+    {
+      "stationId": "kharkivska",
+      "forwardFirst": 22465,
+      "forwardLast": 83130,
+      "backwardFirst": 20155,
+      "backwardLast": 81160
+    },
+    {
+      "stationId": "vyrlytsia",
+      "forwardFirst": 22615,
+      "forwardLast": 83275,
+      "backwardFirst": 20020,
+      "backwardLast": 81030
+    },
+    {
+      "stationId": "boryspilska",
+      "forwardFirst": 22815,
+      "forwardLast": 83465,
+      "backwardFirst": 19860,
+      "backwardLast": 80875
+    },
+    {
+      "stationId": "chervonyi-khutir",
+      "forwardFirst": null,
+      "forwardLast": null,
+      "backwardFirst": 21420,
+      "backwardLast": 80700
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+/* System permission prompts. Must match the privacy policy. */
+"NSLocationWhenInUseUsageDescription" = "Location is used only while the app is open: during a trip, to refine the train's position on above-ground metro sections; in Calibration mode, which you turn on yourself, to save a track of the ride to a file on your device. Location is never used in the background and is never transmitted anywhere.";
+"NSMotionUsageDescription" = "The accelerometer is recorded only in Calibration mode, which you turn on yourself; the data stays on your device.";
+"CFBundleDisplayName" = "Metro Timer";
