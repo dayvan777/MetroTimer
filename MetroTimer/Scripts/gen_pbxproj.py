@@ -2,7 +2,8 @@
 """Generates MetroTimer.xcodeproj/project.pbxproj (mirror of project.yml)."""
 import os
 
-ROOT = "/Users/macbook/Downloads/влад/MetroTimer"
+# Корень проекта — родитель папки Scripts: генератор переживает переезд.
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SHARED = [
     "Shared/MetroActivityAttributes.swift",

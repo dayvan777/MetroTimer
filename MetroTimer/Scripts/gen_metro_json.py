@@ -11,7 +11,7 @@
 Площа Українських Героїв (экс-«Площа Льва Толстого», 2023).
 «Дніпро» открыта с 08.03.2024 (закрывалась в 2022–2024).
 """
-import json, math, io
+import json, math, io, os
 
 # (id, nameUk, nameEn, isClosed, isSurface)
 M1 = [
@@ -416,7 +416,8 @@ def main():
 
     data = {"lines": lines, "stations": stations, "segments": segments,
             "transfers": transfers, "headways": headways, "serviceHours": service}
-    out = "/Users/macbook/Downloads/влад/MetroTimer/App/Resources/kyiv_metro.json"
+    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    out = os.path.join(root, "App", "Resources", "kyiv_metro.json")
     with io.open(out, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
     print(f"stations={len(stations)} segments={len(segments)} "
