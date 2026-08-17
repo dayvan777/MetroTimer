@@ -63,6 +63,21 @@ DYNAMIC ISLAND І ЕКРАН БЛОКУВАННЯ
 4. `store_4_transfer.png` — «Пересадки будує сам»
 5. `store_5_offline.png` — «Нуль реклами. Нуль трекінгу. Нуль мережі.»
 
+## Поля App Store Connect, які легко забути
+
+- **Copyright:** `2026 Vladyslav Domotskyi`
+  (поле в App Information; формат — рік + правовласник, без слова «Copyright»)
+- **Контакт для App Review** (не публікується, потрібен рев'юверу):
+  Vladyslav Domotskyi, vladdomotsky@gmail.com, телефон — вказати свій
+- **Демо-акаунт:** не потрібен, у застосунку немає входу й реєстрації
+  (у формі так і написати: «No account required»)
+- **Marketing URL:** необов'язково; можна вказати ту саму
+  https://dayvan777.github.io/METRO/
+- **Локалізації лістингу:** українська (основна) + англійська
+  (тексти — `metadata_uk.md` і `metadata_en.md`)
+- **Регіони продажу:** якщо не заявлятися як трейдер DSA — виключити ЄС
+- **Ціна:** безкоштовно, без покупок у застосунку
+
 ## Нотатки для рев'ювера (англійською — для App Review)
 Metro Timer is an offline countdown timer for the Kyiv metro. To test without
 being in Kyiv: pick any departure and destination station, tap «Поїхали» (Go),
