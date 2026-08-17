@@ -91,10 +91,36 @@ identify the user, and nothing is stored off device. Local files (trip journal,
 calibration) are encrypted and excluded from iCloud/iTunes backups.
 
 ## Перед відправленням (чек-лист)
-- [ ] Платний акаунт Apple Developer Program ($99/рік) — Personal Team не публікує в App Store
+
+Готове:
+- [x] Політика конфіденційності за публічним URL — https://dayvan777.github.io/METRO/
+      (той самий URL іде і в Support URL; сторінка двомовна)
+- [x] Версія/білд: MARKETING_VERSION 1.0, CURRENT_PROJECT_VERSION 1
+- [x] Скриншоти 6.9" (1320×2868) — 5 слайдів у `screenshots/framed/`, зняті
+      17.08.2026 з поточного інтерфейсу (реальні кадри, реальне сповіщення,
+      реальний Dynamic Island)
+- [x] `ITSAppUsesNonExemptEncryption = false` — анкета експортного контролю
+- [x] PrivacyInfo.xcprivacy в обох таргетах
+- [x] Нотатки рев'юверу описують мережевий виклик тривог чесно
+- [x] Локальні файли зашифровані й виключені з резервних копій
+
+Потребує платного акаунта:
+- [ ] Платний акаунт Apple Developer Program ($99/рік) — Personal Team не публікує
 - [ ] Bundle ID зареєструвати в App Store Connect (ua.vlad.MetroTimer)
-- [ ] Повернути time-sensitive entitlement (на платному акаунті підтримується)
-- [ ] Розмістити політику конфіденційності за публічним URL
-- [ ] Версію/білд: MARKETING_VERSION 1.0, CURRENT_PROJECT_VERSION 1
-- [ ] Скриншоти 6.9" (1320×2868) — завантажити 5 слайдів із screenshots/framed/
-- [ ] Archive → Distribute в Xcode (схема MetroTimer, Any iOS Device)
+- [ ] Повернути time-sensitive entitlement
+- [ ] Увімкнути звіти про збої в Xcode Organizer (без SDK і без збору даних)
+- [ ] Archive → Distribute у Xcode (схема MetroTimer, Any iOS Device)
+
+Відповіді на анкети App Store Connect:
+- **App Privacy: Data Not Collected.** Застосунок нічого не надсилає, що
+  ідентифікує користувача, і нічого не зберігає поза пристроєм. IP-адресу
+  бачить сервер фіду тривог так само, як будь-який сайт; ми її не отримуємо
+  і не зберігаємо — під визначення збору Apple це не підпадає.
+- **Віковий рейтинг:** 4+.
+- **Статус трейдера DSA:** потрібен для ЄС. Для фізособи це окрема морока;
+  Україна не ЄС, тож можна не заявлятися і виключити ЄС із регіонів продажу.
+
+Залишається полевою перевіркою (не закривається кодом):
+- [ ] 5–10 поїздок трьома лініями: медіана |план − факт| на кінцевій ≤ 30 с
+- [ ] Заміряти два перевірені переходи: Театральна ↔ Золоті ворота і
+      Площа Українських Героїв ↔ Палац спорту (зараз там оцінка, не замір)

@@ -90,7 +90,7 @@ def header(canvas, h1, h2, accent, sub, badges=False):
     if badges:
         x = 90
         fb = font(40)
-        for label, dot in [("Офлайн", RED), ("Без реклами", BLUE), ("Безкоштовно", GREEN)]:
+        for label, dot in [("Працює в тунелі", RED), ("Без реклами", BLUE), ("Безкоштовно", GREEN)]:
             tw = d.textlength(label, font=fb)
             bw = int(tw) + 96
             d.rounded_rectangle([x, 668, x + bw, 748], radius=40,
@@ -210,7 +210,7 @@ def brand_slide(out="store_5_offline.png"):
     y = 1180
     for word, rest, color in [("Нуль", " реклами.", RED),
                               ("Нуль", " трекінгу.", BLUE),
-                              ("Нуль", " мережі.", GREEN)]:
+                              ("Нуль", " серверів.", GREEN)]:
         ww = d.textlength(word, font=fz)
         rw = d.textlength(rest, font=fz)
         x = (W - ww - rw) / 2
@@ -218,7 +218,7 @@ def brand_slide(out="store_5_offline.png"):
         d.text((x + ww, y), rest, font=fz, fill=(255, 255, 255))
         y += 168
 
-    sub = "Повністю офлайн. Працює навіть у тунелі."
+    sub = "Відлік працює без інтернету — навіть у тунелі."
     fs = fit_font(d, sub, 52, max_w=1160, bold=False)
     d.text(((W - d.textlength(sub, font=fs)) / 2, y + 60), sub, font=fs, fill=TEXT_DIM)
     sub2 = "Безкоштовно · Без реєстрації · Українською"
