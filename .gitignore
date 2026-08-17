@@ -1,10 +1,21 @@
-# Репозиторий живёт в папке Downloads, куда постоянно попадают посторонние
-# файлы (PDF, картинки, дистрибутивы). Отслеживаем только проект — иначе
-# случайный `git add -A` тащит в историю чужие гигабайты.
+# Репозиторий лежит в папке Downloads, куда постоянно попадают посторонние
+# файлы (PDF, картинки, дистрибутивы). Поэтому в корне разрешено только то,
+# что относится к проекту, — иначе случайный `git add -A` утащит чужие гигабайты.
 /*
 !/.gitignore
-!/MetroTimer/
+!/README.md
+!/App/
+!/AppStore/
+!/Scripts/
+!/Shared/
+!/Tests/
+!/Widget/
+!/docs/
+!/MetroTimer.xcodeproj/
 
-MetroTimer/build/
-MetroTimer/build-ios/
+# Сборки и локальное состояние Xcode
+build/
+build-ios/
+xcuserdata/
+*.xcodeproj/project.xcworkspace/
 .DS_Store

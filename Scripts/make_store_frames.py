@@ -9,6 +9,9 @@ from pathlib import Path
 W, H = 1320, 2868
 ROOT = Path(__file__).parent.parent
 SHOTS = ROOT / "AppStore" / "screenshots"
+# store_*.png — снимки экрана целиком (идут в рамку телефона);
+# banner_real.png и island_real.png — готовые вырезки настоящих элементов iOS,
+# которые кладутся поверх как «плавающие» карточки.
 OUT = SHOTS / "framed"
 OUT.mkdir(exist_ok=True)
 ICON = ROOT / "App" / "Assets.xcassets" / "AppIcon.appiconset" / "icon1024.png"
@@ -165,8 +168,8 @@ def float_card(canvas, card, y, glow_color, radius=None):
                         radius=radius, outline=(255, 255, 255, 48), width=3)
 
 def island_card(width_px=920):
-    """Реальные пиксели Dynamic Island из скриншота симулятора."""
-    src = Image.open(SHOTS / "store_4_island.png").crop((340, 28, 1015, 160))
+    """Реальные пиксели Dynamic Island (готовая вырезка из скриншота симулятора)."""
+    src = Image.open(SHOTS / "island_real.png")
     scale = width_px / src.width
     src = src.resize((width_px, int(src.height * scale)), Image.LANCZOS)
     return rounded(src, src.height // 2)

@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Generates MetroTimer.xcodeproj/project.pbxproj (mirror of project.yml)."""
+"""Собирает MetroTimer.xcodeproj/project.pbxproj.
+
+Списки файлов — константы ниже: добавил файл в проект → допиши сюда
+и перезапусти. XcodeGen и Homebrew не нужны.
+"""
 import os
 
 # Корень проекта — родитель папки Scripts: генератор переживает переезд.
@@ -40,7 +44,7 @@ APP_RES = ["App/Resources/kyiv_metro.json", "App/Resources/uk.lproj",
 WIDGET_RES = ["Widget/PrivacyInfo.xcprivacy"]
 TEST_SRC = ["Tests/PlannerTests.swift", "Tests/DataTests.swift", "Tests/ScheduleTests.swift",
             "Tests/LocalizationTests.swift"]
-OTHER = ["App/Info.plist", "App/MetroTimer.entitlements", "Widget/Info.plist", "project.yml"]
+OTHER = ["App/Info.plist", "App/MetroTimer.entitlements", "Widget/Info.plist"]
 
 for p in SHARED + APP_SRC + WIDGET_SRC + TEST_SRC + APP_RES + WIDGET_RES + OTHER:
     assert os.path.exists(os.path.join(ROOT, p)), f"missing {p}"
@@ -196,7 +200,6 @@ def group(gid, name, children, path=None):
 
 add("\n/* Begin PBXGroup section */")
 group(g_main, "MainGroup", [
-    (fileref["project.yml"], "project.yml"),
     (g_app, "App"), (g_shared, "Shared"), (g_widget, "Widget"), (g_tests, "Tests"),
     (g_products, "Products"),
 ])
