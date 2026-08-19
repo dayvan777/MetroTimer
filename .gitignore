@@ -4,6 +4,10 @@
 /*
 !/.gitignore
 !/README.md
+# Витрина на GitHub Pages: отдаётся из main / root, поэтому оба файла
+# обязаны лежать в корне. .nojekyll выключает обработку Jekyll.
+!/index.html
+!/.nojekyll
 !/App/
 !/AppStore/
 !/Scripts/

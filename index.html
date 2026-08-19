@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Metro Timer: Kyiv — a ride countdown with no GPS, no network, no background</title>
+<meta name="description" content="An iOS ride countdown for the Kyiv metro that lives in the Dynamic Island. It computes the train's position from the official timetable, because underground there is no GPS to ask.">
+<link rel="icon" href="App/Assets.xcassets/AppIcon.appiconset/icon1024.png" type="image/png">
+<meta property="og:title" content="Metro Timer: Kyiv">
+<meta property="og:description" content="A ride countdown in the Dynamic Island — with no GPS, no network, and no background execution.">
+<meta property="og:image" content="AppStore/screenshots/banner_real.png">
+<meta property="og:type" content="website">
+<style>
+  :root {
+    --bg: #101114;
+    --card: #1a1c21;
+    --inner: #24262d;
+    --line: #2a2d34;
+    --text: #f4f5f7;
+    --dim: #a2a7b3;
+    --red: #ed1c24;
+    --blue: #0072bc;
+    --green: #00a651;
+    --link: #7fb6ff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-text-size-adjust: 100%;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 32px 20px 72px; }
+  a { color: var(--link); }
+
+  header { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
+  header img { width: 72px; height: 72px; border-radius: 17px; }
+  h1 { font-size: 27px; line-height: 1.25; margin: 0 0 3px; }
+  .sub { color: var(--dim); font-size: 15px; }
+
+  .stripes { display: flex; gap: 6px; margin: 22px 0 24px; }
+  .stripes span { height: 6px; border-radius: 3px; }
+  .stripes span:nth-child(1) { width: 90px; background: var(--red); }
+  .stripes span:nth-child(2) { width: 60px; background: var(--blue); }
+  .stripes span:nth-child(3) { width: 34px; background: var(--green); }
+
+  .lead {
+    border-left: 3px solid var(--green); padding-left: 14px;
+    font-size: 19px; margin: 0 0 22px;
+  }
+  .hero { margin: 0 0 26px; }
+  .hero img { width: 100%; border-radius: 12px; display: block; }
+  .hero figcaption { color: var(--dim); font-size: 14px; margin-top: 8px; }
+
+  nav { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 28px; }
+  nav a {
+    color: var(--text); text-decoration: none; font-size: 14px;
+    border: 1px solid var(--line); border-radius: 999px; padding: 8px 16px;
+  }
+  nav a:hover { border-color: var(--dim); }
+
+  section { background: var(--card); border-radius: 16px; padding: 22px 22px 8px; margin-bottom: 18px; }
+  h2 { font-size: 21px; margin: 0 0 14px; }
+  p, li { color: var(--text); }
+  .note { color: var(--dim); font-size: 15px; }
+  ul, ol { padding-left: 22px; }
+  li { margin-bottom: 10px; }
+  code { background: var(--inner); padding: 2px 6px; border-radius: 5px; font-size: 14px; }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-bottom: 18px; }
+  .cards div { background: var(--inner); border-radius: 12px; padding: 16px; }
+  .cards h3 { margin: 0 0 6px; font-size: 16px; }
+  .cards p { margin: 0; font-size: 15px; color: var(--dim); }
+  .cards .own { border-left: 3px solid var(--red); }
+
+  .shots { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 12px; margin-bottom: 6px; }
+  .shots img {
+    width: 172px; flex: 0 0 auto; border-radius: 14px;
+    border: 1px solid var(--line); display: block;
+  }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+  .chips span {
+    border: 1px solid var(--line); border-radius: 999px;
+    padding: 6px 13px; font-size: 14px; color: var(--dim);
+  }
+
+  table { width: 100%; border-collapse: collapse; margin-bottom: 18px; font-size: 15px; }
+  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--dim); font-weight: 600; }
+  td:first-child { white-space: nowrap; color: var(--dim); }
+
+  .links { display: flex; flex-wrap: wrap; gap: 10px; }
+  .links a {
+    text-decoration: none; border: 1px solid var(--line); border-radius: 10px;
+    padding: 12px 18px; color: var(--text); font-size: 15px;
+  }
+  .links a:hover { border-color: var(--dim); }
+  .links .primary { border-color: var(--green); }
+
+  footer { color: var(--dim); font-size: 14px; margin-top: 34px; text-align: center; }
+
+  @media (max-width: 420px) {
+    header img { width: 56px; height: 56px; border-radius: 13px; }
+    h1 { font-size: 22px; }
+    .wrap { padding: 24px 16px 56px; }
+    section { padding: 18px 18px 6px; }
+    .lead { font-size: 17px; }
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #ffffff; --card: #f5f6f8; --inner: #e9ebef;
+      --line: #dcdfe5; --text: #14161a; --dim: #5b616e; --link: #0a63c9;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <img src="App/Assets.xcassets/AppIcon.appiconset/icon1024.png" alt="Metro Timer app icon">
+    <div>
+      <h1>Metro Timer: Kyiv</h1>
+      <div class="sub">iOS 16.1+ · SwiftUI · Ukrainian and English · unofficial</div>
+    </div>
+  </header>
+
+  <div class="stripes"><span></span><span></span><span></span></div>
+
+  <p class="lead">A ride countdown that lives in the Dynamic Island — with no GPS,
+  no network, and no background execution.</p>
+
+  <figure class="hero">
+    <img src="AppStore/screenshots/banner_real.png" alt="Live Activity on the iPhone Lock Screen showing the countdown and stops remaining">
+    <figcaption>The Live Activity on the Lock Screen. The countdown keeps running even
+    if the app is force-quit.</figcaption>
+  </figure>
+
+  <nav>
+    <a href="#constraint">The constraint</a>
+    <a href="#how">How it works</a>
+    <a href="#screens">Screens</a>
+    <a href="#limits">What it can't know</a>
+    <a href="#hood">Under the hood</a>
+    <a href="#status">Status</a>
+  </nav>
+
+  <section id="constraint">
+    <h2>The constraint that shapes everything</h2>
+    <p>On the metro you read, doze off, or put headphones on — and then you look up at
+    the wrong station. Three things are unavailable to an app that wants to help, and
+    only one of them is a choice.</p>
+    <div class="cards">
+      <div>
+        <h3>No GPS</h3>
+        <p>Eight of the network's fifty-two stations are above ground. The rest are in
+        tunnels, where satellites are not an option.</p>
+      </div>
+      <div>
+        <h3>No network</h3>
+        <p>Same tunnels. Nothing can be fetched at the moment it is actually needed.</p>
+      </div>
+      <div class="own">
+        <h3>No background modes</h3>
+        <p>This one is a decision, not a limitation. They cost battery, invite App Review
+        questions, and buy nothing a pre-scheduled notification does not.</p>
+      </div>
+    </div>
+    <p>So the train's position cannot be <em>measured</em>. It has to be
+    <em>computed</em> — from a timetable, anchored to the single event a passenger can
+    supply for free: the moment the train starts moving.</p>
+    <p class="note">That one tap is the whole contract. Everything else follows from it.</p>
+  </section>
+
+  <section id="how">
+    <h2>How it works</h2>
+    <ol>
+      <li><strong>Route.</strong> One line, or two via a transfer. In Kyiv any pair of
+      lines meets at exactly one node, which keeps routing to a lookup rather than a
+      graph search.</li>
+      <li><strong>Anchor.</strong> The tap on <em>Start</em> becomes t₀, recorded
+      synchronously before any permission dialog can appear and skew it.</li>
+      <li><strong>Schedule.</strong> Arrival and departure for every station on the route
+      are computed up front, along with the alert moment and the arrival moment.</li>
+      <li><strong>Notifications.</strong> Scheduled immediately, so they fire even if the
+      app is force-quit on the platform.</li>
+      <li><strong>Countdown.</strong> Drawn by SwiftUI itself via
+      <code>Text(timerInterval:)</code>. No process has to stay alive for it to tick.</li>
+      <li><strong>Corrections.</strong> On iOS 17+ the −1 / +1 and “train departed”
+      buttons in the Live Activity are App Intents: one tap on the Lock Screen wakes the
+      app's own process and reschedules everything.</li>
+    </ol>
+    <p class="note">Where the model is uncertain, the passenger is the sensor — and a
+    correction never requires unlocking the phone.</p>
+  </section>
+
+  <section id="screens">
+    <h2>Screens</h2>
+    <div class="shots">
+      <img src="AppStore/screenshots/framed/store_3_pick.png" alt="Picking departure and destination stations">
+      <img src="AppStore/screenshots/framed/store_1_trip.png" alt="Active trip with countdown and stop list">
+      <img src="AppStore/screenshots/framed/store_2_island.png" alt="Dynamic Island showing stops remaining">
+      <img src="AppStore/screenshots/framed/store_4_transfer.png" alt="Route with a transfer between lines">
+      <img src="AppStore/screenshots/framed/store_5_offline.png" alt="Working with no network connection">
+    </div>
+    <p class="note">Swipe to see all five.</p>
+  </section>
+
+  <section id="limits">
+    <h2>What it can't know</h2>
+    <p>Being explicit about this is part of the design, not a caveat bolted on afterwards.</p>
+    <p><strong>Waiting for a train after a transfer.</strong> Genuinely unknowable —
+    anywhere from zero to a full headway. The model books a quarter of the current
+    headway rather than the “correct” half, because the two errors do not cost the same.
+    Underestimate, and the countdown runs <em>ahead</em> of the train: the passenger
+    looks up early and keeps riding. Overestimate, and the warning arrives <em>after</em>
+    their station. The whole product exists to prevent the second one, so the estimate
+    leans early on purpose — and a “train departed” button erases the uncertainty
+    entirely.</p>
+    <p><strong>The stop counter freezes in the background.</strong> With no background
+    modes, ActivityKit cannot be handed a deferred update. The timer keeps running on its
+    own, but “3 stops left” holds its last value until something wakes the app. That is
+    the price of the third constraint above, and it was paid knowingly.</p>
+  </section>
+
+  <section id="hood">
+    <h2>Under the hood</h2>
+    <div class="chips">
+      <span>SwiftUI</span><span>ActivityKit</span><span>App Intents</span>
+      <span>WidgetKit</span><span>UserNotifications</span><span>CoreLocation</span>
+      <span>CoreMotion</span><span>XCTest</span><span>no dependencies</span>
+    </div>
+    <table>
+      <tr><th>Target</th><th>Contents</th></tr>
+      <tr><td>App</td><td>SwiftUI screens and app-only services: accelerometer, GPS corrector, air-raid polling</td></tr>
+      <tr><td>Shared</td><td>Compiled into both app and widget: models, planner, trip engine, strings</td></tr>
+      <tr><td>Widget</td><td>Live Activity presentation only — Dynamic Island and Lock Screen</td></tr>
+    </table>
+    <p>Segment times are derived from the official Kyiv Metro timetable published on the
+    city's open data portal — not estimated, not crowdsourced. A generator turns the
+    published departure times into per-segment running and dwell times; on device, field
+    calibration refines them per segment and per direction.</p>
+    <p>Both languages live as pairs on one line
+    (<code>tr("Наступна — ваша", "Yours is next")</code>), so there is no key to forget
+    and no <code>.strings</code> file to fall out of sync. 28 tests cover the planner,
+    the schedule, data consistency and localization.</p>
+    <p><strong>Privacy:</strong> no analytics, no advertising, no third-party SDKs, no
+    account. Exactly one feature touches the network — optional air-raid alerts — and it
+    is off until you turn it on. Everything written to disk is excluded from backups and
+    protected while the device is locked.</p>
+  </section>
+
+  <section id="status">
+    <h2>Status</h2>
+    <p><strong>Pre-release.</strong> Not on the App Store yet.</p>
+    <p>Feature-complete: routing with transfers, service hours, Live Activity with
+    interactive corrections, calibration, trip journal, both languages throughout,
+    VoiceOver labels and Reduce Motion support, store metadata and privacy policy.</p>
+    <p>What remains is field validation. The trip journal records the plan against the
+    outcome and counts every correction, precisely so accuracy can be measured rather
+    than asserted — and that data does not exist yet. No accuracy figure is claimed here
+    for that reason.</p>
+  </section>
+
+  <section>
+    <h2>Links</h2>
+    <div class="links">
+      <a class="primary" href="https://github.com/dayvan777/MetroTimer">Source on GitHub</a>
+      <a href="https://dayvan777.github.io/METRO/">Privacy policy &amp; support</a>
+      <a href="https://github.com/dayvan777/MetroTimer/blob/main/docs/BUILD.md">Build notes</a>
+    </div>
+  </section>
+
+  <footer>
+    <p>Timetable data: <a href="https://data.kyivcity.gov.ua/dataset/rozklad-rukhu-miskoho-elektrychnoho-ta-avtomobilnoho-transportu-dep-transport">Kyiv open data portal</a>.
+    Station coordinates: © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors (ODbL).</p>
+    <p>Unofficial app. Not affiliated with or endorsed by Kyiv Metro
+    (КП «Київський метрополітен»).</p>
+  </footer>
+
+</div>
+</body>
+</html>
