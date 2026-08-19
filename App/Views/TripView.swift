@@ -301,9 +301,12 @@ struct TripView: View {
         .accessibilityHint(hint)
     }
 
+    // Киевское время, как и на экране выбора: расписание метро задано в нём,
+    // и два экрана одного приложения не должны показывать разные часы.
     private static let timeFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "HH:mm"
+        formatter.timeZone = MetroRepository.kyivCalendar.timeZone
         return formatter
     }()
 }

@@ -19,6 +19,10 @@ struct SelectionView: View {
     @State private var showOnboarding = false
     // Направление слайда списка станций при переключении линии.
     @State private var slideEdge: Edge = .trailing
+    // Момент нажатия «Поїхали». Фиксируется синхронно в обработчике кнопки:
+    // между тапом и фактическим стартом лежат объясняющий алерт и системный
+    // запрос разрешений, а привязывать модель надо к тапу.
+    @State private var boardedAt = Date()
 
     private var repo: MetroRepository { engine.repo }
     private var selectedLine: Line? { repo.line(id: selectedLineId) }
@@ -414,6 +418,8 @@ struct SelectionView: View {
 
     // Перед первым запросом системного разрешения показываем объяснение зачем.
     private func requestStart() {
+        // Синхронно, до любых Task и алертов: это и есть момент, когда поезд тронулся.
+        boardedAt = Date()
         Task {
             let status = await NotificationScheduler.shared.authorizationStatus()
             if status == .notDetermined {
@@ -426,10 +432,14 @@ struct SelectionView: View {
 
     private func startTrip(askForNotifications: Bool = true) {
         guard let from = fromId, let to = toId else { return }
+        let start = boardedAt
         Task {
             let started = await engine.start(fromId: from, toId: to,
-                                             askForNotifications: askForNotifications)
-            if !started {
+                                             askForNotifications: askForNotifications,
+                                             at: start)
+            // false бывает и от «поездка уже идёт» (двойной тап) — тогда маршрут
+            // ни при чём и показывать «невірний маршрут» было бы враньём.
+            if !started, engine.trip == nil {
                 showRouteError = true
             }
         }

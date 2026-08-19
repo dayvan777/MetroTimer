@@ -5,6 +5,22 @@ import XCTest
 final class DataTests: XCTestCase {
     private let repo = MetroRepository.shared
 
+    // stopsWord ветвится по глобальному appLanguage, который берётся из
+    // preferredLocalizations хост-приложения. Без фиксации прогон на симуляторе
+    // с английским языком валил бы проверки украинских склонений.
+    private var savedLanguage: Language = .uk
+
+    override func setUp() {
+        super.setUp()
+        savedLanguage = appLanguage
+        appLanguage = .uk
+    }
+
+    override func tearDown() {
+        appLanguage = savedLanguage
+        super.tearDown()
+    }
+
     // 9. Консистентность бандл-данных: то, на что молча полагается весь код.
     func testBundledMetroData() throws {
         XCTAssertEqual(repo.data.stations.count, 52)

@@ -16,14 +16,27 @@ struct MetroTimerApp: App {
                 .environmentObject(engine)
                 .onChange(of: scenePhase) { phase in
                     if phase == .active {
-                        engine.refresh()
-                        // Тривоги опитуємо лише поки застосунок відкритий.
-                        AlertService.shared.startIfEnabled()
+                        activate()
                     } else {
                         AlertService.shared.stop()
+                        // Тикер обновляет только остров и только в foreground.
+                        engine.suspendTicker()
                     }
                 }
+                // onChange не срабатывает для начального значения scenePhase.
+                // Без этого холодный старт с восстановленной поездкой зависел бы
+                // от того, пройдёт ли SwiftUI через .inactive → .active.
+                // Обе операции идемпотентны, повторный вызов безвреден.
+                .task { await activate() }
         }
+    }
+
+    // Всё, что нужно сделать, когда приложение оказалось на переднем плане.
+    @MainActor
+    private func activate() {
+        engine.refresh()
+        // Тривоги опитуємо лише поки застосунок відкритий.
+        AlertService.shared.startIfEnabled()
     }
 }
 

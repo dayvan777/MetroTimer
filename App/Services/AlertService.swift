@@ -37,6 +37,10 @@ final class AlertService: ObservableObject {
     private var timer: Timer?
     private var isFetching = false
     private var consecutiveFailures = 0
+    // Останній стан, який ми справді знали (тільки .quiet або .alert). state під
+    // час обриву мережі стає .unavailable, і порівнювати з ним не можна: у метро
+    // обрив — норма, тож «попередній стан» треба пам'ятати окремо від показаного.
+    private var lastKnownState: State = .unknown
 
     var isEnabled: Bool { UserDefaults.standard.bool(forKey: Self.enabledKey) }
 
@@ -82,6 +86,7 @@ final class AlertService: ObservableObject {
         } else {
             stop()
             state = .unknown
+            lastKnownState = .unknown
             updatedAt = nil
             consecutiveFailures = 0
             UNUserNotificationCenter.current()
@@ -110,11 +115,17 @@ final class AlertService: ObservableObject {
             }
             self.consecutiveFailures = 0
             let newState: State = fetched ? .alert : .quiet
-            let wasQuiet = self.state == .quiet
+            // Порівнюємо з останнім ВІДОМИМ станом, а не з показаним: інакше
+            // будь-який обрив мережі (у тунелі — щоразу) з'їдав би сповіщення
+            // про тривогу, яка почалася, поки джерело було недоступне.
+            let wasQuiet = self.lastKnownState == .quiet
             self.state = newState
+            self.lastKnownState = newState
             self.updatedAt = Date()
             // Сповіщаємо лише про ПОЧАТОК тривоги і лише під час поїздки:
             // поза поїздкою для цього є спеціалізовані застосунки.
+            // .unknown (щойно відкрили застосунок) не рахується за початок:
+            // тривога могла тривати вже годину.
             if newState == .alert, wasQuiet, TripEngine.shared.trip != nil {
                 Self.notifyAlertStarted()
             }

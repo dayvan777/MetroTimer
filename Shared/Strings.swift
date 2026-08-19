@@ -236,6 +236,8 @@ enum L10n {
     static var journalExport: String { tr("Експортувати журнал", "Export journal") }
     static var journalFinished: String { tr("завершено", "completed") }
     static var journalStopped: String { tr("зупинено", "stopped") }
+    static var journalPlanned: String { tr("план", "planned") }
+    static var journalActual: String { tr("підсумок", "actual") }
     static var routeError: String { tr("Не вдалося побудувати маршрут", "Could not build a route") }
 
     static var calibStart: String { tr("Старт", "Start") }
