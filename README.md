@@ -1,159 +1,202 @@
-# Метро-таймер (Київ)
+# Metro Timer: Kyiv
 
-Пассажир выбирает станцию отправления и назначения, жмёт «Поїхали» в момент, когда поезд трогается, — в Dynamic Island / на локскрине висит Live Activity с обратным отсчётом и числом оставшихся остановок. За одну станцию до выхода приходит уведомление с вибрацией.
+**A ride countdown that lives in the Dynamic Island — with no GPS, no network, and no background execution.**
 
-Отсчёт работает без сети: положение поезда считается по официальному графику КП «Київський метрополітен», без GPS и фонового выполнения. Единственное место, которое ходит в сеть, — опциональные воздушные тревоги (по умолчанию выключены, см. ниже).
+![Live Activity on the Lock Screen](AppStore/screenshots/banner_real.png)
 
-iOS 16.1+, iPhone, украинский и английский. Неофициальное приложение, не связано с КП «Київський метрополітен».
+![iOS](https://img.shields.io/badge/iOS-16.1%2B-1a1c21?logo=apple&logoColor=white)
+![Swift](https://img.shields.io/badge/Swift-5-F05138?logo=swift&logoColor=white)
+![UI](https://img.shields.io/badge/UI-SwiftUI-0072bc)
+![Dependencies](https://img.shields.io/badge/dependencies-none-00a651)
+![Localization](https://img.shields.io/badge/localization-uk%20%C2%B7%20en-0072bc)
+![Status](https://img.shields.io/badge/status-pre--release-ed1c24)
 
-## Где что лежит
+You pick where you get on and where you get off, and you tap **Start** the moment
+the train pulls out. A countdown to your station appears on the Lock Screen and in
+the Dynamic Island, along with the number of stops left. One station before yours,
+the phone buzzes.
 
-| | |
+<table>
+  <tr>
+    <td><img src="AppStore/screenshots/framed/store_3_pick.png" width="170" alt="Station picker"></td>
+    <td><img src="AppStore/screenshots/framed/store_1_trip.png" width="170" alt="Active trip"></td>
+    <td><img src="AppStore/screenshots/framed/store_2_island.png" width="170" alt="Dynamic Island"></td>
+    <td><img src="AppStore/screenshots/framed/store_4_transfer.png" width="170" alt="Transfer"></td>
+    <td><img src="AppStore/screenshots/framed/store_5_offline.png" width="170" alt="Works offline"></td>
+  </tr>
+</table>
+
+---
+
+## The problem
+
+On the metro you read, doze off, or put headphones on — and then you look up at
+the wrong station. Announcements do not help if you cannot hear them, and there is
+no signal down there to check a map.
+
+## The constraint that shapes everything
+
+Three things are unavailable to this app, and only two of them are anyone's fault:
+
+- **No GPS underground.** Physics. Eight of the network's fifty-two stations are
+  above ground; the rest are in tunnels where satellites are not an option.
+- **No network.** Same tunnels.
+- **No background execution.** This one is a decision, not a limitation. Background
+  modes cost battery, invite App Review questions, and buy nothing here that a
+  pre-scheduled notification does not already provide.
+
+So the train's position cannot be *measured*. It has to be *computed* — from a
+timetable, anchored to the single event a passenger can supply for free: the moment
+the train starts moving.
+
+That one tap is the whole contract. Everything else follows from it.
+
+## How it works
+
+1. **Route.** Departure and destination, on one line or across two. In Kyiv any pair
+   of lines meets at exactly one transfer node, which keeps routing to a lookup
+   rather than a graph search.
+2. **Anchor.** The moment you tap Start becomes t₀. The app records it synchronously,
+   before any permission dialog can appear and skew it.
+3. **Schedule.** Arrival and departure for every station on the route are computed
+   up front, along with the alert moment and the arrival moment.
+4. **Notifications.** Both are scheduled immediately as
+   `UNTimeIntervalNotificationTrigger`. They fire even if the app is force-quit
+   on the platform.
+5. **Countdown.** Drawn by SwiftUI itself via `Text(timerInterval:)`. No process has to
+   stay alive for it to keep ticking.
+6. **Live Activity.** Stops remaining, next station, a segmented route bar. On iOS 17+
+   the **−1 / +1** and **"train departed"** buttons are `LiveActivityIntent`s, so a tap
+   on the Lock Screen wakes the app's own process and reschedules everything.
+
+Where the model is uncertain, the passenger is the sensor. A correction takes one tap
+and never requires unlocking the phone.
+
+## Where the numbers come from
+
+Segment times are derived from the official Kyiv Metro timetable published on the
+city's open data portal — not estimated, not crowdsourced.
+
+`Scripts/derive_official_times.py` reads the departure times of the first and last
+train at every station in both directions. The difference between adjacent stations
+is running time plus dwell. That yields up to four samples per segment; the script
+takes the median of the plausible ones (60–420 s) and discards outliers produced by
+trains starting mid-line from a depot.
+
+At runtime each segment resolves through a fallback chain, and running time and dwell
+fall back **independently** — measuring one does not overwrite the other:
+
+| Priority | Source |
 |---|---|
-| `App/` | Экраны SwiftUI и сервисы, живущие только в приложении |
-| `Shared/` | Компилируется и в приложение, и в виджет: модели, планировщик, движок поездки, тексты |
-| `Widget/` | Live Activity — Dynamic Island и экран блокировки |
-| `Tests/` | 28 тестов ядра; грузятся в процесс приложения |
-| `Scripts/` | Генераторы данных метро и проекта Xcode, сборка витринных слайдов |
-| `AppStore/` | Метаданные, политика, скриншоты, исходник страницы поддержки |
-| `docs/` | Как работает GPS-коррекция и отчёт о готовности к релизу |
+| 1 | On-device calibration for this exact direction |
+| 2 | Official seed for this direction |
+| 3 | Official seed for the mirrored direction |
+| 4 | Default: 115 s running, 25 s dwell |
 
-## Сборка
+Calibration comes from a dedicated screen where you tap at each stop and start, and
+passively from GPS while the train is on the surface. Both feed the same running
+average.
 
-`.xcodeproj` лежит в репозитории и генерируется скриптом — XcodeGen и Homebrew не нужны.
+## What it can't know
+
+Being explicit about this is part of the design, not a caveat bolted on afterwards.
+
+**Waiting for a train after a transfer.** This is genuinely unknowable: anywhere from
+zero to a full headway. The model books a quarter of the current headway rather than
+the "correct" half, because the two errors do not cost the same. Underestimate, and the
+countdown runs *ahead* of the train: the passenger looks up early and keeps riding.
+Overestimate, and the warning arrives *after* their station. The whole product exists to
+prevent the second one. So the estimate leans early on purpose — and a **"train
+departed"** button in the Live Activity lets the passenger erase the uncertainty entirely.
+
+**The stop counter freezes in the background.** With no background modes, ActivityKit
+cannot be handed a deferred update. The timer keeps running on its own, but "3 stops
+left" holds its last pushed value until something wakes the app — opening it, tapping
+±1, or a GPS fix on the surface. That is the price of the third constraint above, and
+it was paid knowingly.
+
+## Architecture
+
+| Target | Contents |
+|---|---|
+| `App/` | SwiftUI screens, plus services that only make sense in the app: accelerometer, GPS corrector, air-raid polling |
+| `Shared/` | Compiled into **both** app and widget: models, `TripPlanner`, `TripEngine`, `ActivityController`, `NotificationScheduler`, strings |
+| `Widget/` | Live Activity presentation only — Dynamic Island compact/minimal/expanded, and the Lock Screen card |
+
+`TripEngine` is the single owner of trip state. Every mutation — start, manual
+correction, GPS snap, finish — goes through it, and each one re-derives the schedule,
+reschedules notifications, and pushes a fresh Live Activity state. The widget never
+computes anything; it renders a `ContentState` it was handed.
+
+Both languages live as **pairs on one line**:
+
+```swift
+static var lastStopAhead: String { tr("Наступна — ваша", "Yours is next") }
+```
+
+There is no `.strings` file to fall out of sync, because there is no key to forget.
+
+## Testing
+
+28 tests over the core, run inside the app process so they read the real bundled data
+rather than a fixture:
+
+- **`PlannerTests`** — route composition, monotonic times, dwell placement, transfers,
+  ±1 corrections at both boundaries, notification payloads, Live Activity state stability
+  (the state must *not* change mid-segment, or the island would push needlessly)
+- **`ScheduleTests`** — headway interpolation inside the hour, weekday vs weekend,
+  behaviour outside service hours, first/last train warnings
+- **`DataTests`** — bundled data consistency, coordinates inside a Kyiv bounding box,
+  surface stations far enough apart for a 400 m GPS snap to be unambiguous
+- **`LocalizationTests`** — every sampled string actually changes with the language, and
+  no Cyrillic survives into the English build
+
+## Privacy
+
+The app ships with no analytics, no advertising, no third-party SDKs, and no account.
+Exactly one feature touches the network — optional air-raid alerts — and it is off until
+you turn it on.
+
+Everything written to disk (trip journal, calibration, and in Calibration mode the raw
+accelerometer and location traces) gets `FileProtectionType.completeUnlessOpen` and is
+excluded from iCloud and iTunes backups. A stolen powered-off phone does not give it up,
+and "stays on your device" is a statement about file attributes rather than a promise.
+Both targets ship a `PrivacyInfo.xcprivacy`.
+
+## Status
+
+**Pre-release.** Not on the App Store yet.
+
+*Done:* feature-complete v1.0 — routing with transfers, service hours, Live Activity with
+interactive corrections, calibration, trip journal, Ukrainian and English throughout,
+VoiceOver labels, Reduce Motion, App Store listing metadata, privacy policy and support
+page.
+
+*Remaining:* field validation. The trip journal records the plan against the outcome and
+counts every correction precisely so accuracy can be measured rather than asserted — and
+that data does not exist yet. No accuracy figure is claimed here for that reason.
+
+One open modelling question is worth naming: the headway table encodes each hour as a
+pair of values that the model interpolates across the hour. Roughly half the hour
+boundaries in the source data are discontinuous, which suggests the field may instead be
+a min–max range for the hour. Resolving it against the source layer may shift the
+transfer-wait estimate.
+
+## Build
 
 ```bash
 xcodebuild -project MetroTimer.xcodeproj -scheme MetroTimer \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max' test
 ```
 
-При добавлении или удалении файлов проект пересоздаётся:
+The Xcode project is committed and has no dependencies — clone and open. Generators,
+data derivation, debug hooks and repository layout are in **[docs/BUILD.md](docs/BUILD.md)**.
+The GPS correction design is in [docs/GPS.md](docs/GPS.md).
 
-```bash
-python3 Scripts/gen_pbxproj.py     # списки файлов — вверху скрипта
-python3 Scripts/gen_metro_json.py  # данные метро → App/Resources/kyiv_metro.json
-```
+## Data and credits
 
-Данные метро выводятся из официальных слоёв портала открытых данных Киева:
-`Scripts/derive_official_times.py` (времена перегонов) и
-`Scripts/derive_official_service.py` (интервалы движения, первый/последний поезд).
-Их вывод вставлен в `gen_metro_json.py` литералами, поэтому генератор не требует сети.
+- Timetable, headways and service hours: [Kyiv open data portal](https://data.kyivcity.gov.ua/dataset/rozklad-rukhu-miskoho-elektrychnoho-ta-avtomobilnoho-transportu-dep-transport), dataset «Розклад руху міського електричного та автомобільного транспорту»
+- Station coordinates: © OpenStreetMap contributors (ODbL)
 
-## Архитектура
-
-- **App** — SwiftUI-экраны (выбор станций, активная поездка, калибровка) и сервисы, живущие только в приложении (акселерометр, GPS-корректор — см. `docs/GPS.md`).
-- **Shared** — компилируется и в приложение, и в виджет: модели, `TripPlanner` (расчёт расписания), `TripEngine` (единая точка управления поездкой), `ActivityController` (Live Activity), `NotificationScheduler`, `CalibrationStore`, `AdjustTripIntent` (кнопки ±1 в острове, iOS 17+, выполняется в процессе приложения через `LiveActivityIntent`).
-- **Widget** — UI Live Activity: Dynamic Island (compact/minimal/expanded) + локскрин.
-
-Ключевые решения:
-
-- Отсчёт рисует сам SwiftUI через `Text(timerInterval:)` — после принудительного закрытия приложения таймер продолжает идти, оба уведомления (`UNTimeIntervalNotificationTrigger`) запланированы ещё на старте поездки.
-- Счётчик остановок в Live Activity обновляется тикером только пока жив процесс приложения — осознанный трейд-офф MVP без фоновых режимов.
-- Времена перегонов: калибровка → сид прямого направления → сид зеркального → дефолт (115 с ход / 25 с стоянка). Каждое поле (ход/стоянка) фолбэчится независимо.
-- Закрытые станции (`isClosed`) поезд проезжает без остановки: не выбираются конечными, не считаются остановками, замер хода «через» них делится между перегонами пропорционально сид-временам.
-- Коррекция ±1 перестраивает всё расписание с якорем «поезд стоит сейчас на станции перед следующей» и пересоздаёт уведомления и состояние активности.
-
-## Калибровка
-
-Экран «Калібрування»: выбор линии/направления/станции, «Старт» в момент отправления, дальше одна большая кнопка в моменты «зупинився»/«рушив». Замеры усредняются в `Documents/calibration.json` и сразу подменяют сид-данные в расчётах. Параллельно пишется сырой поток акселерометра 50 Гц (`motion.csv`) с метками событий (`events.csv`) — размеченный датасет для будущей модели распознавания перегонов по вибрации. «Експортувати» шарит всё через `UIActivityViewController`.
-
-## Отладочные хуки (только DEBUG-сборка)
-
-```bash
-# автостарт поездки без UI
-SIMCTL_CHILD_MT_SKIP_NOTIF_AUTH=1 xcrun simctl launch booted ua.vlad.MetroTimer \
-  -MTStartFrom akademmistechko -MTStartTo khreshchatyk
-
-# коррекция активной поездки
-xcrun simctl launch booted ua.vlad.MetroTimer -MTAdjust 1
-```
-
-`MT_SKIP_NOTIF_AUTH` пропускает запрос разрешения на уведомления. В Release-сборку хуки не попадают.
-
-## Пересадки и журнал
-
-Маршруты между линиями строятся через пересадочные узлы (в Киеве любая пара линий
-связана ровно одним): переход — пеший сегмент с сид-временем «ходьба + среднее
-ожидание поезда», о пересадке приходит отдельное уведомление за одну остановку.
-Каждая завершённая поездка пишется в журнал (`Documents/trip_log.json`, экран
-«Журнал»): план на старте, итог после коррекций, число ручных и GPS-коррекций —
-метрики точности для полевых тестов. Экспорты калибровки с нескольких устройств
-сливаются скриптом `Scripts/merge_calibration.py`.
-
-## Границы
-
-Списки станций без карты; аналитики и трекеров нет. Времена перегонов — из
-официального графика (модель по координатам OSM осталась запасным вариантом для
-перегонов без данных); полевая калибровка уточняет их по-перегонно.
-
-Главное неустранимое ограничение — **ожидание поезда на пересадке**. Его нельзя
-вычислить: это разброс от нуля до целого интервала. Оценка сознательно смещена
-в раннюю сторону (четверть интервала, см. `MetroRepository.waitShareOfHeadway`),
-потому что цена ошибок разная: рано — пассажир поднимет глаза и поедет дальше,
-поздно — проедет станцию. Точный ответ даёт только сам пассажир — кнопка
-«Поїзд рушив» в Live Activity.
-
-Счётчик зупинок в Live Activity обновляется только пока приложение живо
-(foreground-тикер): в фоне остров показывает последнее отправленное состояние —
-таймер продолжает идти сам (`Text(timerInterval:)`), а «залишилось N» и
-«наступна» замирают до следующего события (открытие приложения, кнопки −1/+1,
-GPS-коррекция). Это осознанная цена запрета фоновых режимов: без них ActivityKit
-не умеет отложенных обновлений. Проверено вживую тапами по острову: интенты
-−1/+1 выполняются в процессе приложения и мгновенно пушат свежий пересчёт.
-
-## Расписание: интервалы и часы работы
-
-`kyiv_metro.json` кроме перегонов содержит два официальных слоя:
-
-- **`headways`** — интервалы движения по линии, часу и типу дня (рабочий/выходной),
-  с отдельными значениями на начало и конец часа; модель интерполирует внутри часа.
-  Отсюда берётся ожидание поезда после пересадки.
-- **`serviceHours`** — первый и последний поезд с каждой станции в каждом
-  направлении. Превью маршрута предупреждает «метро ще зачинене», «останній поїзд
-  уже пішов» и «останній поїзд скоро» — в том числе для посадки после пересадки.
-
-## Локализация
-
-Украинский и английский лежат **парами в одной строке** в `Shared/Strings.swift`
-(`tr(uk, en)`) — рассинхронизировать их физически нельзя, в отличие от
-`.strings`-файлов, где ключ рано или поздно забудешь. Язык выбирается в
-`Shared/Localization.swift` по `Bundle.preferredLocalizations`. Названия станций
-берутся из данных (`nameUk`/`nameEn`) и вшиты в события маршрута, потому что
-виджет живёт в своём бандле, где данных метро нет. Системные запросы разрешений
-локализуются через `App/Resources/{uk,en}.lproj/InfoPlist.strings`.
-
-## Воздушные тревоги
-
-`App/Services/AlertService.swift` — единственный сетевой код. Работает только
-если пользователь сам включил переключатель в «Про застосунок» (по умолчанию
-выключен), только пока приложение открыто, раз в минуту, без фоновых режимов.
-Источник неофициальный, о чём прямо сказано рядом с переключателем; при
-недоступности фида приложение показывает «не вдалося перевірити», а не молчит —
-молчание читалось бы как «тревоги нет».
-
-## Приватность на уровне файлов
-
-Всё, что приложение пишет (журнал поездок, калибровка с треком координат),
-получает `FileProtection.completeUnlessOpen` и исключается из резервных копий
-iCloud/iTunes — иначе обещание «остаётся на вашем устройстве» было бы неправдой.
-См. `FileManager.protectAsLocalOnly` в `Shared/CalibrationStore.swift`.
-
-## Тесты
-
-```bash
-xcodebuild -project MetroTimer.xcodeproj -scheme MetroTimer \
-  -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max' test
-```
-
-28 тестов в четырёх файлах: планировщик и коррекции (`PlannerTests`),
-консистентность данных (`DataTests`), расписание и пересадки (`ScheduleTests`),
-переключение языка (`LocalizationTests`). Тесты грузятся в процесс приложения
-(`TEST_HOST`), поэтому `MetroRepository` работает с настоящим бандлом.
-
-## Материалы для App Store
-
-`AppStore/` — метаданные для обеих локализаций (`metadata_uk.md`,
-`metadata_en.md`), политика конфиденциальности (`PRIVACY.md`), отчёт о
-готовности с историей спринтов (`docs/READINESS.md`), исходник опубликованной
-страницы политики и поддержки (`site/`) и витринные слайды
-(`screenshots/framed/`, собираются `Scripts/make_store_frames.py`).
+Unofficial app. Not affiliated with or endorsed by Kyiv Metro
+(КП «Київський метрополітен»).
