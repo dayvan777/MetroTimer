@@ -11,6 +11,8 @@
 ![Localization](https://img.shields.io/badge/localization-uk%20%C2%B7%20en-0072bc)
 ![Status](https://img.shields.io/badge/status-pre--release-ed1c24)
 
+**[→ Project page](https://dayvan777.github.io/MetroTimer/)**
+
 You pick where you get on and where you get off, and you tap **Start** the moment
 the train pulls out. A countdown to your station appears on the Lock Screen and in
 the Dynamic Island, along with the number of stops left. One station before yours,
