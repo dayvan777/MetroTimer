@@ -135,8 +135,15 @@ private func isChangingLines(_ context: ActivityViewContext<MetroActivityAttribu
 }
 
 // Поездка доехала по модели: отсчёт и счётчик зупинок больше не несут смысла.
+//
+// Считаем по времени, а не только по пришедшему счётчику: пока приложение
+// усыплено, обновить состояние некому, и stopsRemaining остаётся тем, каким
+// его отправили при последнем взгляде на экран. arrivalDate же лежит в
+// состоянии и сравнивается с «сейчас» прямо при отрисовке — поэтому в момент
+// staleDate (то самое прибытие) система перерисует карточку, и она скажет
+// «Прибули», а не застынет на «Ще 3 зупинки · 0:00».
 private func hasArrived(_ context: ActivityViewContext<MetroActivityAttributes>) -> Bool {
-    context.state.stopsRemaining == 0
+    context.state.stopsRemaining == 0 || Date() >= context.state.arrivalDate
 }
 
 // Линия текущего этапа приходит в состоянии; attributes — запасной вариант

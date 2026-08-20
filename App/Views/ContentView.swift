@@ -215,9 +215,13 @@ struct SelectionView: View {
                 }
                 Spacer()
                 if let marker {
+                    // Цвет в этом приложении всегда означает линию — вкладки,
+                    // точки станций, акцент острова и экрана поездки. Метки A/B
+                    // были единственным исключением: красные (цвет M1) даже
+                    // на синей M2, где красный читается как «ошибка».
                     Text(marker)
                         .font(.headline)
-                        .foregroundColor(.accentColor)
+                        .foregroundColor(Color(hex: line.colorHex))
                         .transition(.scale.combined(with: .opacity))
                 }
             }
@@ -246,6 +250,13 @@ struct SelectionView: View {
 
     // MARK: - Нижняя панель
 
+    // Линия, на которую пассажир садится: её цветом красится «Поїхали».
+    // До выбора станции отправления — просто открытая вкладка.
+    private var boardingColor: Color {
+        let line = fromId.flatMap { repo.line(ofStation: $0) } ?? selectedLine
+        return Color(hex: line?.colorHex ?? "#888888")
+    }
+
     private var bottomPanel: some View {
         let canStart = fromId != nil && toId != nil
         return VStack(spacing: 10) {
@@ -273,9 +284,10 @@ struct SelectionView: View {
                 .padding(.vertical, 12)
             }
             .buttonStyle(.borderedProminent)
+            .tint(boardingColor)
             .disabled(!canStart)
             .scaleEffect(canStart || reduceMotion ? 1 : 0.97)
-            .shadow(color: canStart ? Color.accentColor.opacity(0.45) : .clear,
+            .shadow(color: canStart ? boardingColor.opacity(0.45) : .clear,
                     radius: 14, y: 4)
             .accessibilityHint(canStart ? L10n.startHint : "")
         }
@@ -284,6 +296,8 @@ struct SelectionView: View {
         .background(.thinMaterial)
         .animation(.easeInOut(duration: 0.25), value: canStart)
         .animation(.easeInOut(duration: 0.25), value: engine.recents)
+        .animation(.easeInOut(duration: 0.25), value: selectedLineId)
+        .animation(.easeInOut(duration: 0.25), value: fromId)
     }
 
     // Резюме маршрута: что именно построится и сколько ехать — до нажатия.

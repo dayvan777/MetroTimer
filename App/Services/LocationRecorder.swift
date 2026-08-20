@@ -45,7 +45,11 @@ final class LocationRecorder: NSObject, CLLocationManagerDelegate {
         }
     }
 
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+    // Актуальный колбэк: didChangeAuthorization(status:) объявлен устаревшим
+    // с iOS 14, и статус берётся у менеджера, а не приходит параметром.
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        guard handle != nil else { return }   // сессия уже закрыта — не будим GPS
+        let status = manager.authorizationStatus
         if status == .authorizedWhenInUse || status == .authorizedAlways {
             manager.startUpdatingLocation()
         }
