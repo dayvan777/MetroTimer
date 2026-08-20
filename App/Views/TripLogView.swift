@@ -61,8 +61,8 @@ struct TripLogView: View {
                 .font(.caption)
                 .foregroundColor(.secondary)
             HStack(spacing: 12) {
-                Text("план \(Self.mmss(entry.plannedSeconds))")
-                Text("підсумок \(Self.mmss(entry.finalSeconds))")
+                Text("\(L10n.journalPlanned) \(Self.mmss(entry.plannedSeconds))")
+                Text("\(L10n.journalActual) \(Self.mmss(entry.finalSeconds))")
                 if entry.transfers > 0 {
                     Label("\(entry.transfers)", systemImage: "figure.walk")
                 }

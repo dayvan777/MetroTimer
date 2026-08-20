@@ -15,6 +15,9 @@ final class TripEngine: ObservableObject {
     @Published private(set) var liveActivityUnavailable = false
 
     private var timer: Timer?
+    // В start() есть await, поэтому одного `guard trip == nil` мало:
+    // второй тап успевает пройти проверку, пока первый ждёт разрешений.
+    private var isStarting = false
     private let defaults = UserDefaults.standard
     private static let tripKey = "activeTrip"
     private static let recentsKey = "recentTrips"
@@ -69,10 +72,17 @@ final class TripEngine: ObservableObject {
     // Возвращает false, если пара станций невалидна (в т.ч. разные линии).
     // askForNotifications = false — пользователь осознанно едет без сповіщень:
     // системный промпт не показываем, поездка всё равно стартует.
+    // boardedAt — момент нажатия «Поїхали», а НЕ момент, когда мы досюда дошли:
+    // между ними лежит диалог разрешений, и привязка модели к нему сдвигала бы
+    // весь отсчёт и оба уведомления на время, потраченное на промпты.
     @discardableResult
-    func start(fromId: String, toId: String, askForNotifications: Bool = true) async -> Bool {
+    func start(fromId: String, toId: String, askForNotifications: Bool = true,
+               at boardedAt: Date = Date()) async -> Bool {
         // Двойной тап «Поїхали» / гонка с восстановлением: вторая поездка поверх живой невозможна.
-        guard trip == nil else { return false }
+        // isStarting держит окно от первой проверки до присвоения trip — внутри есть await.
+        guard trip == nil, !isStarting else { return false }
+        isStarting = true
+        defer { isStarting = false }
         #if DEBUG
         let skipAuth = ProcessInfo.processInfo.environment["MT_SKIP_NOTIF_AUTH"] != nil
         #else
@@ -94,7 +104,7 @@ final class TripEngine: ObservableObject {
 
         // Цвет Live Activity — линия станции выхода: она актуальна в момент,
         // когда пассажир смотрит на остров чаще всего.
-        guard let planned = TripPlanner.plan(fromId: fromId, toId: toId, start: Date(), repo: repo),
+        guard let planned = TripPlanner.plan(fromId: fromId, toId: toId, start: boardedAt, repo: repo),
               let line = repo.line(ofStation: planned.toId) else { return false }
 
         trip = planned
@@ -172,6 +182,13 @@ final class TripEngine: ObservableObject {
             if ActivityController.shared.areActivitiesEnabled { liveActivityUnavailable = false }
             startTicker()
         }
+    }
+
+    // Вызывается при уходе сцены из .active. Тикер обновляет только остров и
+    // только пока жив процесс: за пределами foreground он впустую стучит раз
+    // в секунду на .common runloop mode (шторка уведомлений, Пункт управления).
+    func suspendTicker() {
+        stopTicker()
     }
 
     private func finalizeArrivedTrip() {

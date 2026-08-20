@@ -16,8 +16,15 @@ final class MotionRecorder {
     func start(fileURL: URL) {
         stop()
         FileManager.default.createFile(atPath: fileURL.path, contents: nil)
-        handle = try? FileHandle(forWritingTo: fileURL)
-        write(line: "wall_ts,boot_ts,ax,ay,az")
+        let opened = try? FileHandle(forWritingTo: fileURL)
+        // handle и buffer живут только на своей последовательной очереди: иначе
+        // запись заголовка с главного потока — неявная гонка с колбэком
+        // акселерометра на 50 Гц, и одновременные append/removeAll рвут массив.
+        // stop() выше уже дождался всех операций, так что порядок гарантирован.
+        queue.addOperation { [weak self] in
+            self?.handle = opened
+            self?.write(line: "wall_ts,boot_ts,ax,ay,az")
+        }
 
         guard manager.isAccelerometerAvailable else { return }
         manager.accelerometerUpdateInterval = 1.0 / 50.0
@@ -40,7 +47,8 @@ final class MotionRecorder {
         queue.waitUntilAllOperationsAreFinished()
     }
 
-    // Вызывается только на своей последовательной очереди либо до старта апдейтов.
+    // Вызывается ТОЛЬКО на своей последовательной очереди — единственное место,
+    // где допустим доступ к handle и buffer.
     private func write(line: String) {
         buffer.append(line)
         if buffer.count >= 100 { flush() }

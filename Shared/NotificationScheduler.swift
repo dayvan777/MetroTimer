@@ -84,8 +84,20 @@ final class NotificationScheduler {
         }
     }
 
-    // Приложение владеет всеми своими pending-уведомлениями — снимаем разом.
+    // Снимаем только уведомления поездки. removeAllPendingNotificationRequests()
+    // сносил бы и «kyiv.airAlert» от AlertService: коррекция ±1 или GPS-снэп,
+    // случившиеся в ту же секунду, что и начало тревоги, глушили бы её молча.
+    // Список фиксированный и синхронный — асинхронная выборка pending успела бы
+    // удалить уже перепланированные запросы, потому что префикс у них тот же.
+    private static var tripIdentifiers: [String] {
+        [nextStopId, arrivalId] + (0..<maxTransferSlots).map { "trip.transfer.\($0)" }
+    }
+
+    // С запасом: самая длинная линия Киева — 18 станций, маршрут с пересадкой короче.
+    private static let maxTransferSlots = 64
+
     func cancelAll() {
-        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        UNUserNotificationCenter.current()
+            .removePendingNotificationRequests(withIdentifiers: Self.tripIdentifiers)
     }
 }
