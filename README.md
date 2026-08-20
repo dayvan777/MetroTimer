@@ -194,6 +194,7 @@ xcodebuild -project MetroTimer.xcodeproj -scheme MetroTimer \
 The Xcode project is committed and has no dependencies — clone and open. Generators,
 data derivation, debug hooks and repository layout are in **[docs/BUILD.md](docs/BUILD.md)**.
 The GPS correction design is in [docs/GPS.md](docs/GPS.md).
+What is left before the App Store, and why, is in [docs/READINESS.md](docs/READINESS.md).
 
 ## Data and credits
 

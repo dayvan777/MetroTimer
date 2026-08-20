@@ -31,8 +31,23 @@ python3 Scripts/gen_pbxproj.py
 
 Rebuilds `MetroTimer.xcodeproj/project.pbxproj`. The file lists live at the top
 of the script: add or remove a source file there, then re-run. Note that
-`Shared/` is compiled into **both** the app and the widget target, while
-`kyiv_metro.json` ships only with the app.
+`Shared/` is compiled into **both** the app and the widget target — and so is
+`kyiv_metro.json`, because `MetroRepository.init` calls `fatalError` when the
+file is missing from its bundle.
+
+```bash
+MT_PAID_TEAM=1 python3 Scripts/gen_pbxproj.py
+```
+
+Same, but wires `App/MetroTimer.entitlements` into the app target. A free
+Personal Team cannot sign the Time Sensitive Notifications entitlement, and
+without it iOS silently downgrades `.timeSensitive` notifications — so the
+"next stop is yours" alert stops breaking through Focus modes, which is the
+one scenario the app exists for. Use this on a paid account and verify with:
+
+```bash
+codesign -d --entitlements - build/Build/Products/Release-iphoneos/MetroTimer.app
+```
 
 ```bash
 python3 Scripts/gen_metro_json.py
