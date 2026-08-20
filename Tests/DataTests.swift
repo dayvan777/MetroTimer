@@ -19,9 +19,11 @@ final class DataTests: XCTestCase {
                 XCTAssertNotNil(repo.station(id: stationId), "\(stationId) нет в станциях")
             }
             // У каждой соседней пары должен быть сегмент в обе стороны.
+            // Именно seedTiming, а не timing: timing подмешивает калибровку
+            // с этого устройства, и тест бандл-данных ловил бы чужие замеры.
             for (a, b) in zip(line.stationIds, line.stationIds.dropFirst()) {
-                XCTAssertGreaterThan(repo.timing(from: a, to: b).travel, 0, "\(a)→\(b)")
-                XCTAssertGreaterThan(repo.timing(from: b, to: a).travel, 0, "\(b)→\(a)")
+                XCTAssertGreaterThan(repo.seedTiming(from: a, to: b).travel, 0, "\(a)→\(b)")
+                XCTAssertGreaterThan(repo.seedTiming(from: b, to: a).travel, 0, "\(b)→\(a)")
             }
         }
 
@@ -87,6 +89,28 @@ final class DataTests: XCTestCase {
         XCTAssertEqual(try XCTUnwrap(averaged.travelSeconds), 110, accuracy: 0.001)
         XCTAssertEqual(repo.timing(from: a, to: b).travel, 110, "калибровка перебивает сид")
         XCTAssertEqual(repo.timing(from: a, to: b).dwell, 25, "стоянка остаётся сидовой")
+
+        // Неправдоподобный замер не должен попасть в базу ни при каких условиях:
+        // перегон с ходом 0.2 с молча съедает станцию из отсчёта.
+        let (c, d) = ("test-junk-a", "test-junk-b")
+        XCTAssertFalse(store.recordTravel(from: c, to: d, seconds: 0.2), "0.2 с — не замер")
+        XCTAssertFalse(store.recordTravel(from: c, to: d, seconds: 5000), "83 минуты — не замер")
+        XCTAssertFalse(store.recordDwell(from: c, to: d, seconds: 0.16), "0.16 с — не стоянка")
+        XCTAssertNil(store.record(from: c, to: d), "мусор не создаёт записи")
+        XCTAssertEqual(repo.timing(from: c, to: d).travel, repo.seedTiming(from: c, to: d).travel,
+                       "после отброшенного замера остаётся сид")
+
+        // Файл, написанный прошлой версией без этих проверок, чинится при чтении.
+        let dirty = CalibrationRecord(travelSeconds: 0.2, travelSamples: 1,
+                                      dwellSeconds: 30, dwellSamples: 1)
+        let cleaned = dirty.sanitized()
+        XCTAssertNil(cleaned.travelSeconds, "битый ход выбрасывается")
+        XCTAssertEqual(cleaned.travelSamples, 0, "вместе со счётчиком проб")
+        XCTAssertEqual(try XCTUnwrap(cleaned.dwellSeconds), 30, accuracy: 0.001,
+                       "правдоподобная стоянка остаётся")
+        XCTAssertTrue(CalibrationRecord(travelSeconds: 0.2, travelSamples: 1,
+                                        dwellSeconds: 0.1, dwellSamples: 1)
+                        .sanitized().isEmpty, "запись без единого валидного поля — пустая")
 
         // Украинские формы: 1 зупинка, 2–4 зупинки, 5+ зупинок, 11–14 — зупинок.
         XCTAssertEqual(L10n.stopsWord(1), "зупинка")

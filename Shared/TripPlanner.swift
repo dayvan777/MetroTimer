@@ -81,16 +81,41 @@ enum TripPlanner {
                           manualCorrections: 0, gpsCorrections: 0, events: events)
     }
 
-    // События одного этапа по линии, времена — заглушки до fill().
-    private static func legEvents(line: Line, from: String, to: String,
-                                  placeholder: Date, repo: MetroRepository) -> [StopEvent]? {
+    // Последовательность станций одного этапа — общая основа и для плана,
+    // и для ответа на вопрос «почему маршрут не построился».
+    private static func legStationIds(line: Line, from: String, to: String) -> [String]? {
         guard let fromIndex = line.stationIds.firstIndex(of: from),
               let toIndex = line.stationIds.firstIndex(of: to) else { return nil }
         let step = toIndex >= fromIndex ? 1 : -1
+        return stride(from: fromIndex, through: toIndex, by: step).map { line.stationIds[$0] }
+    }
+
+    // Есть ли на маршруте перегон, по которому сейчас не ходят поезда.
+    // Отдельный вопрос, а не «plan() вернул nil»: nil бывает по десятку причин,
+    // а пассажиру нужно услышать ровно одну — «цією ділянкою зараз не їздять».
+    static func hasSuspendedSection(fromId: String, toId: String,
+                                    repo: MetroRepository = .shared) -> Bool {
+        guard let fromLine = repo.line(ofStation: fromId),
+              let toLine = repo.line(ofStation: toId) else { return false }
+        var legs: [[String]] = []
+        if fromLine.id == toLine.id {
+            legs = [legStationIds(line: fromLine, from: fromId, to: toId)].compactMap { $0 }
+        } else if let node = repo.transfer(from: fromLine.id, to: toLine.id) {
+            legs = [legStationIds(line: fromLine, from: fromId, to: node.exitAt),
+                    legStationIds(line: toLine, from: node.boardAt, to: toId)].compactMap { $0 }
+        }
+        return legs.contains { leg in
+            zip(leg, leg.dropFirst()).contains { repo.isSuspended(from: $0, to: $1) }
+        }
+    }
+
+    // События одного этапа по линии, времена — заглушки до fill().
+    private static func legEvents(line: Line, from: String, to: String,
+                                  placeholder: Date, repo: MetroRepository) -> [StopEvent]? {
+        guard let ids = legStationIds(line: line, from: from, to: to) else { return nil }
         var events: [StopEvent] = []
-        var index = fromIndex
-        while true {
-            guard let station = repo.station(id: line.stationIds[index]) else { return nil }
+        for id in ids {
+            guard let station = repo.station(id: id) else { return nil }
             // Ділянка без руху розриває маршрут: краще чесно відмовити, ніж
             // рахувати час поїзда, якого немає.
             if let previous = events.last,
@@ -101,8 +126,6 @@ enum TripPlanner {
                                     nameEn: station.nameEn, lineId: line.id,
                                     arrival: placeholder, departure: placeholder,
                                     isStop: !station.isClosed, isTransfer: false))
-            if index == toIndex { break }
-            index += step
         }
         return events
     }

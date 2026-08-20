@@ -122,7 +122,9 @@ calibration) are encrypted and excluded from iCloud/iTunes backups.
 Потребує платного акаунта:
 - [ ] Платний акаунт Apple Developer Program ($99/рік) — Personal Team не публікує
 - [ ] Bundle ID зареєструвати в App Store Connect (ua.vlad.MetroTimer)
-- [ ] Повернути time-sensitive entitlement
+- [ ] Повернути time-sensitive entitlement: `MT_PAID_TEAM=1 python3 Scripts/gen_pbxproj.py`
+      (без нього iOS мовчки знижує рівень сповіщень, і «Наступна — ваша»
+      не пробиває режими фокусування — див. `docs/READINESS.md`)
 - [ ] Увімкнути звіти про збої в Xcode Organizer (без SDK і без збору даних)
 - [ ] Archive → Distribute у Xcode (схема MetroTimer, Any iOS Device)
 

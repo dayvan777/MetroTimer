@@ -117,10 +117,6 @@ final class CalibrationViewModel: ObservableObject {
         awaitingDeparture ? markDeparted() : markStopped()
     }
 
-    // Границы правдоподобия: дребезг кнопки не должен попадать в базу.
-    private static let plausibleTravel: ClosedRange<TimeInterval> = 20...900
-    private static let plausibleDwell: ClosedRange<TimeInterval> = 3...600
-
     private func markStopped() {
         // Закрытые станции поезд проезжает — фиксируем остановку на следующей открытой.
         while nextIndex < sequence.count, sequence[nextIndex].isClosed {
@@ -130,13 +126,13 @@ final class CalibrationViewModel: ObservableObject {
 
         let now = Date()
         let travel = now.timeIntervalSince(lastDepartureAt)
-        if Self.plausibleTravel.contains(travel) {
-            distributeTravel(travel, fromIndex: lastStopIndex, toIndex: nextIndex)
-            CalibrationStore.shared.save()
-            appendLog(L10n.calibLogTravel(sequence[nextIndex].localizedName, seconds: Int(travel), skipped: false))
-        } else {
-            appendLog(L10n.calibLogTravel(sequence[nextIndex].localizedName, seconds: Int(travel), skipped: true))
-        }
+        // Правдоподобие проверяет хранилище — одними и теми же границами для
+        // ручной калибровки и для пассивного обучения по GPS. Здесь только
+        // честно показываем, попал замер в базу или нет.
+        let accepted = distributeTravel(travel, fromIndex: lastStopIndex, toIndex: nextIndex)
+        if accepted { CalibrationStore.shared.save() }
+        appendLog(L10n.calibLogTravel(sequence[nextIndex].localizedName,
+                                      seconds: Int(travel), skipped: !accepted))
         stoppedAt = now
         awaitingDeparture = true
         writeEvent("stop,\(sequence[lastStopIndex].id),\(sequence[nextIndex].id)")
@@ -147,13 +143,10 @@ final class CalibrationViewModel: ObservableObject {
         let dwell = now.timeIntervalSince(stoppedAt)
         let prev = sequence[nextIndex - 1]
         let current = sequence[nextIndex]
-        if Self.plausibleDwell.contains(dwell) {
-            CalibrationStore.shared.recordDwell(from: prev.id, to: current.id, seconds: dwell)
-            CalibrationStore.shared.save()
-            appendLog(L10n.calibLogDwell(current.localizedName, seconds: Int(dwell), skipped: false))
-        } else {
-            appendLog(L10n.calibLogDwell(current.localizedName, seconds: Int(dwell), skipped: true))
-        }
+        let accepted = CalibrationStore.shared.recordDwell(from: prev.id, to: current.id,
+                                                           seconds: dwell)
+        if accepted { CalibrationStore.shared.save() }
+        appendLog(L10n.calibLogDwell(current.localizedName, seconds: Int(dwell), skipped: !accepted))
         writeEvent("depart,\(prev.id),\(current.id)")
 
         lastStopIndex = nextIndex
@@ -165,15 +158,21 @@ final class CalibrationViewModel: ObservableObject {
 
     // Ход между остановками может накрывать закрытую станцию (2 перегона):
     // делим замер пропорционально сид-временам, чтобы прежняя калибровка не влияла на делёж.
-    private func distributeTravel(_ total: TimeInterval, fromIndex: Int, toIndex: Int) {
+    // Возвращает true, если хранилище приняло хотя бы одну долю: доли считаются
+    // из общего замера, и неправдоподобный общий отсекается на каждой из них.
+    @discardableResult
+    private func distributeTravel(_ total: TimeInterval, fromIndex: Int, toIndex: Int) -> Bool {
         let pairs = (fromIndex..<toIndex).map { (sequence[$0].id, sequence[$0 + 1].id) }
-        guard !pairs.isEmpty else { return }
+        guard !pairs.isEmpty else { return false }
         let seeds = pairs.map { Double(repo.seedTiming(from: $0.0, to: $0.1).travel) }
         let seedTotal = seeds.reduce(0, +)
+        var accepted = false
         for (pair, seed) in zip(pairs, seeds) {
             let share = seedTotal > 0 ? total * seed / seedTotal : total / Double(pairs.count)
-            CalibrationStore.shared.recordTravel(from: pair.0, to: pair.1, seconds: share)
+            accepted = CalibrationStore.shared.recordTravel(from: pair.0, to: pair.1,
+                                                            seconds: share) || accepted
         }
+        return accepted
     }
 
     func finish() {

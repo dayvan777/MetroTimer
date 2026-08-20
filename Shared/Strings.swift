@@ -152,6 +152,12 @@ enum L10n {
            "Notifications are off: you won’t get the exit warning.")
     }
     static var openSettings: String { tr("Налаштування", "Settings") }
+    // «Живі активності» выключены системным тумблером: ни острова, ни карточки
+    // на экране блокировки — молчать об этом нельзя, это весь смысл продукта.
+    static var liveActivityOff: String {
+        tr("Живі активності вимкнені: відліку на екрані блокування не буде.",
+           "Live Activities are off: there will be no countdown on the Lock Screen.")
+    }
 
     static var notifNextBody: String { tr("Готуйтеся до виходу.", "Get ready to exit.") }
     static var notifArrivalBody: String { tr("Виходьте.", "This is your stop.") }

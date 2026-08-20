@@ -16,9 +16,6 @@ final class LocationCorrector: NSObject, CLLocationManagerDelegate {
         static let minCorrectionInterval: TimeInterval = 30
         // Кэшированный фикс при старте менеджера может быть старым — снэп назад по маршруту.
         static let maxFixAge: TimeInterval = 10
-        // Пассивное обучение: правдоподобные границы замера хода между
-        // соседними наземными станциями; вне границ — мусор, не учим.
-        static let learnableTravelRange: ClosedRange<TimeInterval> = 30...900
     }
 
     private let manager = CLLocationManager()
@@ -154,10 +151,11 @@ final class LocationCorrector: NSObject, CLLocationManagerDelegate {
         let dwell = TimeInterval(engine.repo.timing(from: prevOfFrom.stationId,
                                                     to: from.stationId).dwell)
         let travel = now.timeIntervalSince(last.at) - dwell
-        guard Tuning.learnableTravelRange.contains(travel) else { return }
-
-        CalibrationStore.shared.recordTravel(from: from.stationId, to: to.stationId,
-                                             seconds: travel)
+        // Границы правдоподобия — общие с ручной калибровкой (CalibrationStore):
+        // мусор одинаково опасен, откуда бы он ни пришёл, а хранилище отсеет
+        // его само и скажет об этом.
+        guard CalibrationStore.shared.recordTravel(from: from.stationId, to: to.stationId,
+                                                   seconds: travel) else { return }
         CalibrationStore.shared.save()
     }
 }

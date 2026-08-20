@@ -37,7 +37,10 @@ struct TripView: View {
                 AirAlertBanner(text: L10n.alertsUnavailable, muted: true)
             }
             if engine.notificationsDenied {
-                notificationsBanner
+                warningBanner(L10n.notifDenied)
+            }
+            if engine.liveActivityUnavailable {
+                warningBanner(L10n.liveActivityOff)
             }
             header(trip: trip, now: now, stopsLeft: stopsLeft, accent: accent)
             if now < trip.arrivalDate {
@@ -47,6 +50,9 @@ struct TripView: View {
                     .tint(accent)
                     .padding(.horizontal)
                     .padding(.bottom, 6)
+                    // То же, что таймер и счётчик зупинок, но без подписи:
+                    // VoiceOver читал безымянный индикатор посреди экрана.
+                    .accessibilityHidden(true)
             }
             stationList(trip: trip, nextIndex: nextIndex, accent: accent)
             controls(trip: trip, now: now, stopsLeft: stopsLeft, accent: accent)
@@ -59,13 +65,16 @@ struct TripView: View {
         // Переход «едем ↔ мали прибути» — одним мягким кроссфейдом.
         .animation(.easeInOut(duration: 0.4), value: now < trip.arrivalDate)
         .animation(.easeInOut(duration: 0.3), value: engine.notificationsDenied)
+        .animation(.easeInOut(duration: 0.3), value: engine.liveActivityUnavailable)
         .animation(.easeInOut(duration: 0.3), value: trip.isChangingLines(at: now))
     }
 
     // Занимает своё место в потоке — заголовок поездки не перекрывается.
-    private var notificationsBanner: some View {
+    // Оба предупреждения — «нет сповіщень» и «нет живих активностей» — ведут
+    // в одно и то же место Параметров, поэтому и выглядят одинаково.
+    private func warningBanner(_ text: String) -> some View {
         HStack(alignment: .firstTextBaseline, spacing: 8) {
-            Text(L10n.notifDenied)
+            Text(text)
                 .font(.caption)
                 .fixedSize(horizontal: false, vertical: true)
             Spacer(minLength: 0)
@@ -140,8 +149,11 @@ struct TripView: View {
                     ForEach(Array(trip.events.enumerated()), id: \.element.stationId) { index, event in
                         stationRow(
                             event: event, index: index, nextIndex: nextIndex, accent: accent,
+                            // Округление, а не отбрасывание: «~3 хв» рядом со
+                            // временами 14:04 → 14:08 читалось как ошибка.
                             walkMinutes: event.isTransfer && index > 0
-                                ? max(1, Int(event.arrival.timeIntervalSince(trip.events[index - 1].departure) / 60))
+                                ? max(1, Int((event.arrival.timeIntervalSince(
+                                    trip.events[index - 1].departure) / 60).rounded()))
                                 : nil)
                             .id(event.stationId)
                     }
@@ -312,12 +324,13 @@ struct TripView: View {
 private struct WalkIcon: View {
     let active: Bool
     let color: Color
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         let icon = Image(systemName: "figure.walk")
             .font(.footnote)
             .foregroundColor(color)
-        if #available(iOS 17.0, *), active {
+        if #available(iOS 17.0, *), active, !reduceMotion {
             icon.symbolEffect(.pulse, options: .repeating)
         } else {
             icon
@@ -326,13 +339,16 @@ private struct WalkIcon: View {
 }
 
 // Мягкое «дыхание» подсказки про опоздание модели.
+// Бесконечная анимация — ровно то, что «Зменшення руху» просит выключить.
 private struct BreathingOpacity: ViewModifier {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var dim = false
 
     func body(content: Content) -> some View {
         content
             .opacity(dim ? 0.55 : 1)
             .onAppear {
+                guard !reduceMotion else { return }
                 withAnimation(.easeInOut(duration: 1.4).repeatForever(autoreverses: true)) {
                     dim = true
                 }
@@ -341,21 +357,27 @@ private struct BreathingOpacity: ViewModifier {
 }
 
 // «Сонар» у следующей станции: расходящееся кольцо поверх точки.
+// При «Зменшенні руху» остаётся просто цветная точка — какая станция
+// следующая, видно и по жирному начертанию строки.
 private struct PulsingDot: View {
     let color: Color
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var pulsing = false
 
     var body: some View {
         ZStack {
-            Circle()
-                .stroke(color.opacity(0.7), lineWidth: 2)
-                .scaleEffect(pulsing ? 2.4 : 1)
-                .opacity(pulsing ? 0 : 0.8)
+            if !reduceMotion {
+                Circle()
+                    .stroke(color.opacity(0.7), lineWidth: 2)
+                    .scaleEffect(pulsing ? 2.4 : 1)
+                    .opacity(pulsing ? 0 : 0.8)
+            }
             Circle()
                 .fill(color)
         }
         .frame(width: 10, height: 10)
         .onAppear {
+            guard !reduceMotion else { return }
             withAnimation(.easeOut(duration: 1.2).repeatForever(autoreverses: false)) {
                 pulsing = true
             }

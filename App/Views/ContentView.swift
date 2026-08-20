@@ -79,6 +79,11 @@ struct SelectionView: View {
             .sheet(isPresented: $showOnboarding) { OnboardingView() }
             .alert(L10n.routeError, isPresented: $showRouteError) {
                 Button("OK", role: .cancel) {}
+            } message: {
+                // Причина одна на весь nil от планировщика, но пассажиру важна
+                // именно эта: «маршрут не будується» без объяснения выглядит
+                // как поломка приложения, а не как закрытая ділянка.
+                if isRouteSuspended { Text(L10n.routeSuspended) }
             }
             // Ни одна ветка не оставляет пользователя без поездки: отказ от
             // сповіщень — тоже валидный выбор, а не тупик.
@@ -287,6 +292,12 @@ struct SelectionView: View {
                     .font(.subheadline.weight(.semibold))
                     .lineLimit(2)
                     .minimumScaleFactor(0.8)
+                if plan == nil, isRouteSuspended {
+                    Label(L10n.routeSuspended, systemImage: "exclamationmark.octagon")
+                        .font(.caption2)
+                        .foregroundColor(.orange)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
                 if let plan {
                     Text([L10n.routeMinutes(plan.minutes), plan.transfer.map(L10n.routeTransfer)]
                         .compactMap { $0 }.joined(separator: " · "))
@@ -318,6 +329,11 @@ struct SelectionView: View {
             .accessibilityLabel(L10n.swapStations)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private var isRouteSuspended: Bool {
+        guard let from = fromId, let to = toId else { return false }
+        return TripPlanner.hasSuspendedSection(fromId: from, toId: to, repo: repo)
     }
 
     // Тот же планировщик, что и при старте: превью не расходится с фактом.

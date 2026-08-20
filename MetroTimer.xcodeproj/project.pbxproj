@@ -51,39 +51,40 @@
 		AA0000000000000000000055 /* TripLogStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000000C /* TripLogStore.swift */; };
 		AA000000000000000000004D /* TripPlanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000004 /* TripPlanner.swift */; };
 		AA0000000000000000000049 /* MetroActivityWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000001A /* MetroActivityWidget.swift */; };
+		AA0000000000000000000058 /* kyiv_metro.json in Resources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000001F /* kyiv_metro.json */; };
 		AA0000000000000000000057 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000024 /* PrivacyInfo.xcprivacy */; };
-		AA0000000000000000000059 /* DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000001C /* DataTests.swift */; };
-		AA000000000000000000005B /* LocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000001E /* LocalizationTests.swift */; };
-		AA0000000000000000000058 /* PlannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000001B /* PlannerTests.swift */; };
-		AA000000000000000000005A /* ScheduleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000001D /* ScheduleTests.swift */; };
-		AA000000000000000000005C /* MetroTimerWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000029 /* MetroTimerWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		AA000000000000000000005A /* DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000001C /* DataTests.swift */; };
+		AA000000000000000000005C /* LocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000001E /* LocalizationTests.swift */; };
+		AA0000000000000000000059 /* PlannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000001B /* PlannerTests.swift */; };
+		AA000000000000000000005B /* ScheduleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000001D /* ScheduleTests.swift */; };
+		AA000000000000000000005D /* MetroTimerWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000029 /* MetroTimerWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		AA0000000000000000000073 /* PBXContainerItemProxy */ = {
+		AA0000000000000000000074 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = AA0000000000000000000072 /* Project object */;
+			containerPortal = AA0000000000000000000073 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = AA0000000000000000000070;
+			remoteGlobalIDString = AA0000000000000000000071;
 			remoteInfo = MetroTimerWidget;
 		};
-		AA0000000000000000000075 /* PBXContainerItemProxy */ = {
+		AA0000000000000000000076 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = AA0000000000000000000072 /* Project object */;
+			containerPortal = AA0000000000000000000073 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = AA000000000000000000006F;
+			remoteGlobalIDString = AA0000000000000000000070;
 			remoteInfo = MetroTimer;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		AA0000000000000000000069 /* Embed Foundation Extensions */ = {
+		AA000000000000000000006A /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				AA000000000000000000005C /* MetroTimerWidget.appex in Embed Foundation Extensions */,
+				AA000000000000000000005D /* MetroTimerWidget.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -136,28 +137,21 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		AA0000000000000000000068 /* Frameworks */ = {
+		AA0000000000000000000069 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		AA000000000000000000006C /* Frameworks */ = {
+		AA000000000000000000006D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		AA000000000000000000006E /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AA000000000000000000006E /* Frameworks */ = {
+		AA000000000000000000006F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -167,18 +161,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		AA000000000000000000005D /* MainGroup */ = {
+		AA000000000000000000005E /* MainGroup */ = {
 			isa = PBXGroup;
 			children = (
-				AA000000000000000000005E /* App */,
-				AA0000000000000000000062 /* Shared */,
-				AA0000000000000000000063 /* Widget */,
-				AA0000000000000000000064 /* Tests */,
-				AA0000000000000000000065 /* Products */,
+				AA000000000000000000005F /* App */,
+				AA0000000000000000000063 /* Shared */,
+				AA0000000000000000000064 /* Widget */,
+				AA0000000000000000000065 /* Tests */,
+				AA0000000000000000000066 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		AA000000000000000000005E /* App */ = {
+		AA000000000000000000005F /* App */ = {
 			isa = PBXGroup;
 			children = (
 				AA000000000000000000000E /* MetroTimerApp.swift */,
@@ -186,15 +180,14 @@
 				AA0000000000000000000026 /* MetroTimer.entitlements */,
 				AA0000000000000000000022 /* Assets.xcassets */,
 				AA0000000000000000000023 /* PrivacyInfo.xcprivacy */,
-				AA0000000000000000000023 /* PrivacyInfo.xcprivacy */,
-				AA000000000000000000005F /* Views */,
-				AA0000000000000000000060 /* Services */,
-				AA0000000000000000000061 /* Resources */,
+				AA0000000000000000000060 /* Views */,
+				AA0000000000000000000061 /* Services */,
+				AA0000000000000000000062 /* Resources */,
 			);
 			path = App;
 			sourceTree = "<group>";
 		};
-		AA000000000000000000005F /* Views */ = {
+		AA0000000000000000000060 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				AA000000000000000000000F /* ContentView.swift */,
@@ -206,7 +199,7 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		AA0000000000000000000060 /* Services */ = {
+		AA0000000000000000000061 /* Services */ = {
 			isa = PBXGroup;
 			children = (
 				AA0000000000000000000014 /* MotionRecorder.swift */,
@@ -219,7 +212,7 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
-		AA0000000000000000000061 /* Resources */ = {
+		AA0000000000000000000062 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
 				AA000000000000000000001F /* kyiv_metro.json */,
@@ -229,7 +222,7 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		AA0000000000000000000062 /* Shared */ = {
+		AA0000000000000000000063 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
 				AA0000000000000000000001 /* MetroActivityAttributes.swift */,
@@ -249,7 +242,7 @@
 			path = Shared;
 			sourceTree = "<group>";
 		};
-		AA0000000000000000000063 /* Widget */ = {
+		AA0000000000000000000064 /* Widget */ = {
 			isa = PBXGroup;
 			children = (
 				AA000000000000000000001A /* MetroActivityWidget.swift */,
@@ -259,7 +252,7 @@
 			path = Widget;
 			sourceTree = "<group>";
 		};
-		AA0000000000000000000064 /* Tests */ = {
+		AA0000000000000000000065 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
 				AA000000000000000000001B /* PlannerTests.swift */,
@@ -270,7 +263,7 @@
 			path = Tests;
 			sourceTree = "<group>";
 		};
-		AA0000000000000000000065 /* Products */ = {
+		AA0000000000000000000066 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				AA0000000000000000000028 /* MetroTimer.app */,
@@ -283,32 +276,32 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		AA000000000000000000006F /* MetroTimer */ = {
+		AA0000000000000000000070 /* MetroTimer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AA0000000000000000000078 /* Build configuration list for PBXNativeTarget "MetroTimer" */;
+			buildConfigurationList = AA0000000000000000000079 /* Build configuration list for PBXNativeTarget "MetroTimer" */;
 			buildPhases = (
-				AA0000000000000000000066 /* Sources */,
-				AA0000000000000000000068 /* Frameworks */,
-				AA0000000000000000000067 /* Resources */,
-				AA0000000000000000000069 /* Embed Foundation Extensions */,
+				AA0000000000000000000067 /* Sources */,
+				AA0000000000000000000069 /* Frameworks */,
+				AA0000000000000000000068 /* Resources */,
+				AA000000000000000000006A /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				AA0000000000000000000074 /* PBXTargetDependency */,
+				AA0000000000000000000075 /* PBXTargetDependency */,
 			);
 			name = MetroTimer;
 			productName = MetroTimer;
 			productReference = AA0000000000000000000028 /* MetroTimer.app */;
 			productType = "com.apple.product-type.application";
 		};
-		AA0000000000000000000070 /* MetroTimerWidget */ = {
+		AA0000000000000000000071 /* MetroTimerWidget */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AA0000000000000000000079 /* Build configuration list for PBXNativeTarget "MetroTimerWidget" */;
+			buildConfigurationList = AA000000000000000000007A /* Build configuration list for PBXNativeTarget "MetroTimerWidget" */;
 			buildPhases = (
-				AA000000000000000000006A /* Sources */,
-				AA000000000000000000006C /* Frameworks */,
-				AA000000000000000000006B /* Resources */,
+				AA000000000000000000006B /* Sources */,
+				AA000000000000000000006D /* Frameworks */,
+				AA000000000000000000006C /* Resources */,
 			);
 			buildRules = (
 			);
@@ -319,34 +312,17 @@
 			productReference = AA0000000000000000000029 /* MetroTimerWidget.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		AA0000000000000000000071 /* MetroTimerTests */ = {
+		AA0000000000000000000072 /* MetroTimerTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AA000000000000000000007A /* Build configuration list for PBXNativeTarget "MetroTimerTests" */;
+			buildConfigurationList = AA000000000000000000007B /* Build configuration list for PBXNativeTarget "MetroTimerTests" */;
 			buildPhases = (
-				AA000000000000000000006D /* Sources */,
-				AA000000000000000000006E /* Frameworks */,
+				AA000000000000000000006E /* Sources */,
+				AA000000000000000000006F /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				AA0000000000000000000076 /* PBXTargetDependency */,
-			);
-			name = MetroTimerTests;
-			productName = MetroTimerTests;
-			productReference = AA000000000000000000002A /* MetroTimerTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		AA0000000000000000000071 /* MetroTimerTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = AA000000000000000000007A /* Build configuration list for PBXNativeTarget "MetroTimerTests" */;
-			buildPhases = (
-				AA000000000000000000006D /* Sources */,
-				AA000000000000000000006E /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				AA0000000000000000000076 /* PBXTargetDependency */,
+				AA0000000000000000000077 /* PBXTargetDependency */,
 			);
 			name = MetroTimerTests;
 			productName = MetroTimerTests;
@@ -356,13 +332,13 @@
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		AA0000000000000000000072 /* Project object */ = {
+		AA0000000000000000000073 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastUpgradeCheck = 1500;
 			};
-			buildConfigurationList = AA0000000000000000000077 /* Build configuration list for PBXProject "MetroTimer" */;
+			buildConfigurationList = AA0000000000000000000078 /* Build configuration list for PBXProject "MetroTimer" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = uk;
 			hasScannedForEncodings = 0;
@@ -370,21 +346,20 @@
 				uk,
 				Base,
 			);
-			mainGroup = AA000000000000000000005D;
-			productRefGroup = AA0000000000000000000065 /* Products */;
+			mainGroup = AA000000000000000000005E;
+			productRefGroup = AA0000000000000000000066 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				AA000000000000000000006F /* MetroTimer */,
-				AA0000000000000000000070 /* MetroTimerWidget */,
-				AA0000000000000000000071 /* MetroTimerTests */,
-				AA0000000000000000000071 /* MetroTimerTests */,
+				AA0000000000000000000070 /* MetroTimer */,
+				AA0000000000000000000071 /* MetroTimerWidget */,
+				AA0000000000000000000072 /* MetroTimerTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		AA0000000000000000000067 /* Resources */ = {
+		AA0000000000000000000068 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -396,10 +371,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		AA000000000000000000006B /* Resources */ = {
+		AA000000000000000000006C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA0000000000000000000058 /* kyiv_metro.json in Resources */,
 				AA0000000000000000000057 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -407,7 +383,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		AA0000000000000000000066 /* Sources */ = {
+		AA0000000000000000000067 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -439,7 +415,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		AA000000000000000000006A /* Sources */ = {
+		AA000000000000000000006B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -460,45 +436,34 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		AA000000000000000000006D /* Sources */ = {
+		AA000000000000000000006E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA0000000000000000000059 /* DataTests.swift in Sources */,
-				AA000000000000000000005B /* LocalizationTests.swift in Sources */,
-				AA0000000000000000000058 /* PlannerTests.swift in Sources */,
-				AA000000000000000000005A /* ScheduleTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AA000000000000000000006D /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				AA0000000000000000000059 /* DataTests.swift in Sources */,
-				AA000000000000000000005B /* LocalizationTests.swift in Sources */,
-				AA0000000000000000000058 /* PlannerTests.swift in Sources */,
-				AA000000000000000000005A /* ScheduleTests.swift in Sources */,
+				AA000000000000000000005A /* DataTests.swift in Sources */,
+				AA000000000000000000005C /* LocalizationTests.swift in Sources */,
+				AA0000000000000000000059 /* PlannerTests.swift in Sources */,
+				AA000000000000000000005B /* ScheduleTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		AA0000000000000000000074 /* PBXTargetDependency */ = {
+		AA0000000000000000000075 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = AA0000000000000000000070 /* MetroTimerWidget */;
-			targetProxy = AA0000000000000000000073 /* PBXContainerItemProxy */;
+			target = AA0000000000000000000071 /* MetroTimerWidget */;
+			targetProxy = AA0000000000000000000074 /* PBXContainerItemProxy */;
 		};
-		AA0000000000000000000076 /* PBXTargetDependency */ = {
+		AA0000000000000000000077 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = AA000000000000000000006F /* MetroTimer */;
-			targetProxy = AA0000000000000000000075 /* PBXContainerItemProxy */;
+			target = AA0000000000000000000070 /* MetroTimer */;
+			targetProxy = AA0000000000000000000076 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		AA000000000000000000007B /* Debug */ = {
+		AA000000000000000000007C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -525,7 +490,7 @@
 			};
 			name = Debug;
 		};
-		AA000000000000000000007C /* Release */ = {
+		AA000000000000000000007D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -550,7 +515,7 @@
 			};
 			name = Release;
 		};
-		AA000000000000000000007D /* Debug */ = {
+		AA000000000000000000007E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -562,7 +527,7 @@
 			};
 			name = Debug;
 		};
-		AA000000000000000000007E /* Release */ = {
+		AA000000000000000000007F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -574,7 +539,7 @@
 			};
 			name = Release;
 		};
-		AA000000000000000000007F /* Debug */ = {
+		AA0000000000000000000080 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = Widget/Info.plist;
@@ -585,7 +550,7 @@
 			};
 			name = Debug;
 		};
-		AA0000000000000000000080 /* Release */ = {
+		AA0000000000000000000081 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = Widget/Info.plist;
@@ -596,7 +561,7 @@
 			};
 			name = Release;
 		};
-		AA0000000000000000000081 /* Debug */ = {
+		AA0000000000000000000082 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -607,29 +572,7 @@
 			};
 			name = Debug;
 		};
-		AA0000000000000000000082 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				GENERATE_INFOPLIST_FILE = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = ua.vlad.MetroTimerTests;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MetroTimer.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MetroTimer";
-			};
-			name = Release;
-		};
-		AA0000000000000000000081 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				GENERATE_INFOPLIST_FILE = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = ua.vlad.MetroTimerTests;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MetroTimer.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MetroTimer";
-			};
-			name = Debug;
-		};
-		AA0000000000000000000082 /* Release */ = {
+		AA0000000000000000000083 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -643,52 +586,43 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		AA0000000000000000000077 /* Build configuration list for PBXProject "MetroTimer" */ = {
+		AA0000000000000000000078 /* Build configuration list for PBXProject "MetroTimer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				AA000000000000000000007B /* Debug */,
-				AA000000000000000000007C /* Release */,
+				AA000000000000000000007C /* Debug */,
+				AA000000000000000000007D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AA0000000000000000000078 /* Build configuration list for PBXNativeTarget "MetroTimer" */ = {
+		AA0000000000000000000079 /* Build configuration list for PBXNativeTarget "MetroTimer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				AA000000000000000000007D /* Debug */,
-				AA000000000000000000007E /* Release */,
+				AA000000000000000000007E /* Debug */,
+				AA000000000000000000007F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AA0000000000000000000079 /* Build configuration list for PBXNativeTarget "MetroTimerWidget" */ = {
+		AA000000000000000000007A /* Build configuration list for PBXNativeTarget "MetroTimerWidget" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				AA000000000000000000007F /* Debug */,
-				AA0000000000000000000080 /* Release */,
+				AA0000000000000000000080 /* Debug */,
+				AA0000000000000000000081 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AA000000000000000000007A /* Build configuration list for PBXNativeTarget "MetroTimerTests" */ = {
+		AA000000000000000000007B /* Build configuration list for PBXNativeTarget "MetroTimerTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				AA0000000000000000000081 /* Debug */,
-				AA0000000000000000000082 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		AA000000000000000000007A /* Build configuration list for PBXNativeTarget "MetroTimerTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				AA0000000000000000000081 /* Debug */,
-				AA0000000000000000000082 /* Release */,
+				AA0000000000000000000082 /* Debug */,
+				AA0000000000000000000083 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = AA0000000000000000000072 /* Project object */;
+	rootObject = AA0000000000000000000073 /* Project object */;
 }

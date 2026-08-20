@@ -10,6 +10,9 @@ final class TripEngine: ObservableObject {
     @Published private(set) var trip: ActiveTrip?
     @Published private(set) var recents: [RecentTrip] = []
     @Published var notificationsDenied = false
+    // «Живі активності» выключены в Параметрах или карточку не удалось создать:
+    // отсчёта на экране блокировки не будет, и об этом надо сказать вслух.
+    @Published private(set) var liveActivityUnavailable = false
 
     private var timer: Timer?
     private let defaults = UserDefaults.standard
@@ -98,13 +101,14 @@ final class TripEngine: ObservableObject {
         persistTrip()
         rememberRecent(fromId: fromId, toId: toId, lineId: planned.lineId)
         NotificationScheduler.shared.schedule(for: planned)
-        ActivityController.shared.start(trip: planned, line: line)
+        liveActivityUnavailable = !ActivityController.shared.start(trip: planned, line: line)
         startTicker()
         return true
     }
 
     func stopByUser() {
         guard let trip else { return }
+        liveActivityUnavailable = false
         stopTicker()
         NotificationScheduler.shared.cancelAll()
         ActivityController.shared.endAllImmediately()
@@ -164,6 +168,8 @@ final class TripEngine: ObservableObject {
             finalizeArrivedTrip()
         } else {
             ActivityController.shared.attachIfNeeded()
+            // Тумблер могли переключить, пока приложение было свёрнуто.
+            if ActivityController.shared.areActivitiesEnabled { liveActivityUnavailable = false }
             startTicker()
         }
     }

@@ -23,11 +23,28 @@ extension FileManager {
 }
 
 // Усреднённые замеры по направленному перегону, ключ Segment.key.
-struct CalibrationRecord: Codable {
+struct CalibrationRecord: Codable, Equatable {
     var travelSeconds: Double?
     var travelSamples: Int = 0
     var dwellSeconds: Double?
     var dwellSamples: Int = 0
+
+    var isEmpty: Bool { travelSeconds == nil && dwellSeconds == nil }
+
+    // Замер за пределами правдоподобия — не замер, а мусор: выкидываем поле
+    // целиком вместе со счётчиком проб, иначе среднее так и останется битым.
+    func sanitized() -> CalibrationRecord {
+        var record = self
+        if let travel = travelSeconds, !CalibrationStore.plausibleTravel.contains(travel) {
+            record.travelSeconds = nil
+            record.travelSamples = 0
+        }
+        if let dwell = dwellSeconds, !CalibrationStore.plausibleDwell.contains(dwell) {
+            record.dwellSeconds = nil
+            record.dwellSamples = 0
+        }
+        return record
+    }
 }
 
 final class CalibrationStore {
@@ -40,13 +57,27 @@ final class CalibrationStore {
             .appendingPathComponent("calibration.json")
     }
 
+    // Границы правдоподобия замера перегона. Единственный источник истины:
+    // ими проверяются и ручная калибровка, и пассивное обучение по GPS, и то,
+    // что уже лежит на диске. Самый короткий реальный перегон в Киеве — 70 с,
+    // самый длинный — 287 с; запас взят с обеих сторон.
+    static let plausibleTravel: ClosedRange<TimeInterval> = 30...900
+    static let plausibleDwell: ClosedRange<TimeInterval> = 3...600
+
     private init() {
-        if let data = try? Data(contentsOf: Self.fileURL),
-           let decoded = try? JSONDecoder().decode([String: CalibrationRecord].self, from: data) {
-            records = decoded
-        } else {
-            records = [:]
+        let decoded = (try? Data(contentsOf: Self.fileURL)).flatMap {
+            try? JSONDecoder().decode([String: CalibrationRecord].self, from: $0)
+        } ?? [:]
+        // Файл писала в том числе предыдущая версия приложения, у которой этих
+        // проверок не было. Доверять ему нельзя: перегон с ходом 0.2 с
+        // (реальная находка в отладочном контейнере) навсегда съедает станцию
+        // из отсчёта — молча, и пользователю нечем это заметить.
+        records = decoded.compactMapValues { record in
+            let clean = record.sanitized()
+            return clean.isEmpty ? nil : clean
         }
+        // Чистим файл сразу, а не только память: иначе мусор переживёт запуск.
+        if records != decoded { save() }
     }
 
     func record(from: String, to: String) -> CalibrationRecord? {
@@ -54,16 +85,24 @@ final class CalibrationStore {
     }
 
     // Замеры не сохраняются на диск сами — вызывающий делает save() раз на действие.
-    func recordTravel(from: String, to: String, seconds: TimeInterval) {
+    // Возвращает false, если замер отброшен как неправдоподобный: вызывающий
+    // показывает это в журнале калибровки, а не молчит.
+    @discardableResult
+    func recordTravel(from: String, to: String, seconds: TimeInterval) -> Bool {
+        guard Self.plausibleTravel.contains(seconds) else { return false }
         var record = records[Segment.key(from, to)] ?? CalibrationRecord()
         Self.addSample(seconds, to: &record.travelSeconds, count: &record.travelSamples)
         records[Segment.key(from, to)] = record
+        return true
     }
 
-    func recordDwell(from: String, to: String, seconds: TimeInterval) {
+    @discardableResult
+    func recordDwell(from: String, to: String, seconds: TimeInterval) -> Bool {
+        guard Self.plausibleDwell.contains(seconds) else { return false }
         var record = records[Segment.key(from, to)] ?? CalibrationRecord()
         Self.addSample(seconds, to: &record.dwellSeconds, count: &record.dwellSamples)
         records[Segment.key(from, to)] = record
+        return true
     }
 
     private static func addSample(_ seconds: TimeInterval, to value: inout Double?, count: inout Int) {

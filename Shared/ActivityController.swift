@@ -15,8 +15,16 @@ final class ActivityController {
         trip.expiryDate
     }
 
-    func start(trip: ActiveTrip, line: Line) {
-        guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }
+    // «Живі активності» можно выключить в Параметрах iOS одним тумблером.
+    // Тогда ни острова, ни карточки на экране блокировки не будет вообще —
+    // и без слов это читается как «приложение сломалось».
+    var areActivitiesEnabled: Bool { ActivityAuthorizationInfo().areActivitiesEnabled }
+
+    // Возвращает false, если карточку создать не удалось: вызывающий обязан
+    // сказать об этом пассажиру, а не молча остаться без главного экрана.
+    @discardableResult
+    func start(trip: ActiveTrip, line: Line) -> Bool {
+        guard areActivitiesEnabled else { return false }
         endAllImmediately()
 
         let attributes = MetroActivityAttributes(destinationName: trip.destinationName,
@@ -31,6 +39,7 @@ final class ActivityController {
         } else {
             activity = try? Activity.request(attributes: attributes, contentState: state, pushType: nil)
         }
+        return activity != nil
     }
 
     // После перезапуска приложения подхватываем живую активность.

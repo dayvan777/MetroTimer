@@ -187,6 +187,9 @@ private func stopsProgress(_ context: ActivityViewContext<MetroActivityAttribute
                 .frame(maxWidth: .infinity)
         }
     }
+    // Декор: то же самое уже сказано счётчиком зупинок. Без этого VoiceOver
+    // перечисляет два десятка безымянных фигур перед полезным текстом.
+    .accessibilityHidden(true)
 }
 
 // Локскрин / баннер: та же информация в одну-две строки.
