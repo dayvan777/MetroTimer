@@ -42,7 +42,7 @@ final class TripEngine: ObservableObject {
             // Live Activity и записываем поездку в журнал как завершённую.
             defaults.removeObject(forKey: Self.tripKey)
             ActivityController.shared.endAllImmediately()
-            TripLogStore.shared.append(trip: saved, finished: true)
+            TripLogStore.shared.append(trip: saved, outcome: .expired)
         } else {
             trip = saved
             ActivityController.shared.attachIfNeeded()
@@ -116,13 +116,16 @@ final class TripEngine: ObservableObject {
         return true
     }
 
-    func stopByUser() {
+    // outcome решает, что попадёт в журнал. Разница не косметическая:
+    // «Я на місці» — единственный момент, когда мы узнаём реальное время
+    // прибытия и можем сравнить его с расчётом. «Зупинити» такого не даёт.
+    func stopByUser(outcome: TripOutcome = .stopped) {
         guard let trip else { return }
         liveActivityUnavailable = false
         stopTicker()
         NotificationScheduler.shared.cancelAll()
         ActivityController.shared.endAllImmediately()
-        TripLogStore.shared.append(trip: trip, finished: false)
+        TripLogStore.shared.append(trip: trip, outcome: outcome)
         self.trip = nil
         persistTrip()
     }
@@ -133,6 +136,10 @@ final class TripEngine: ObservableObject {
               var replanned = TripPlanner.replan(trip: current, nextStopShift: delta,
                                                  now: Date(), repo: repo) else { return }
         replanned.manualCorrections += 1
+        // Направление важнее количества: «+1» означает, что поезд отстаёт
+        // от расчёта, «−1» — что опережает. Без этого журнал отвечал только
+        // на «часто ли поправляли», а нужен ответ «в какую сторону мы врём».
+        if delta > 0 { replanned.lateCorrections = (replanned.lateCorrections ?? 0) + 1 }
         await apply(replanned)
     }
 
@@ -197,7 +204,7 @@ final class TripEngine: ObservableObject {
         guard let trip, Date() >= trip.expiryDate else { return }
         stopTicker()
         Task { await ActivityController.shared.end(trip: trip) }
-        TripLogStore.shared.append(trip: trip, finished: true)
+        TripLogStore.shared.append(trip: trip, outcome: .expired)
         self.trip = nil
         persistTrip()
     }

@@ -248,7 +248,7 @@ struct TripView: View {
             }
             if arrived {
                 // Прибытие — позитивное завершение, а не «деструктив».
-                primaryButton(L10n.arrivedAction) { engine.stopByUser() }
+                primaryButton(L10n.arrivedAction) { engine.stopByUser(outcome: .arrived) }
                     .buttonStyle(.borderedProminent)
                     .tint(accent)
             } else {
@@ -260,7 +260,12 @@ struct TripView: View {
         .padding()
         .confirmationDialog(L10n.stopConfirmTitle, isPresented: $showStopConfirm,
                             titleVisibility: .visible) {
-            Button(L10n.stopConfirmAction, role: .destructive) { engine.stopByUser() }
+            // Вышел раньше расчёта — это не «бросил поездку», а самый ценный
+            // для точности случай: модель отставала от поезда.
+            Button(L10n.stopConfirmArrived) { engine.stopByUser(outcome: .arrived) }
+            Button(L10n.stopConfirmAction, role: .destructive) {
+                engine.stopByUser(outcome: .stopped)
+            }
             Button(L10n.stopConfirmKeep, role: .cancel) {}
         } message: {
             Text(L10n.stopConfirmBody)

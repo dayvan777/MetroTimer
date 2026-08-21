@@ -114,6 +114,10 @@ enum L10n {
            "The countdown and the exit notification will be cancelled.")
     }
     static var stopConfirmAction: String { tr("Зупинити поїздку", "Stop the trip") }
+    // Отдельная ветка для «вышел раньше расчёта». Без неё ранние прибытия
+    // попадали в журнал как «бросил поездку» — а это ровно та сторона ошибки,
+    // где предупреждение приходит после нужной станции.
+    static var stopConfirmArrived: String { tr("Я вже вийшов", "I already got off") }
     static var stopConfirmKeep: String { tr("Продовжити поїздку", "Keep going") }
     static var arrivedAction: String { tr("Я на місці", "I’m here") }
 
@@ -242,6 +246,28 @@ enum L10n {
     static var journalExport: String { tr("Експортувати журнал", "Export journal") }
     static var journalFinished: String { tr("завершено", "completed") }
     static var journalStopped: String { tr("зупинено", "stopped") }
+    static var journalArrived: String { tr("підтверджено", "confirmed") }
+
+    // Точность считается только по поездкам, где пассажир сам подтвердил
+    // прибытие: всё остальное — сравнение плана с планом.
+    static func journalAccuracy(_ seconds: Int, trips: Int) -> String {
+        tr("Похибка розрахунку: медіана \(signedSeconds(seconds)) на \(trips) \(tripsWord(trips))",
+           "Estimate error: median \(signedSeconds(seconds)) over \(trips) \(tripsWord(trips))")
+    }
+    static var journalAccuracyHint: String {
+        tr("Щоб цифра з'явилась, натискайте «Я на місці», коли вийдете: лише тоді застосунок знає реальний час прибуття.",
+           "To get this number, tap “I'm here” when you get off: that is the only moment the app learns the real arrival time.")
+    }
+    static func signedSeconds(_ seconds: Int) -> String {
+        let sign = seconds > 0 ? "+" : (seconds < 0 ? "−" : "")
+        return tr("\(sign)\(abs(seconds)) с", "\(sign)\(abs(seconds)) s")
+    }
+    static func tripsWord(_ n: Int) -> String {
+        guard appLanguage == .uk else { return n == 1 ? "trip" : "trips" }
+        let mod100 = n % 100
+        if (11...14).contains(mod100) { return "поїздках" }
+        return n % 10 == 1 ? "поїздці" : "поїздках"
+    }
     static var journalPlanned: String { tr("план", "planned") }
     static var journalActual: String { tr("підсумок", "actual") }
     static var routeError: String { tr("Не вдалося побудувати маршрут", "Could not build a route") }

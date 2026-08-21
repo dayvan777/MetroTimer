@@ -20,6 +20,18 @@ struct TripLogView: View {
                         .foregroundColor(.secondary)
                 } else {
                     List {
+                        // Главная цифра журнала — сверху: ради неё он и ведётся.
+                        Section {
+                            if let median = TripLogStore.shared.medianErrorSeconds {
+                                Text(L10n.journalAccuracy(
+                                    median, trips: TripLogStore.shared.measuredTripCount))
+                                    .font(.subheadline.weight(.semibold))
+                            } else {
+                                Text(L10n.journalAccuracyHint)
+                                    .font(.footnote)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
                         ForEach(entries) { entry in
                             entryRow(entry)
                         }
@@ -50,7 +62,7 @@ struct TripLogView: View {
                 Text("\(entry.fromName) → \(entry.toName)")
                     .font(.subheadline.bold())
                 Spacer()
-                Text(entry.finished ? L10n.journalFinished : L10n.journalStopped)
+                Text(Self.outcomeLabel(entry))
                     .font(.caption2)
                     .padding(.horizontal, 6)
                     .padding(.vertical, 2)
@@ -69,11 +81,27 @@ struct TripLogView: View {
                 if entry.manualCorrections + entry.gpsCorrections > 0 {
                     Text("±\(entry.manualCorrections) · GPS \(entry.gpsCorrections)")
                 }
+                // Ошибка известна только там, где пассажир подтвердил прибытие.
+                if let error = entry.errorSeconds {
+                    Text(L10n.signedSeconds(error))
+                        .fontWeight(.semibold)
+                        .foregroundColor(abs(error) <= 30 ? .green : .orange)
+                }
             }
             .font(.caption.monospacedDigit())
             .foregroundColor(.secondary)
         }
         .padding(.vertical, 2)
+    }
+
+    // Старые записи знают только finished — для них подпись прежняя.
+    private static func outcomeLabel(_ entry: TripLogEntry) -> String {
+        switch entry.outcome {
+        case .arrived: return L10n.journalArrived
+        case .stopped: return L10n.journalStopped
+        case .expired: return L10n.journalFinished
+        case nil: return entry.finished ? L10n.journalFinished : L10n.journalStopped
+        }
     }
 
     private static func mmss(_ seconds: Int) -> String {

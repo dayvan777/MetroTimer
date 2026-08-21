@@ -142,6 +142,76 @@ final class DataTests: XCTestCase {
         XCTAssertEqual(L10n.stopsWord(111), "зупинок")
     }
 
+    // 11. Журнал: ради него и запускается бета, поэтому он обязан отличать
+    // «пассажир подтвердил прибытие» от «бросил» и от «истекла по модели».
+    func testTripLogOutcomes() throws {
+        let start = Date(timeIntervalSince1970: 1_760_000_000)
+        let trip = try XCTUnwrap(TripPlanner.plan(fromId: "lisova", toId: "chernihivska",
+                                                  start: start, repo: repo))
+        let planned = Int(trip.arrivalDate.timeIntervalSince(start))
+
+        // Подтверждённое прибытие на 40 секунд позже расчёта: модель спешила.
+        let late = TripLogEntry(trip: trip, outcome: .arrived,
+                                endedAt: trip.arrivalDate.addingTimeInterval(40))
+        XCTAssertTrue(late.finished)
+        XCTAssertEqual(late.confirmedSeconds, planned + 40)
+        XCTAssertEqual(late.errorSeconds, 40, "плюс — доехал позже расчёта")
+
+        // Вышел раньше расчёта — опасная сторона: предупреждение пришло бы
+        // после нужной станции. Раньше такая поездка писалась как «зупинено».
+        let early = TripLogEntry(trip: trip, outcome: .arrived,
+                                 endedAt: trip.arrivalDate.addingTimeInterval(-25))
+        XCTAssertEqual(early.errorSeconds, -25)
+        XCTAssertTrue(early.finished)
+
+        // Брошенная поездка не даёт знания о точности вообще.
+        let stopped = TripLogEntry(trip: trip, outcome: .stopped, endedAt: start.addingTimeInterval(60))
+        XCTAssertFalse(stopped.finished)
+        XCTAssertNil(stopped.confirmedSeconds)
+        XCTAssertNil(stopped.errorSeconds, "без подтверждения прибытия ошибка неизвестна")
+
+        // Истёкшая по модели: доехал, но реального времени мы не знаем.
+        let expired = TripLogEntry(trip: trip, outcome: .expired, endedAt: trip.expiryDate)
+        XCTAssertTrue(expired.finished)
+        XCTAssertNil(expired.errorSeconds)
+
+        // Медиана считается только по подтверждённым.
+        XCTAssertEqual(TripLogStore.medianError(of: [late, early, stopped, expired]), 40)
+        XCTAssertNil(TripLogStore.medianError(of: [stopped, expired]))
+        XCTAssertEqual(TripLogStore.medianError(of: [late]), 40)
+    }
+
+    // 12. Направление коррекции должно доживать до журнала: «часто поправляли»
+    // и «в какую сторону мы врём» — разные вопросы.
+    func testCorrectionDirectionReachesLog() throws {
+        let start = Date(timeIntervalSince1970: 1_760_000_000)
+        var trip = try XCTUnwrap(TripPlanner.plan(fromId: "lisova", toId: "chernihivska",
+                                                  start: start, repo: repo))
+        trip.manualCorrections = 3
+        trip.lateCorrections = 2
+        let entry = TripLogEntry(trip: trip, outcome: .arrived, endedAt: trip.arrivalDate)
+        XCTAssertEqual(entry.manualCorrections, 3)
+        XCTAssertEqual(entry.lateCorrections, 2, "два «+1» — поезд отставал")
+    }
+
+    // 13. Журнал прошлой версии не знает про outcome — он должен читаться,
+    // а не пропадать целиком вместе со всей историей пассажира.
+    func testOldLogEntryStillDecodes() throws {
+        let legacy = """
+        [{"id":"\(UUID().uuidString)","date":"2026-08-01T10:00:00Z","fromName":"Лісова",
+          "toName":"Чернігівська","plannedSeconds":120,"finalSeconds":120,
+          "manualCorrections":0,"gpsCorrections":0,"transfers":0,"finished":true}]
+        """
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        let entries = try decoder.decode([TripLogEntry].self, from: Data(legacy.utf8))
+        let entry = try XCTUnwrap(entries.first)
+        XCTAssertTrue(entry.finished)
+        XCTAssertNil(entry.outcome, "старая запись не знает исхода — и это нормально")
+        XCTAssertNil(entry.errorSeconds)
+        XCTAssertNil(entry.lateCorrections)
+    }
+
     private func distance(_ a: Station, _ b: Station) -> Double {
         let earth = 6_371_000.0
         let dLat = (b.lat - a.lat) * .pi / 180

@@ -78,7 +78,8 @@ enum TripPlanner {
         fill(events: &events, from: 1, cursor: start, repo: repo)
         return ActiveTrip(lineId: fromLine.id, fromId: fromId, toId: toId,
                           startDate: start, initialArrival: events.last?.arrival ?? start,
-                          manualCorrections: 0, gpsCorrections: 0, events: events)
+                          manualCorrections: 0, lateCorrections: 0,
+                          gpsCorrections: 0, events: events)
     }
 
     // Последовательность станций одного этапа — общая основа и для плана,

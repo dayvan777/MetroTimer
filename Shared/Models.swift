@@ -95,6 +95,10 @@ struct ActiveTrip: Codable {
     let startDate: Date
     let initialArrival: Date            // план на момент старта — для журнала
     var manualCorrections: Int
+    // Из ручных коррекций — те, что «+1 зупинка»: поезд отстаёт от расчёта.
+    // Опциональное поле: поездка, сохранённая прошлой версией, декодируется
+    // без него, а не теряется целиком вместе с активной поездкой пассажира.
+    var lateCorrections: Int?
     var gpsCorrections: Int
     var events: [StopEvent]             // [0] — станция отправления
 
