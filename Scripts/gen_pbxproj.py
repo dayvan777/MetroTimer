@@ -36,6 +36,7 @@ SHARED = [
     "Shared/Strings.swift",
     "Shared/Localization.swift",
     "Shared/TripLogStore.swift",
+    "Shared/RouteStore.swift",
     "Shared/ColorHex.swift",
 ]
 APP_SRC = [
@@ -51,6 +52,7 @@ APP_SRC = [
     "App/Services/LocationCorrector.swift",
     "App/Services/NotificationPresenter.swift",
     "App/Services/AlertService.swift",
+    "App/Services/Shortcuts.swift",
 ]
 WIDGET_SRC = ["Widget/MetroActivityWidget.swift"]
 APP_RES = ["App/Resources/kyiv_metro.json", "App/Resources/uk.lproj",
@@ -60,7 +62,7 @@ APP_RES = ["App/Resources/kyiv_metro.json", "App/Resources/uk.lproj",
 # файла в бандле. 48 КБ — дешевле, чем крэш расширения в чужих руках.
 WIDGET_RES = ["Widget/PrivacyInfo.xcprivacy", "App/Resources/kyiv_metro.json"]
 TEST_SRC = ["Tests/PlannerTests.swift", "Tests/DataTests.swift", "Tests/ScheduleTests.swift",
-            "Tests/LocalizationTests.swift"]
+            "Tests/LocalizationTests.swift", "Tests/RouteTests.swift"]
 OTHER = ["App/Info.plist", "App/MetroTimer.entitlements", "Widget/Info.plist"]
 
 for p in SHARED + APP_SRC + WIDGET_SRC + TEST_SRC + APP_RES + WIDGET_RES + OTHER:

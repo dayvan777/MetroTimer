@@ -20,6 +20,9 @@ Reading, dozing off or listening to music on the metro? Metro Timer keeps track 
 
 Pick your departure station and your destination, tap “Start” the moment the train pulls out — and a countdown to your station appears on the Lock Screen and in the Dynamic Island, with the number of stops left. One station before yours the phone vibrates: “Next stop: Khreshchatyk. Get ready to exit.”
 
+QUICK START
+Station search, pinned routes and recent trips get your daily ride going in two taps. Say “Last route in Metro Timer” to Siri and the app opens with the stations already filled in.
+
 WORKS OFFLINE
 There is no GPS underground — and none is needed. The app works out the train’s position from the official Kyiv Metro timetable (running times for every section, to the second). No servers, no ads, no analytics. Exactly one feature needs the internet — showing air-raid alerts — and it is off by default: you turn it on yourself.
 
@@ -56,7 +59,7 @@ metro,kyiv,kiev,subway,timer,station,stop,commute,offline,underground,alarm,tran
 4+
 
 ## What’s new (version 1.0)
-First release: countdown in the Dynamic Island and on the Lock Screen, a notification one stop before you get off, line changes, GPS correction on above-ground sections, calibration mode and a trip journal. Fully offline.
+First release: countdown in the Dynamic Island and on the Lock Screen, a notification one stop before you get off, line changes, station search, pinned routes, a Siri shortcut, GPS correction on above-ground sections, calibration mode and a trip journal. Fully offline.
 
 ## Notes for App Store Connect
 - Add English as a second localization for the app listing; the primary one

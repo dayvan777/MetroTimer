@@ -95,6 +95,36 @@ final class MetroRepository {
         return (travel, dwell)
     }
 
+    // MARK: - Пошук станції
+
+    // Нормалізація для пошуку: без регістру, діакритики та апострофів — щоб
+    // «лукян» знаходило «Лукʼянівську» незалежно від того, яким саме символом
+    // набрано апостроф (у даних — модифікаторний U+02BC).
+    private static func searchKey(_ text: String) -> String {
+        text.folding(options: [.caseInsensitive, .diacriticInsensitive],
+                     locale: Locale(identifier: "uk"))
+            .replacingOccurrences(of: "ʼ", with: "")
+            .replacingOccurrences(of: "’", with: "")
+            .replacingOccurrences(of: "'", with: "")
+    }
+
+    // Станції, назва яких (українська чи англійська) містить запит.
+    // Закриті не повертаємо: їх не можна обрати, тож і знаходити нема чого.
+    func stations(matching query: String) -> [(line: Line, station: Station)] {
+        let key = Self.searchKey(query.trimmingCharacters(in: .whitespaces))
+        guard !key.isEmpty else { return [] }
+        var results: [(line: Line, station: Station)] = []
+        for line in lines {
+            for station in stations(of: line)
+            where !station.isClosed
+                && (Self.searchKey(station.nameUk).contains(key)
+                    || Self.searchKey(station.nameEn).contains(key)) {
+                results.append((line, station))
+            }
+        }
+        return results
+    }
+
     // MARK: - Режим работы (официальное расписание)
 
     // Направление «прямое» = порядок stationIds на линии (как в источнике «Прямий»).

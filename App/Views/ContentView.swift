@@ -19,6 +19,9 @@ struct SelectionView: View {
     @State private var showOnboarding = false
     // Направление слайда списка станций при переключении линии.
     @State private var slideEdge: Edge = .trailing
+    // Пошук станції: у кожній лінії 16–18 станцій, скролити довше, ніж набрати
+    // три літери. Шукає по всіх лініях одразу — і українською, і англійською.
+    @State private var searchText = ""
     // Момент нажатия «Поїхали». Фиксируется синхронно в обработчике кнопки:
     // между тапом и фактическим стартом лежат объясняющий алерт и системный
     // запрос разрешений, а привязывать модель надо к тапу.
@@ -42,6 +45,7 @@ struct SelectionView: View {
             .background(Color(hex: "#101114").ignoresSafeArea())
             .navigationTitle(L10n.appTitle)
             .navigationBarTitleDisplayMode(.inline)
+            .searchable(text: $searchText, prompt: Text(L10n.searchStations))
             // Банер тривоги стоїть одразу під панеллю — фіксуємо її фон,
             // інакше панель фарбується червоним разом із банером.
             .toolbarBackground(Color(hex: "#101114"), for: .navigationBar)
@@ -96,6 +100,15 @@ struct SelectionView: View {
                 Button(L10n.notifSkip) { startTrip(askForNotifications: false) }
             } message: {
                 Text(L10n.notifExplainBody)
+            }
+            .onReceive(engine.$pendingPrefill) { prefill in
+                guard let prefill else { return }
+                engine.pendingPrefill = nil
+                animated {
+                    fromId = prefill.fromId
+                    toId = prefill.toId
+                    selectedLineId = prefill.lineId
+                }
             }
             .onAppear {
                 if !onboardingShown {
@@ -152,7 +165,7 @@ struct SelectionView: View {
                         .background(
                             RoundedRectangle(cornerRadius: 10)
                                 .fill(Color(hex: line.colorHex)
-                                    .opacity(isSelected ? 1 : 0.22))
+                                    .opacity(isSelected ? 1 : 0.32))
                         )
                         .foregroundColor(.white)
                         .scaleEffect(isSelected && !reduceMotion ? 1 : 0.94)
@@ -171,6 +184,62 @@ struct SelectionView: View {
     // MARK: - Станции
 
     private var stationList: some View {
+        Group {
+            if searchText.trimmingCharacters(in: .whitespaces).isEmpty {
+                lineStationList
+            } else {
+                searchResultsList
+            }
+        }
+    }
+
+    private var searchResultsList: some View {
+        let results = repo.stations(matching: searchText)
+        return List {
+            if results.isEmpty {
+                Text(L10n.searchNoResults)
+                    .foregroundColor(.secondary)
+                    .listRowBackground(Color(hex: "#1A1C21"))
+            } else {
+                ForEach(results, id: \.station.id) { result in
+                    Button {
+                        pickSearchResult(result.station, line: result.line)
+                    } label: {
+                        HStack {
+                            Circle()
+                                .fill(Color(hex: result.line.colorHex))
+                                .frame(width: 10, height: 10)
+                            Text(result.station.localizedName)
+                                .foregroundColor(.primary)
+                            Spacer()
+                            Text(result.line.id.uppercased())
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    .listRowBackground(Color(hex: "#1A1C21"))
+                }
+            }
+        }
+        .listStyle(.insetGrouped)
+        .scrollContentBackground(.hidden)
+    }
+
+    // Та же логика, что и тап по строке линии, плюс переключение вкладки:
+    // выбранная из поиска станция отправления должна показать свою линию.
+    private func pickSearchResult(_ station: Station, line: Line) {
+        animated {
+            if fromId == nil || fromId == station.id {
+                fromId = station.id
+                selectedLineId = line.id
+            } else {
+                toId = station.id
+            }
+            searchText = ""
+        }
+    }
+
+    private var lineStationList: some View {
         List {
             Section(sectionTitle) {
                 if let line = selectedLine {
@@ -263,8 +332,8 @@ struct SelectionView: View {
             if canStart {
                 routeSummary
                     .transition(.opacity)
-            } else if !engine.recents.isEmpty {
-                recentsRow
+            } else if !engine.favorites.isEmpty || !engine.recents.isEmpty {
+                routesRow
                     .transition(.opacity)
             }
             Button {
@@ -296,6 +365,7 @@ struct SelectionView: View {
         .background(.thinMaterial)
         .animation(.easeInOut(duration: 0.25), value: canStart)
         .animation(.easeInOut(duration: 0.25), value: engine.recents)
+        .animation(.easeInOut(duration: 0.25), value: engine.favorites)
         .animation(.easeInOut(duration: 0.25), value: selectedLineId)
         .animation(.easeInOut(duration: 0.25), value: fromId)
     }
@@ -317,7 +387,9 @@ struct SelectionView: View {
                         .fixedSize(horizontal: false, vertical: true)
                 }
                 if let plan {
-                    Text([L10n.routeMinutes(plan.minutes), plan.transfer.map(L10n.routeTransfer)]
+                    Text([L10n.routeMinutes(plan.minutes),
+                          plan.transfer.map(L10n.routeTransfer),
+                          plan.headway.map(L10n.routeInterval)]
                         .compactMap { $0 }.joined(separator: " · "))
                         .font(.caption)
                         .foregroundColor(.secondary)
@@ -336,6 +408,20 @@ struct SelectionView: View {
                 }
             }
             Spacer()
+            // Закрепить маршрут — чтобы «додому» жило в чипах постоянно,
+            // а не вытеснялось тремя случайными поездками.
+            Button {
+                if let from = fromId, let to = toId {
+                    animated { engine.toggleFavorite(fromId: from, toId: to) }
+                }
+            } label: {
+                Image(systemName: isCurrentFavorite ? "star.fill" : "star")
+                    .font(.body.weight(.semibold))
+                    .foregroundColor(isCurrentFavorite ? .yellow : .primary)
+                    .frame(width: 44, height: 44)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(isCurrentFavorite ? L10n.unpinRoute : L10n.pinRoute)
             Button {
                 animated { swap(&fromId, &toId) }
             } label: {
@@ -349,6 +435,11 @@ struct SelectionView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
+    private var isCurrentFavorite: Bool {
+        guard let from = fromId, let to = toId else { return false }
+        return engine.isFavorite(fromId: from, toId: to)
+    }
+
     private var isRouteSuspended: Bool {
         guard let from = fromId, let to = toId else { return false }
         return TripPlanner.hasSuspendedSection(fromId: from, toId: to, repo: repo)
@@ -356,7 +447,7 @@ struct SelectionView: View {
 
     // Тот же планировщик, что и при старте: превью не расходится с фактом.
     private func plannedPreview() -> (minutes: Int, transfer: String?, hasSurface: Bool,
-                                      serviceIssue: ServiceIssue?)? {
+                                      serviceIssue: ServiceIssue?, headway: Int?)? {
         #if DEBUG
         // Сдвиг «зараз» для проверки часов работы: -MTPreviewOffset <секунды>.
         let now = Date().addingTimeInterval(
@@ -369,8 +460,21 @@ struct SelectionView: View {
         else { return nil }
         let minutes = max(1, Int((trip.initialArrival.timeIntervalSince(trip.startDate) / 60).rounded()))
         let hasSurface = trip.events.contains { repo.station(id: $0.stationId)?.isSurface == true }
+        // Інтервал руху на першому перегоні маршруту (лінія посадки, «зараз»).
+        // Перша пара сусідніх подій однієї лінії без переходу — це і є перший
+        // перегін; на маршруті з посадкою прямо на пересадковому вузлі ним
+        // виявиться перегін нової лінії, що й треба.
+        var headway: Int?
+        for (a, b) in zip(trip.events, trip.events.dropFirst())
+        where a.lineId == b.lineId && !a.isTransfer && !b.isTransfer {
+            if let forward = repo.isForward(lineId: a.lineId, from: a.stationId, to: b.stationId),
+               let seconds = repo.headwaySeconds(lineId: a.lineId, forward: forward, at: now) {
+                headway = max(1, Int((Double(seconds) / 60).rounded()))
+            }
+            break
+        }
         return (minutes, trip.events.first(where: \.isTransfer)?.displayName, hasSurface,
-                TripPlanner.serviceIssue(for: trip, repo: repo))
+                TripPlanner.serviceIssue(for: trip, repo: repo), headway)
     }
 
     // Часы работы: предупреждаем, но не запрещаем — расписание может измениться,
@@ -403,15 +507,18 @@ struct SelectionView: View {
         return formatter
     }()
 
-    private var recentsRow: some View {
+    private var routesRow: some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text(L10n.recents)
+            Text(engine.favorites.isEmpty ? L10n.recents : L10n.savedRoutes)
                 .font(.caption)
                 .foregroundColor(.secondary)
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ForEach(engine.recents, id: \.self) { recent in
-                        recentChip(recent)
+                    ForEach(engine.favorites, id: \.self) { route in
+                        routeChip(route, pinned: true)
+                    }
+                    ForEach(engine.recents, id: \.self) { route in
+                        routeChip(route, pinned: false)
                     }
                 }
             }
@@ -420,7 +527,7 @@ struct SelectionView: View {
     }
 
     // Чип только подставляет станции: старт поездки — всегда осознанный тап «Поїхали».
-    private func recentChip(_ recent: RecentTrip) -> some View {
+    private func routeChip(_ recent: RecentTrip, pinned: Bool) -> some View {
         Button {
             animated {
                 fromId = recent.fromId
@@ -429,7 +536,13 @@ struct SelectionView: View {
             }
         } label: {
             HStack(spacing: 4) {
-                if let line = repo.line(id: recent.lineId) {
+                if pinned {
+                    // Звезда вместо точки линии: закреплённое видно с одного взгляда.
+                    Image(systemName: "star.fill")
+                        .font(.system(size: 9))
+                        .foregroundColor(.yellow)
+                        .accessibilityHidden(true)
+                } else if let line = repo.line(id: recent.lineId) {
                     Circle().fill(Color(hex: line.colorHex)).frame(width: 8, height: 8)
                 }
                 Text("\(repo.station(id: recent.fromId)?.localizedName ?? "?") → \(repo.station(id: recent.toId)?.localizedName ?? "?")")
@@ -442,6 +555,14 @@ struct SelectionView: View {
         }
         .buttonStyle(.plain)
         .accessibilityHint(L10n.a11yRecentHint)
+        .contextMenu {
+            Button {
+                engine.toggleFavorite(fromId: recent.fromId, toId: recent.toId)
+            } label: {
+                Label(pinned ? L10n.unpinRoute : L10n.pinRoute,
+                      systemImage: pinned ? "star.slash" : "star")
+            }
+        }
     }
 
     // MARK: - Старт

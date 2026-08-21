@@ -8,7 +8,12 @@ final class TripEngine: ObservableObject {
     static let shared = TripEngine()
 
     @Published private(set) var trip: ActiveTrip?
+    // Что показывают чипы под кнопкой: закреплённые и последние (без дублей).
     @Published private(set) var recents: [RecentTrip] = []
+    @Published private(set) var favorites: [RecentTrip] = []
+    // Маршрут, который просят подставить извне — диплинк или ярлык Siri.
+    // Только подстановка: «Поїхали» человек жмёт сам в момент отправления.
+    @Published var pendingPrefill: RecentTrip?
     @Published var notificationsDenied = false
     // «Живі активності» выключены в Параметрах или карточку не удалось создать:
     // отсчёта на экране блокировки не будет, и об этом надо сказать вслух.
@@ -19,8 +24,9 @@ final class TripEngine: ObservableObject {
     // второй тап успевает пройти проверку, пока первый ждёт разрешений.
     private var isStarting = false
     private let defaults = UserDefaults.standard
+    // Активная поездка остаётся в UserDefaults сознательно: её читает интент
+    // с заблокированного экрана, а строгая защита файла в этот момент закрыта.
     private static let tripKey = "activeTrip"
-    private static let recentsKey = "recentTrips"
 
     let repo = MetroRepository.shared
 
@@ -31,10 +37,7 @@ final class TripEngine: ObservableObject {
     // MARK: - Персистентность
 
     private func restore() {
-        if let data = defaults.data(forKey: Self.recentsKey),
-           let decoded = try? JSONDecoder().decode([RecentTrip].self, from: data) {
-            recents = decoded
-        }
+        refreshRoutes()
         guard let data = defaults.data(forKey: Self.tripKey),
               let saved = try? JSONDecoder().decode(ActiveTrip.self, from: data) else { return }
         if saved.expiryDate < Date() {
@@ -58,13 +61,27 @@ final class TripEngine: ObservableObject {
     }
 
     private func rememberRecent(fromId: String, toId: String, lineId: String) {
-        let entry = RecentTrip(lineId: lineId, fromId: fromId, toId: toId)
-        var list = recents.filter { $0 != entry }
-        list.insert(entry, at: 0)
-        recents = Array(list.prefix(3))
-        if let data = try? JSONEncoder().encode(recents) {
-            defaults.set(data, forKey: Self.recentsKey)
-        }
+        RouteStore.shared.rememberRecent(RecentTrip(lineId: lineId, fromId: fromId, toId: toId))
+        refreshRoutes()
+    }
+
+    private func refreshRoutes() {
+        favorites = RouteStore.shared.book.favorites
+        recents = RouteStore.shared.book.displayedRecents
+    }
+
+    // MARK: - Закреплённые маршруты
+
+    func toggleFavorite(fromId: String, toId: String) {
+        guard let lineId = repo.line(ofStation: fromId)?.id else { return }
+        RouteStore.shared.toggleFavorite(RecentTrip(lineId: lineId, fromId: fromId, toId: toId))
+        refreshRoutes()
+    }
+
+    func isFavorite(fromId: String, toId: String) -> Bool {
+        guard let lineId = repo.line(ofStation: fromId)?.id else { return false }
+        return RouteStore.shared.book.isFavorite(
+            RecentTrip(lineId: lineId, fromId: fromId, toId: toId))
     }
 
     // MARK: - Жизненный цикл поездки

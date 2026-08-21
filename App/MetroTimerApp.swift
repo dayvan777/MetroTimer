@@ -96,14 +96,24 @@ struct RootView: View {
 
     // metrotimer://trip — тап по Live Activity просто открывает приложение.
     private func handle(_ url: URL) {
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { return }
+        let value: (String) -> String? = { name in
+            components.queryItems?.first(where: { $0.name == name })?.value
+        }
+        // metrotimer://route?from=<id>&to=<id> — ярлыки и Siri подставляют
+        // маршрут, но не стартуют его: «Поїхали» человек жмёт сам в момент
+        // отправления — это контракт всего продукта. Во время живой поездки
+        // подстановка игнорируется: экран выбора всё равно закрыт.
+        if url.host == "route", let from = value("from"), let to = value("to"),
+           let lineId = engine.repo.line(ofStation: from)?.id, engine.trip == nil {
+            engine.pendingPrefill = RecentTrip(lineId: lineId, fromId: from, toId: to)
+            return
+        }
         #if DEBUG
-        // Отладочный запуск поездки диплинком: metrotimer://start?from=<id>&to=<id>
-        guard url.host == "start",
-              let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
-              let from = components.queryItems?.first(where: { $0.name == "from" })?.value,
-              let to = components.queryItems?.first(where: { $0.name == "to" })?.value
-        else { return }
-        Task { await engine.start(fromId: from, toId: to) }
+        // Отладочный автостарт поездки: metrotimer://start?from=<id>&to=<id>
+        if url.host == "start", let from = value("from"), let to = value("to") {
+            Task { await engine.start(fromId: from, toId: to) }
+        }
         #endif
     }
 }

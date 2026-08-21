@@ -7,6 +7,15 @@ enum L10n {
     static var go: String { tr("Поїхали", "Start") }
     static var stopTrip: String { tr("Зупинити", "Stop") }
     static var recents: String { tr("Останні поїздки", "Recent trips") }
+    static var savedRoutes: String { tr("Ваші маршрути", "Your routes") }
+    static var pinRoute: String { tr("Закріпити маршрут", "Pin route") }
+    static var unpinRoute: String { tr("Відкріпити маршрут", "Unpin route") }
+    static var searchStations: String { tr("Пошук станції", "Search stations") }
+    static var searchNoResults: String { tr("Нічого не знайдено", "No matches") }
+    // Інтервал руху на лінії посадки — вирішує, чи бігти сходами.
+    static func routeInterval(_ minutes: Int) -> String {
+        tr("поїзд кожні ~\(minutes) хв", "train every ~\(minutes) min")
+    }
     static var calibration: String { tr("Калібрування", "Calibration") }
     static var pickOrigin: String { tr("Оберіть станцію відправлення", "Choose your departure station") }
     static var pickDestination: String { tr("Тепер оберіть станцію призначення", "Now choose your destination") }
