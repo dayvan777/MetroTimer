@@ -9,6 +9,20 @@ import os
 # Корень проекта — родитель папки Scripts: генератор переживает переезд.
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Команда подписи. При переходе с бесплатного Personal Team на платный аккаунт
+# Team ID меняется, и сборка падает с сообщением про профиль, из которого это
+# никак не следует. Подставить новый:
+#   MT_TEAM_ID=XXXXXXXXXX MT_PAID_TEAM=1 python3 Scripts/gen_pbxproj.py
+# Посмотреть свой: Xcode → Settings → Accounts → команда → колонка Team ID.
+TEAM_ID = os.environ.get("MT_TEAM_ID", "JC2G64UQ8N")
+
+# Номер сборки. App Store Connect отказывается принимать вторую загрузку
+# с тем же номером — а во время беты их будет несколько:
+#   MT_BUILD=2 MT_PAID_TEAM=1 python3 Scripts/gen_pbxproj.py
+# Версию для витрины (1.0) меняем руками здесь же, когда пойдёт 1.1.
+MARKETING_VERSION = "1.0"
+BUILD_NUMBER = os.environ.get("MT_BUILD", "1")
+
 SHARED = [
     "Shared/MetroActivityAttributes.swift",
     "Shared/Models.swift",
@@ -375,16 +389,16 @@ add("/* End PBXTargetDependency section */")
 
 COMMON = {
     "ALWAYS_SEARCH_USER_PATHS": "NO",
-    "DEVELOPMENT_TEAM": "JC2G64UQ8N",
+    "DEVELOPMENT_TEAM": TEAM_ID,
     "CLANG_ENABLE_MODULES": "YES",
     "CLANG_ENABLE_OBJC_ARC": "YES",
     "CODE_SIGN_STYLE": "Automatic",
     "COPY_PHASE_STRIP": "NO",
-    "CURRENT_PROJECT_VERSION": "1",
+    "CURRENT_PROJECT_VERSION": BUILD_NUMBER,
     "ENABLE_STRICT_OBJC_MSGSEND": "YES",
     "GENERATE_INFOPLIST_FILE": "YES",
     "IPHONEOS_DEPLOYMENT_TARGET": "16.1",
-    "MARKETING_VERSION": "1.0",
+    "MARKETING_VERSION": MARKETING_VERSION,
     "PRODUCT_NAME": '"$(TARGET_NAME)"',
     "SDKROOT": "iphoneos",
     "SWIFT_VERSION": "5.0",

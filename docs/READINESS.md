@@ -269,15 +269,63 @@ K поїздках»**. Это и есть цифра, ради которой �
 
 Результаты каждой поездки видны в «Журналі» (план / підсумок / коррекции).
 
-### Шаг 6. Отправка
+### Шаг 6. День активации аккаунта — по порядку
+
+Всё ниже проверено заранее, кроме того, что требует живого аккаунта:
+архив собирается (`ARCHIVE SUCCEEDED`, оба dSYM на месте, виджет вложен),
+платная конфигурация проекта генерируется и компилируется, лимиты символов
+App Store Connect выдержаны с запасом.
+
+**1. Узнать Team ID.** Xcode → Settings → Accounts → новая команда →
+колонка Team ID. У платного аккаунта он **другой**, чем у бесплатного
+Personal Team (`JC2G64UQ8N`), и сборка упадёт с сообщением про профиль,
+из которого это никак не следует.
+
+**2. Пересобрать проект под платный аккаунт:**
 
 ```bash
-MT_PAID_TEAM=1 python3 Scripts/gen_pbxproj.py
+MT_TEAM_ID=<новый_team_id> MT_PAID_TEAM=1 python3 Scripts/gen_pbxproj.py
 ```
 
-Дальше в Xcode: схема **MetroTimer**, устройство **Any iOS Device**,
-Product → Archive → Distribute App → App Store Connect.
-Сначала TestFlight (неделя на друзьях), потом Submit for Review.
+Если Team ID не изменился — `MT_TEAM_ID` можно не указывать.
+
+**3. Зарегистрировать Bundle ID и включить возможность.**
+Xcode с `-allowProvisioningUpdates` обычно регистрирует `ua.vlad.MetroTimer`
+и `ua.vlad.MetroTimer.MetroTimerWidget` сам. А вот **Time Sensitive
+Notifications** может потребовать ручного включения:
+developer.apple.com → Certificates, Identifiers & Profiles → Identifiers →
+`ua.vlad.MetroTimer` → Capabilities.
+
+**4. Убедиться, что entitlement реально в бандле** — не поверить, а проверить:
+
+```bash
+codesign -d --entitlements - build-ios/Build/Products/Debug-iphoneos/MetroTimer.app
+```
+
+Должна появиться строка `usernotifications.time-sensitive`.
+
+**5. Проверить, что это работает.** Единственная настоящая приёмка:
+включить «Не турбувати», поехать (или запустить поездку на короткий
+перегон), дождаться «Наступна — ваша». Придёт при включённом фокусе —
+entitlement работает. Не придёт — что-то не подписалось.
+
+**6. App Store Connect.** Создать запись приложения: имя, Bundle ID,
+SKU (любая строка, например `metrotimer-kyiv`), основной язык —
+украинский. Поля — из `AppStore/metadata_uk.md` и `metadata_en.md`,
+все лимиты выдержаны.
+
+**7. Архив и загрузка.** Xcode: схема **MetroTimer**, устройство
+**Any iOS Device** → Product → Archive → Distribute App → App Store Connect.
+
+**8. TestFlight.** Описание беты и инструкция тестерам — в шаге 4.
+Публичная ссылка требует Beta App Review (обычно день-два).
+
+**9. Каждая следующая загрузка — новый номер сборки.** ASC не примет
+второй раз тот же номер:
+
+```bash
+MT_BUILD=2 MT_TEAM_ID=<team_id> MT_PAID_TEAM=1 python3 Scripts/gen_pbxproj.py
+```
 
 ---
 
