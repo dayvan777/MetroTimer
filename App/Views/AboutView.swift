@@ -60,14 +60,22 @@ struct AboutView: View {
                     Text(L10n.aboutDisclaimer)
                         .font(.footnote)
                         .foregroundColor(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
 
+                // fixedSize обязателен: List сам решает, сколько строк уместить,
+                // и самый длинный из этих текстов (о приватности) обрывался
+                // многоточием прямо посреди обещания «дані не покидають пристрій».
                 Section(L10n.aboutHowTitle) {
-                    Text(L10n.aboutHowBody).font(.subheadline)
+                    Text(L10n.aboutHowBody)
+                        .font(.subheadline)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
 
                 Section(L10n.aboutDataTitle) {
-                    Text(L10n.aboutDataBody).font(.subheadline)
+                    Text(L10n.aboutDataBody)
+                        .font(.subheadline)
+                        .fixedSize(horizontal: false, vertical: true)
                     Link(L10n.aboutOSMLink, destination: Self.osmCopyright)
                         .font(.subheadline)
                 }
@@ -94,7 +102,9 @@ struct AboutView: View {
                 }
 
                 Section(L10n.aboutPrivacyTitle) {
-                    Text(L10n.aboutPrivacyBody).font(.subheadline)
+                    Text(L10n.aboutPrivacyBody)
+                        .font(.subheadline)
+                        .fixedSize(horizontal: false, vertical: true)
                     NavigationLink(L10n.aboutPrivacyFull) {
                         PrivacyPolicyView()
                     }

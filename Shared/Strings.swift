@@ -194,9 +194,13 @@ enum L10n {
     }
     static let aboutOSMLink = "openstreetmap.org/copyright"
     static var aboutPrivacyTitle: String { tr("Конфіденційність", "Privacy") }
+    // Коротко и по делу: 700 символов в одной ячейке настроек — это стена,
+    // которую никто не читает, и List её всё равно обрезал многоточием
+    // прямо посреди обещания. Подробности — на экране полной политики,
+    // он в одном тапе отсюда.
     static var aboutPrivacyBody: String {
-        tr("За замовчуванням застосунок працює повністю офлайн: жодних мережевих запитів, реклами, аналітики та сторонніх SDK (єдиний виняток — увімкнені вами тривоги). Усе, що він зберігає (журнал поїздок, калібрування, у режимі калібрування — записи акселерометра й геопозиції), лежить лише на вашому пристрої і залишає його тільки через кнопку «Експортувати» за вашим рішенням. Геолокація використовується лише коли застосунок відкритий. Дані не потрапляють у резервні копії. Повний текст політики — нижче.",
-           "By default the app works fully offline: no network requests, ads, analytics or third-party SDKs (the only exception is air-raid alerts, if you turn them on). Everything it stores (trip journal, calibration, and in Calibration mode accelerometer and location recordings) stays on your device and leaves it only through the “Export” button, at your decision. Location is used only while the app is open. The data is kept out of backups. The full policy is below.")
+        tr("За замовчуванням — повний офлайн: ні мережевих запитів, ні реклами, ні аналітики, ні сторонніх SDK. Виняток один — тривоги, якщо ви їх увімкнете. Усе, що застосунок зберігає, лежить тільки на вашому пристрої, не потрапляє в резервні копії й залишає телефон лише кнопкою «Експортувати».",
+           "Offline by default: no network requests, no ads, no analytics, no third-party SDKs. The one exception is air-raid alerts, if you turn them on. Everything the app stores stays on your device, is kept out of backups, and leaves the phone only through the “Export” button.")
     }
     static var aboutPrivacyFull: String { tr("Політика конфіденційності", "Privacy Policy") }
     static var aboutDeleteJournal: String { tr("Видалити журнал поїздок", "Delete trip journal") }
