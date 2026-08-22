@@ -420,16 +420,18 @@ RELEASE = {
     "SWIFT_OPTIMIZATION_LEVEL": '"-O"',
     "VALIDATE_PRODUCT": "YES",
 }
-# Платный аккаунт: MT_PAID_TEAM=1 python3 Scripts/gen_pbxproj.py
+# Time Sensitive Notifications. Без этого entitlement iOS молча понижает
+# .timeSensitive до обычного уровня, и «Наступна — ваша» перестаёт пробивать
+# «Не турбувати» и режимы фокусирования — то есть ровно в сценарии «дрімаю
+# в метро», ради которого приложение и существует, уведомление не приходит.
 #
-# Time Sensitive Notifications нельзя подписать бесплатным Personal Team.
-# Без entitlement iOS молча понижает .timeSensitive до .active, и «Наступна —
-# ваша» перестаёт пробивать «Не турбувати» / режими фокусування — то есть
-# ровно в сценарии «дрімаю в метро», ради которого приложение и существует,
-# уведомление не приходит. Поэтому переход на платный аккаунт обязан включать
-# этот флаг; проверить в собранном бандле:
-#   codesign -d --entitlements - build/.../MetroTimer.app
-PAID_TEAM = os.environ.get("MT_PAID_TEAM") == "1"
+# С 22.08.2026 аккаунт платный и подписывает эту возможность, поэтому
+# entitlement включён всегда. Бесплатный Personal Team её не поддерживает —
+# для сборки без платной команды: MT_NO_ENTITLEMENTS=1 python3 Scripts/gen_pbxproj.py
+#
+# Проверять в собранном бандле, а не на глаз:
+#   codesign -d --entitlements :- --xml build-ios/.../MetroTimer.app
+PAID_TEAM = os.environ.get("MT_NO_ENTITLEMENTS") != "1"
 
 APP = {
     "ASSETCATALOG_COMPILER_APPICON_NAME": "AppIcon",

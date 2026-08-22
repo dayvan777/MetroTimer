@@ -216,7 +216,24 @@ $99/год, оплата картой. Оформляется в приложе�
 | Отчёты о сбоях | увидеть падение у пользователя, не спрашивая его |
 | Загрузка в App Store | собственно публикация |
 
-### Шаг 2. Включить entitlement — **одна команда**
+### Шаг 2. Включить entitlement — **сделано 22.08.2026**
+
+Аккаунт активирован, Team ID остался прежним (`JC2G64UQ8N` — Apple повысила
+существующую персональную команду, а не завела новую). Entitlement теперь
+включён в генераторе по умолчанию.
+
+Подтверждено в подписанном бинарнике, а не на глаз:
+
+```
+com.apple.developer.usernotifications.time-sensitive => true
+application-identifier => JC2G64UQ8N.ua.vlad.MetroTimer
+```
+
+Профиль подписи — **до 22.08.2027**. Еженедельная переустановка закончилась.
+
+<details><summary>Как это было устроено до активации</summary>
+
+### Шаг 2 (архив). Включить entitlement — **одна команда**
 
 ```bash
 MT_PAID_TEAM=1 python3 Scripts/gen_pbxproj.py
@@ -238,6 +255,8 @@ codesign -d --entitlements - build/Build/Products/Release-iphoneos/MetroTimer.ap
 ```
 
 В выводе должен появиться `usernotifications.time-sensitive`.
+
+</details>
 
 ### Шаг 3. App Store Connect
 
