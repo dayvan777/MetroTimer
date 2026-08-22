@@ -67,5 +67,7 @@ First release: countdown in the Dynamic Island and on the Lock Screen, a notific
 - Privacy Policy URL and Support URL are the same for both localizations:
   https://dayvan777.github.io/METRO/ (the page itself is bilingual).
 - Screenshots: the store shows the Ukrainian set unless English ones are
-  uploaded. Retake with `-AppleLanguages "(en)"` if an English set is wanted —
-  the app is fully translated, including station names.
+  uploaded. The slides live in Figma
+  (https://www.figma.com/design/nP5hsprVlSa0tB6hEUUx81) — duplicate the page,
+  swap in screenshots taken with `-AppleLanguages "(en)"` and retype the
+  captions. The app is fully translated, station names included.
