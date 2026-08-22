@@ -15,6 +15,9 @@ final class TripEngine: ObservableObject {
     // Только подстановка: «Поїхали» человек жмёт сам в момент отправления.
     @Published var pendingPrefill: RecentTrip?
     @Published var notificationsDenied = false
+    // Взводится после поездки, которая доказала точность. Экран выбора
+    // покажет системный запрос оценки, когда вернётся на передний план.
+    @Published var shouldRequestReview = false
     // «Живі активності» выключены в Параметрах или карточку не удалось создать:
     // отсчёта на экране блокировки не будет, и об этом надо сказать вслух.
     @Published private(set) var liveActivityUnavailable = false
@@ -143,6 +146,11 @@ final class TripEngine: ObservableObject {
         NotificationScheduler.shared.cancelAll()
         ActivityController.shared.endAllImmediately()
         TripLogStore.shared.append(trip: trip, outcome: outcome)
+        // Спрашиваем оценку только там, где приложение себя оправдало:
+        // человек подтвердил прибытие и расчёт по его поездкам сходится.
+        if outcome == .arrived, TripLogStore.shared.deservesReviewPrompt {
+            shouldRequestReview = true
+        }
         self.trip = nil
         persistTrip()
     }

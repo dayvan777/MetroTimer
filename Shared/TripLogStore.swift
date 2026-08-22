@@ -106,6 +106,14 @@ final class TripLogStore {
 
     var measuredTripCount: Int { entries.compactMap(\.errorSeconds).count }
 
+    // Момент, коли просити оцінку не соромно: застосунок ДОВІВ саме цій людині,
+    // що працює — кілька підтверджених прибуттів і медіана в межах порога.
+    // Просити в усіх підряд — швидкий спосіб зібрати одну зірку від тих,
+    // у кого відлік розійшовся.
+    var deservesReviewPrompt: Bool {
+        measuredTripCount >= 3 && (medianErrorSeconds.map { abs($0) <= 30 } ?? false)
+    }
+
     // Статикой, а не только свойством: так медиану проверяют тесты, не трогая
     // общий журнал устройства (ровно та ошибка, на которой уже обжигались).
     static func medianError(of entries: [TripLogEntry]) -> Int? {

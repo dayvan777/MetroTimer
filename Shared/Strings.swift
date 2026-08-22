@@ -220,6 +220,24 @@ enum L10n {
     }
     static var aboutDelete: String { tr("Видалити", "Delete") }
     static var aboutContact: String { tr("Написати розробнику", "Contact the developer") }
+
+    // Лист із відгуком. Технічні поля підставляються в чернетку, яку людина
+    // бачить і може відредагувати чи стерти перед відправкою, — тому це не
+    // збір даних, а заповнена за вас шапка звернення.
+    static var feedbackSubject: String {
+        tr("Метро-таймер: відгук", "Metro Timer: feedback")
+    }
+    static var feedbackPrompt: String {
+        tr("Опишіть, будь ласка, що сталося або що варто покращити. Якщо йдеться про конкретну поїздку — назвіть станції та приблизний час.",
+           "Please describe what happened or what could be better. If it is about a specific trip, name the stations and the approximate time.")
+    }
+    static var feedbackTechHeader: String {
+        tr("— Технічні дані (можете стерти) —", "— Technical details (feel free to delete) —")
+    }
+    static func feedbackAccuracy(_ seconds: Int, trips: Int) -> String {
+        tr("Похибка розрахунку: медіана \(signedSeconds(seconds)) на \(trips) \(tripsWord(trips))",
+           "Estimate error: median \(signedSeconds(seconds)) over \(trips) \(tripsWord(trips))")
+    }
     static var aboutVersion: String { tr("Версія", "Version") }
 
     // Политика конфиденциальности — тот же текст, что в AppStore/PRIVACY.md.

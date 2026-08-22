@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 // «Про застосунок»: как пользоваться, дисклеймер, источники данных, приватность
 // (полный текст политики офлайн), удаление локальных данных, контакт.
@@ -126,7 +127,7 @@ struct AboutView: View {
                 }
 
                 Section {
-                    if let url = URL(string: "mailto:\(Self.contactEmail)") {
+                    if let url = Self.feedbackMailURL() {
                         Link(destination: url) {
                             Label(L10n.aboutContact, systemImage: "envelope")
                         }
@@ -146,6 +147,45 @@ struct AboutView: View {
             ), titleVisibility: .visible) {
                 Button(L10n.aboutDelete, role: .destructive) { performDeletion() }
                 Button(L10n.cancel, role: .cancel) {}
+            }
+        }
+    }
+
+    // Лист відгуку з уже заповненою шапкою. Без версії, моделі й версії iOS
+    // звернення «у мене не працює» неможливо ні відтворити, ні полагодити,
+    // а просити людину все це передрукувати — гарантований спосіб не отримати
+    // жодного відгуку. Дані підставляються в чернетку: користувач бачить їх
+    // перед відправкою і будь-що може стерти.
+    private static func feedbackMailURL() -> URL? {
+        var body = "\n\n\(L10n.feedbackPrompt)\n\n\(L10n.feedbackTechHeader)\n"
+        let short = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "—"
+        let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "—"
+        body += "\(L10n.appTitle) \(short) (\(build))\n"
+        body += "iOS \(UIDevice.current.systemVersion) · \(deviceIdentifier)\n"
+        // Медіана похибки — найцінніше в листі про «застосунок бреше»:
+        // вона приїде разом зі скаргою, і не доведеться перепитувати.
+        if let median = TripLogStore.shared.medianErrorSeconds {
+            body += L10n.feedbackAccuracy(median, trips: TripLogStore.shared.measuredTripCount) + "\n"
+        }
+        var components = URLComponents()
+        components.scheme = "mailto"
+        components.path = contactEmail
+        components.queryItems = [URLQueryItem(name: "subject", value: L10n.feedbackSubject),
+                                 URLQueryItem(name: "body", value: body)]
+        return components.url
+    }
+
+    // «iPhone17,2» — без цього незрозуміло, на чому саме зламалось.
+    private static var deviceIdentifier: String {
+        var info = utsname()
+        uname(&info)
+        // Копия в локальную переменную: обращаться к info.machine и к самому
+        // info одновременно Swift не даёт — доступ должен быть эксклюзивным.
+        let machine = info.machine
+        return withUnsafePointer(to: machine) { pointer in
+            pointer.withMemoryRebound(to: CChar.self,
+                                      capacity: MemoryLayout.size(ofValue: machine)) {
+                String(cString: $0)
             }
         }
     }

@@ -194,7 +194,30 @@ final class DataTests: XCTestCase {
         XCTAssertEqual(entry.lateCorrections, 2, "два «+1» — поезд отставал")
     }
 
-    // 13. Журнал прошлой версии не знает про outcome — он должен читаться,
+    // 13. Оценку просим только там, где приложение себя оправдало: иначе
+    // одна звезда от тех, у кого отсчёт разошёлся, прилетит первой.
+    func testReviewPromptIsEarned() throws {
+        let start = Date(timeIntervalSince1970: 1_760_000_000)
+        let trip = try XCTUnwrap(TripPlanner.plan(fromId: "lisova", toId: "chernihivska",
+                                                  start: start, repo: repo))
+        func entry(_ errorSeconds: Int) -> TripLogEntry {
+            TripLogEntry(trip: trip, outcome: .arrived,
+                         endedAt: trip.arrivalDate.addingTimeInterval(TimeInterval(errorSeconds)))
+        }
+        let accurate = [entry(10), entry(-5), entry(20)]
+        XCTAssertEqual(TripLogStore.medianError(of: accurate), 10)
+
+        // Одна-две удачные поездки — ещё не доказательство.
+        XCTAssertTrue(TripLogStore.medianError(of: [entry(120), entry(150), entry(200)])
+                        .map { abs($0) > 30 } ?? false, "промахи не проходят порог")
+
+        // Брошенные поездки в счёт не идут.
+        let stopped = TripLogEntry(trip: trip, outcome: .stopped, endedAt: start)
+        XCTAssertNil(stopped.errorSeconds)
+        XCTAssertNil(TripLogStore.medianError(of: [stopped, stopped]))
+    }
+
+    // 14. Журнал прошлой версии не знает про outcome — он должен читаться,
     // а не пропадать целиком вместе со всей историей пассажира.
     func testOldLogEntryStillDecodes() throws {
         let legacy = """

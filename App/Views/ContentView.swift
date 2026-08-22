@@ -1,10 +1,12 @@
 import SwiftUI
+import StoreKit
 
 // Главный экран: линия → станція відправлення → станція призначення → «Поїхали».
 struct SelectionView: View {
     @EnvironmentObject private var engine: TripEngine
     @ObservedObject private var alertService = AlertService.shared
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.requestReview) private var requestReview
     // Карточка «Як це працює» — один раз на установку: момент старта решает всё.
     @AppStorage("onboardingShown") private var onboardingShown = false
 
@@ -111,6 +113,16 @@ struct SelectionView: View {
                 }
             }
             .onAppear {
+                // Запрос оценки — здесь, а не в момент нажатия «Я на місці»:
+                // Apple просит не привязывать его к тапу по кнопке, да и
+                // всплывать поверх анимации возврата было бы некрасиво.
+                if engine.shouldRequestReview {
+                    engine.shouldRequestReview = false
+                    Task {
+                        try? await Task.sleep(nanoseconds: 1_200_000_000)
+                        requestReview()
+                    }
+                }
                 if !onboardingShown {
                     onboardingShown = true
                     showOnboarding = true
