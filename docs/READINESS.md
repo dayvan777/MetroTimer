@@ -289,9 +289,53 @@ codesign -d --entitlements - build/Build/Products/Release-iphoneos/MetroTimer.ap
   в слот «6,9-дюймовый дисплей» (меньшие размеры Apple выводит сама),
   в указанном порядке — первые три видны в поиске.
 
+### Шаг 3б. Сборка — **архив собран 22.08.2026, ждёт ключ**
+
+Архив и `.ipa` уже готовы, проверены и лежат в `build-archive/`
+(папка не в гите — её отсекает белый список `.gitignore`):
+
+```
+python3 Scripts/gen_pbxproj.py
+xcodebuild archive -project MetroTimer.xcodeproj -scheme MetroTimer \
+  -configuration Release -destination 'generic/platform=iOS' \
+  -archivePath build-archive/MetroTimer.xcarchive -allowProvisioningUpdates
+xcodebuild -exportArchive -archivePath build-archive/MetroTimer.xcarchive \
+  -exportOptionsPlist AppStore/ExportOptions.plist \
+  -exportPath build-archive/export -allowProvisioningUpdates
+```
+
+Что проверено в собранном `.ipa`, а не предположено:
+
+- подпись **Apple Distribution: Vladyslav Domotskyi (JC2G64UQ8N)** —
+  экспорт пересобрал её из Development, как и должен;
+- `get-task-allow = false` — без этого App Store отклоняет бинарь;
+- `com.apple.developer.usernotifications.time-sensitive = true` —
+  тот самый entitlement, без которого «Наступна — ваша» не пробивает
+  режимы фокусування;
+- `beta-reports-active = true` — TestFlight включится сам;
+- виджет `MetroTimerWidget.appex` вложен и подписан отдельно;
+- манифесты приватності `PrivacyInfo.xcprivacy` в обох таргетах;
+- версія 1.0, білд 1, мінімальна iOS 16.1, локалізації `uk` + `en`;
+- 1,9 МБ.
+
+Остался один шаг — загрузка. Ключ App Store Connect API (**твоё действие**,
+один раз): App Store Connect → «Пользователи и доступ» → «Интеграции» →
+App Store Connect API → «Ключи команды» → сгенерировать, роль **App Manager**.
+`.p8` скачивается **ровно один раз** — сохрани его вне репозитория
+(репозиторий публичный!), например `~/.appstoreconnect/private_keys/`.
+Мне нужны только путь к файлу, Key ID и Issuer ID — содержимое ключа
+не показывай никому, включая меня.
+
+Дальше загрузка — одна команда:
+
+```
+xcrun altool --upload-app -f build-archive/export/MetroTimer.ipa -t ios \
+  --apiKey <KEY_ID> --apiIssuer <ISSUER_ID>
+```
+
 Осталось по этому шагу:
 
-- **Сборка** — единственное, чего ждёт кнопка «Добавить для проверки».
+- **Загрузка сборки** — единственное, чего ждёт кнопка «Добавить для проверки».
 - **ЕС** — статус трейдера DSA не заявлен, и пока он не заявлен, Apple просто
   не показывает приложение в европейских витринах. Ограничение аккаунтное,
   не приложенческое: доступность выставлена на все страны, и если статус

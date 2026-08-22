@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Витрина App Store: экспорт пересобирает подпись из Development
+	     в Distribution и снимает get-task-allow с виджета. -->
+	<key>method</key>
+	<string>app-store-connect</string>
+	<key>teamID</key>
+	<string>JC2G64UQ8N</string>
+	<key>signingStyle</key>
+	<string>automatic</string>
+	<!-- Символы нужны, чтобы отчёты о сбоях в Organizer были читаемыми:
+	     без них трейсы приходят адресами, а не именами функций. -->
+	<key>uploadSymbols</key>
+	<true/>
+	<!-- Только экспорт .ipa; загрузка — отдельным шагом, чтобы было что
+	     проверить перед тем, как отправлять. -->
+	<key>destination</key>
+	<string>export</string>
+</dict>
+</plist>
