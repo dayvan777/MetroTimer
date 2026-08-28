@@ -1,7 +1,13 @@
-# Сторінка політики конфіденційності та підтримки
+# Сторінка застосунку: лендинг + політика конфіденційності + підтримка
 
-Готова сторінка для App Store Connect: `index.html` + `icon.png` + `favicon.png`.
-Одна адреса закриває обидва обовʼязкові поля — **Privacy Policy URL** і **Support URL**.
+Одна сторінка `index.html` (+ тека `img/` зі скриншотами й бейджем App Store)
+закриває три ролі: лендинг із кнопкою «Завантажити в App Store», **Privacy
+Policy URL** і **Support URL** для App Store Connect. Політика лишається за
+тією самою адресою (якір `#privacy`), тож URL у App Store Connect не змінюється.
+
+Опубліковано: https://dayvan777.github.io/METRO/ (репозиторій `dayvan777/METRO`,
+гілка `main`, деплой — GitHub Pages з кореня). Оновлення: скопіювати `index.html`
+і `img/` у той репозиторій і запушити.
 
 ## Як опублікувати (5 хвилин, через сайт GitHub)
 
