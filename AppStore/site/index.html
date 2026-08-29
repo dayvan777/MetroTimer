@@ -201,6 +201,18 @@ main { position:relative; max-width:880px; margin:0 auto; padding:0 20px 20px; }
 .made .fl { display:inline-block; width:20px; height:14px; border-radius:2.5px;
   background:linear-gradient(#0057b7 0 50%, #ffd700 50% 100%); }
 
+/* підтримка */
+.donate { margin-top:30px; max-width:560px; background:var(--panel); border:1px solid var(--line);
+  border-radius:18px; padding:20px 22px; }
+.donate p { margin:0 0 16px; color:var(--dim); font-size:15px; line-height:1.55; }
+.donate p b { color:var(--text); }
+.jar-btn { display:inline-flex; align-items:center; gap:12px; background:#fff; color:#0a0b0d;
+  text-decoration:none; border-radius:14px; padding:13px 22px; font-weight:700; font-size:16px;
+  transition:transform .2s, box-shadow .2s; }
+.jar-btn:hover { transform:translateY(-2px); box-shadow:0 10px 26px rgba(255,255,255,.12); }
+.jar-btn .jar { font-size:22px; line-height:1; }
+.donate .fine-d { margin:12px 0 0; font-size:13px; color:var(--faint); }
+
 /* службові */
 .svc-divider { max-width:880px; margin:28px auto 22px; padding:0 20px; display:flex; align-items:center; gap:16px;
   color:var(--faint); font-size:12px; letter-spacing:.22em; text-transform:uppercase; }
@@ -371,6 +383,16 @@ footer { color:var(--faint); font-size:14px; text-align:center; margin:14px auto
           2,5 МБ · iOS 16.1+ · Безкоштовно<br>Без покупок і підписок</div>
       </div>
       <div class="made"><span class="fl"></span> Зроблено в Україні</div>
+
+      <div class="donate" id="donate">
+        <p><b>Застосунок безкоштовний — і таким залишиться.</b>
+          Без реклами, підписок і покупок. Якщо він уже зекономив вам
+          станцію-другу — можна закинути на каву і на Apple Developer
+          (99&nbsp;$/рік, які Apple бере за право тут бути).</p>
+        <a class="jar-btn" href="https://send.monobank.ua/jar/6jeiHeyrsg" rel="noopener">
+          <span class="jar">🫙</span> Підтримати автора · банка monobank</a>
+        <p class="fine-d">Разово, скільки завгодно, через Apple&nbsp;Pay у два дотики.</p>
+      </div>
     </div>
   </section>
 </main>
