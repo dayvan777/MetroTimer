@@ -352,7 +352,8 @@
    "ref": "1",
    "street": "Вербова вулиця",
    "alongM": 75,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Речовий ринок «Почайна»"
   },
   {
    "ref": "2",
@@ -770,7 +771,8 @@
    "ref": "1",
    "street": "Залізничне шосе",
    "alongM": -110,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Автостанція \"Видубичі\""
   },
   {
    "ref": "2",
@@ -800,7 +802,8 @@
    "ref": null,
    "street": "Наддніпрянське шосе",
    "alongM": -4,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Автостанція \"Видубичі\""
   }
  ],
  "lisova": [
@@ -891,7 +894,8 @@
    "ref": "5",
    "street": "Чорнобаївська площа",
    "alongM": -149,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Речовий ринок"
   },
   {
    "ref": "6",
@@ -903,7 +907,8 @@
    "ref": "7",
    "street": "Чорнобаївська площа",
    "alongM": -177,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Речовий ринок"
   },
   {
    "ref": "8",
@@ -915,25 +920,29 @@
    "ref": "9",
    "street": "Чорнобаївська площа",
    "alongM": -210,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Речовий ринок"
   },
   {
    "ref": "10",
    "street": "Чорнобаївська площа",
    "alongM": -243,
-   "wheelchair": null
+   "wheelchair": null,
+   "poi": "Речовий ринок"
   },
   {
    "ref": "11",
    "street": "Депутатська вулиця",
    "alongM": -239,
-   "wheelchair": "yes"
+   "wheelchair": "yes",
+   "poi": "Речовий ринок"
   },
   {
    "ref": "12",
    "street": "Чорнобаївська площа",
    "alongM": -255,
-   "wheelchair": "yes"
+   "wheelchair": "yes",
+   "poi": "Речовий ринок"
   },
   {
    "ref": null,
@@ -1031,49 +1040,57 @@
    "ref": "1",
    "street": "проспект Миколи Бажана",
    "alongM": -42,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Автостанція \"Осокорки\""
   },
   {
    "ref": "2",
    "street": "проспект Миколи Бажана",
    "alongM": -74,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Автостанція \"Осокорки\""
   },
   {
    "ref": "3",
    "street": "проспект Миколи Бажана",
    "alongM": -75,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Автостанція \"Осокорки\""
   },
   {
    "ref": "4",
    "street": "проспект Миколи Бажана",
    "alongM": -43,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Автостанція \"Осокорки\""
   },
   {
    "ref": "5",
    "street": "проспект Миколи Бажана",
    "alongM": 69,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Автостанція \"Осокорки\""
   },
   {
    "ref": "6",
    "street": "проспект Миколи Бажана",
    "alongM": 36,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Автостанція \"Осокорки\""
   },
   {
    "ref": "7",
    "street": "проспект Миколи Бажана",
    "alongM": 34,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Автостанція \"Осокорки\""
   },
   {
    "ref": "8",
    "street": "проспект Миколи Бажана",
    "alongM": 67,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Автостанція \"Осокорки\""
   }
  ],
  "zvirynetska": [

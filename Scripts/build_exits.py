@@ -99,7 +99,8 @@ def nearest_poi(lat, lon, station_name=""):
     sn = norm(station_name)
     for p in pois:
         # Ж/д «Святошин» біля метро «Святошин» — тавтологія, не орієнтир.
-        if sn and (norm(p["name"]) == sn or sn in norm(p["name"])):
+        # Точний збіг, не підрядок: «Автостанція "Видубичі"» — інший об'єкт.
+        if sn and norm(p["name"]).strip('«»"') == sn:
             continue
         d = dist_m(lat, lon, p["lat"], p["lon"])
         limit = 250 if p["kind"] == "station" else 150 if p["kind"] == "bus_station" else 120
