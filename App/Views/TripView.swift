@@ -55,6 +55,11 @@ struct TripView: View {
                     .accessibilityHidden(true)
             }
             stationList(trip: trip, nextIndex: nextIndex, accent: accent)
+            // Виходи показуємо в момент потреби: коли людина ось-ось встане
+            // з місця. Раніше — шум, пізніше — вже не треба.
+            if stopsLeft <= 1 {
+                exitsCard(trip: trip, accent: accent)
+            }
             controls(trip: trip, now: now, stopsLeft: stopsLeft, accent: accent)
         }
         .background(Color(hex: "#101114").ignoresSafeArea())
@@ -67,6 +72,76 @@ struct TripView: View {
         .animation(.easeInOut(duration: 0.3), value: engine.notificationsDenied)
         .animation(.easeInOut(duration: 0.3), value: engine.liveActivityUnavailable)
         .animation(.easeInOut(duration: 0.3), value: trip.isChangingLines(at: now))
+    }
+
+    // Виходи кінцевої станції: номер із таблички, вулиця і — коли вихід
+    // на самій платформі — у які вагони сідати, розгорнуто під напрямок
+    // саме цієї поїздки.
+    @ViewBuilder
+    private func exitsCard(trip: ActiveTrip, accent: Color) -> some View {
+        let destId = trip.events.last?.stationId ?? ""
+        let exits = ExitStore.shared.exits(for: destId)
+        if !exits.isEmpty {
+            let forward = arrivalIsForward(trip: trip)
+            VStack(alignment: .leading, spacing: 6) {
+                Text(L10n.exitsOn(trip.destinationName))
+                    .font(.footnote.weight(.semibold))
+                    .foregroundColor(.secondary)
+                ForEach(Array(exits.prefix(4)), id: \.self) { exit in
+                    HStack(spacing: 6) {
+                        Text(exit.ref.map(L10n.exitRef) ?? L10n.exitNoRef)
+                            .font(.caption.weight(.bold))
+                            .foregroundColor(accent)
+                        if let street = exit.street {
+                            Text(street)
+                                .font(.caption)
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.75)
+                        }
+                        if let forward,
+                           let cars = CarPosition(alongM: exit.alongM, travellingForward: forward) {
+                            Text("· " + carsText(cars))
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                        if exit.wheelchair == "yes" {
+                            Image(systemName: "figure.roll")
+                                .font(.caption2)
+                                .foregroundColor(.secondary)
+                                .accessibilityLabel("wheelchair")
+                        }
+                        Spacer(minLength: 0)
+                    }
+                }
+                Text(L10n.exitsFootnote)
+                    .font(.caption2)
+                    .foregroundColor(Color.secondary.opacity(0.7))
+            }
+            .padding(12)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(RoundedRectangle(cornerRadius: 12).fill(Color.white.opacity(0.06)))
+            .padding(.horizontal)
+            .padding(.bottom, 4)
+            .transition(.move(edge: .bottom).combined(with: .opacity))
+        }
+    }
+
+    private func carsText(_ cars: CarPosition) -> String {
+        switch cars {
+        case .first: return L10n.exitCarsFirst
+        case .middle: return L10n.exitCarsMiddle
+        case .last: return L10n.exitCarsLast
+        }
+    }
+
+    // Напрямок прибуття: за останнім перегоном маршруту тієї ж лінії.
+    private func arrivalIsForward(trip: ActiveTrip) -> Bool? {
+        let stops = trip.events.filter { !$0.isTransfer }
+        guard stops.count >= 2 else { return nil }
+        let last = stops[stops.count - 1], prev = stops[stops.count - 2]
+        guard last.lineId == prev.lineId else { return nil }
+        return engine.repo.isForward(lineId: last.lineId,
+                                     from: prev.stationId, to: last.stationId)
     }
 
     // Занимает своё место в потоке — заголовок поездки не перекрывается.

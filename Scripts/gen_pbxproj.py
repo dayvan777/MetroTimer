@@ -37,6 +37,7 @@ SHARED = [
     "Shared/Localization.swift",
     "Shared/TripLogStore.swift",
     "Shared/RouteStore.swift",
+    "Shared/ExitStore.swift",
     "Shared/ColorHex.swift",
 ]
 APP_SRC = [
@@ -59,7 +60,7 @@ APP_SRC = [
     "App/Services/Shortcuts.swift",
 ]
 WIDGET_SRC = ["Widget/MetroActivityWidget.swift"]
-APP_RES = ["App/Resources/kyiv_metro.json", "App/Resources/uk.lproj",
+APP_RES = ["App/Resources/kyiv_metro.json", "App/Resources/kyiv_exits.json", "App/Resources/uk.lproj",
            "App/Resources/en.lproj", "App/Assets.xcassets", "App/PrivacyInfo.xcprivacy"]
 # kyiv_metro.json нужен и виджету: MetroRepository компилируется в оба таргета
 # (цепочка AdjustTripIntent → TripEngine), а его init падает fatalError без

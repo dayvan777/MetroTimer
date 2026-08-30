@@ -3,6 +3,48 @@ import XCTest
 
 // Данные метро и локальные хранилища: ошибка здесь тихо портит все расчёты.
 final class DataTests: XCTestCase {
+
+    // ── Виходи (1.2) ──────────────────────────────────────────────────
+
+    func testExitsCoverEveryStation() {
+        let repo = MetroRepository.shared
+        for line in repo.lines {
+            for id in line.stationIds {
+                XCTAssertFalse(ExitStore.shared.exits(for: id).isEmpty,
+                               "станція без виходів у датасеті: \(id)")
+            }
+        }
+    }
+
+    func testExitsDataSane() {
+        let repo = MetroRepository.shared
+        var total = 0
+        for line in repo.lines {
+            for id in line.stationIds {
+                for exit in ExitStore.shared.exits(for: id) {
+                    total += 1
+                    // 2 км уздовж осі — явно битий запис; найдовший реальний
+                    // перехід («Хрещатик») лишається в межах.
+                    XCTAssertLessThan(abs(exit.alongM), 2000, "\(id): alongM=\(exit.alongM)")
+                    if let ref = exit.ref {
+                        XCTAssertFalse(ref.isEmpty)
+                    }
+                }
+            }
+        }
+        XCTAssertGreaterThan(total, 200, "датасет підозріло малий: \(total)")
+    }
+
+    func testCarPositionRespectsTravelDirection() {
+        // Вихід у «голові» forward-осі: їдемо forward → перші вагони,
+        // їдемо назад → останні. Далекий перехід — без порад.
+        XCTAssertEqual(CarPosition(alongM: 40, travellingForward: true), .first)
+        XCTAssertEqual(CarPosition(alongM: 40, travellingForward: false), .last)
+        XCTAssertEqual(CarPosition(alongM: -40, travellingForward: true), .last)
+        XCTAssertEqual(CarPosition(alongM: 10, travellingForward: true), .middle)
+        XCTAssertNil(CarPosition(alongM: 435, travellingForward: true))
+    }
+
     private let repo = MetroRepository.shared
 
     // stopsWord ветвится по глобальному appLanguage, который берётся из

@@ -1,0 +1,1726 @@
+{
+ "universytet": [
+  {
+   "ref": "1",
+   "street": "бульвар Тараса Шевченка",
+   "alongM": 26,
+   "wheelchair": "no"
+  }
+ ],
+ "darnytsia": [
+  {
+   "ref": "1",
+   "street": "Броварський проспект",
+   "alongM": -84,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "1",
+   "street": "Броварський проспект",
+   "alongM": -90,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "2",
+   "street": "Броварський проспект",
+   "alongM": 68,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "3",
+   "street": "Броварський проспект",
+   "alongM": 94,
+   "wheelchair": null
+  },
+  {
+   "ref": "4",
+   "street": "Броварський проспект",
+   "alongM": 90,
+   "wheelchair": null
+  },
+  {
+   "ref": "5",
+   "street": "Броварський проспект",
+   "alongM": 62,
+   "wheelchair": null
+  }
+ ],
+ "slavutych": [
+  {
+   "ref": "1",
+   "street": "проспект Миколи Бажана",
+   "alongM": -48,
+   "wheelchair": "yes"
+  },
+  {
+   "ref": "2",
+   "street": "проспект Миколи Бажана",
+   "alongM": -39,
+   "wheelchair": "yes"
+  }
+ ],
+ "chervonyi-khutir": [
+  {
+   "ref": "1",
+   "street": "Старобориспільська вулиця",
+   "alongM": 34,
+   "wheelchair": "yes"
+  },
+  {
+   "ref": "2",
+   "street": "вулиця Миколи Хвильового",
+   "alongM": 27,
+   "wheelchair": "yes"
+  },
+  {
+   "ref": "3",
+   "street": "вулиця Миколи Хвильового",
+   "alongM": 5,
+   "wheelchair": "yes"
+  },
+  {
+   "ref": null,
+   "street": "Старобориспільська вулиця",
+   "alongM": 186,
+   "wheelchair": "yes"
+  },
+  {
+   "ref": null,
+   "street": "Старобориспільська вулиця",
+   "alongM": 179,
+   "wheelchair": "yes"
+  },
+  {
+   "ref": null,
+   "street": "Старобориспільська вулиця",
+   "alongM": 7,
+   "wheelchair": "yes"
+  },
+  {
+   "ref": null,
+   "street": "вулиця Миколи Хвильового",
+   "alongM": 28,
+   "wheelchair": "yes"
+  },
+  {
+   "ref": null,
+   "street": "вулиця Миколи Хвильового",
+   "alongM": 0,
+   "wheelchair": "yes"
+  }
+ ],
+ "pozniaky": [
+  {
+   "ref": "1",
+   "street": "проспект Петра Григоренка",
+   "alongM": -53,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "2",
+   "street": "проспект Миколи Бажана",
+   "alongM": -33,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "3",
+   "street": "проспект Миколи Бажана",
+   "alongM": -59,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "4",
+   "street": "проспект Миколи Бажана",
+   "alongM": -31,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "5",
+   "street": "проспект Миколи Бажана",
+   "alongM": -61,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "6",
+   "street": "проспект Миколи Бажана",
+   "alongM": 103,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "7",
+   "street": "проспект Миколи Бажана",
+   "alongM": 142,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "8",
+   "street": "проспект Миколи Бажана",
+   "alongM": 117,
+   "wheelchair": "no"
+  }
+ ],
+ "arsenalna": [
+  {
+   "ref": "1",
+   "street": "вулиця Михайла Грушевського",
+   "alongM": -13,
+   "wheelchair": null
+  },
+  {
+   "ref": "2",
+   "street": "вулиця Михайла Грушевського",
+   "alongM": -19,
+   "wheelchair": null
+  },
+  {
+   "ref": null,
+   "street": "вулиця Михайла Грушевського",
+   "alongM": 10,
+   "wheelchair": "no"
+  }
+ ],
+ "kontraktova-ploshcha": [
+  {
+   "ref": null,
+   "street": "Спаська вулиця",
+   "alongM": 142,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Спаська вулиця",
+   "alongM": 144,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "вулиця Нижній Вал",
+   "alongM": -151,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "вулиця Нижній Вал",
+   "alongM": -186,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Спаська вулиця",
+   "alongM": 132,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Спаська вулиця",
+   "alongM": 135,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Спаська вулиця",
+   "alongM": 101,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "вулиця Верхній Вал",
+   "alongM": -99,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "вулиця Хорива",
+   "alongM": -66,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "вулиця Верхній Вал",
+   "alongM": -128,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Костянтинівська вулиця",
+   "alongM": -118,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "вулиця Нижній Вал",
+   "alongM": -159,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Спаська вулиця",
+   "alongM": 99,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "вулиця Верхній Вал",
+   "alongM": -129,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Костянтинівська вулиця",
+   "alongM": -210,
+   "wheelchair": "no"
+  }
+ ],
+ "palats-sportu": [
+  {
+   "ref": null,
+   "street": "Еспланадна вулиця",
+   "alongM": -10,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Еспланадна вулиця",
+   "alongM": 24,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Еспланадна вулиця",
+   "alongM": 13,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Еспланадна вулиця",
+   "alongM": -23,
+   "wheelchair": "no"
+  }
+ ],
+ "obolon": [
+  {
+   "ref": null,
+   "street": "Оболонський проспект",
+   "alongM": 38,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Оболонський проспект",
+   "alongM": 65,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Оболонський проспект",
+   "alongM": 79,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Оболонський проспект",
+   "alongM": -81,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Оболонський проспект",
+   "alongM": -115,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Оболонський проспект",
+   "alongM": -122,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Оболонський проспект",
+   "alongM": -82,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Оболонський проспект",
+   "alongM": 59,
+   "wheelchair": "no"
+  }
+ ],
+ "pochaina": [
+  {
+   "ref": "1",
+   "street": "Вербова вулиця",
+   "alongM": 75,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "2",
+   "street": "Оболонський проспект",
+   "alongM": -68,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "3",
+   "street": "Оболонський проспект",
+   "alongM": -102,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "4",
+   "street": "Оболонський проспект",
+   "alongM": -110,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "5",
+   "street": "Оболонський проспект",
+   "alongM": -77,
+   "wheelchair": "no"
+  }
+ ],
+ "minska": [
+  {
+   "ref": "5",
+   "street": "вулиця Левка Лукʼяненка",
+   "alongM": -71,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "6",
+   "street": "Мінська площа",
+   "alongM": -105,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "7",
+   "street": "Мінська площа",
+   "alongM": -103,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "8",
+   "street": "вулиця Левка Лукʼяненка",
+   "alongM": -71,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Мінська площа",
+   "alongM": 92,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Мінська площа",
+   "alongM": 92,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "вулиця Левка Лукʼяненка",
+   "alongM": 63,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Мінська площа",
+   "alongM": 70,
+   "wheelchair": "no"
+  }
+ ],
+ "lybidska": [
+  {
+   "ref": "1",
+   "street": "Либідська площа",
+   "alongM": -82,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "2",
+   "street": "Либідська площа",
+   "alongM": -63,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "3",
+   "street": "вулиця Антоновича",
+   "alongM": -7,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "3",
+   "street": "Либідська площа",
+   "alongM": -14,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "4",
+   "street": "вулиця Антоновича",
+   "alongM": 12,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "5",
+   "street": "вулиця Антоновича",
+   "alongM": 28,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "6",
+   "street": "Велика Васильківська вулиця",
+   "alongM": -42,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "7",
+   "street": "Велика Васильківська вулиця",
+   "alongM": -61,
+   "wheelchair": "no"
+  }
+ ],
+ "vyrlytsia": [
+  {
+   "ref": "1",
+   "street": "проспект Миколи Бажана",
+   "alongM": 10,
+   "wheelchair": null
+  },
+  {
+   "ref": "2",
+   "street": "проспект Миколи Бажана",
+   "alongM": -24,
+   "wheelchair": "yes"
+  },
+  {
+   "ref": "3",
+   "street": "проспект Миколи Бажана",
+   "alongM": 7,
+   "wheelchair": "yes"
+  },
+  {
+   "ref": "4",
+   "street": "проспект Миколи Бажана",
+   "alongM": -23,
+   "wheelchair": null
+  }
+ ],
+ "zoloti-vorota": [
+  {
+   "ref": "1",
+   "street": "Золотоворітський проїзд",
+   "alongM": 14,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "1",
+   "street": "Золотоворітський проїзд",
+   "alongM": 12,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "1",
+   "street": "Золотоворітський проїзд",
+   "alongM": 10,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "2",
+   "street": "Володимирська вулиця",
+   "alongM": 65,
+   "wheelchair": "no"
+  }
+ ],
+ "livoberezhna": [
+  {
+   "ref": "1",
+   "street": "Броварський проспект",
+   "alongM": -74,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "1",
+   "street": "Броварський проспект",
+   "alongM": -65,
+   "wheelchair": null
+  },
+  {
+   "ref": "2",
+   "street": "Броварський проспект",
+   "alongM": 82,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "2",
+   "street": "Броварський проспект",
+   "alongM": 78,
+   "wheelchair": "no"
+  }
+ ],
+ "lukianivska": [
+  {
+   "ref": "1",
+   "street": "Лукʼянівська площа",
+   "alongM": -4,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "2",
+   "street": "Лукʼянівська площа",
+   "alongM": -10,
+   "wheelchair": "no"
+  }
+ ],
+ "demiivska": [
+  {
+   "ref": "1",
+   "street": "Голосіївський проспект",
+   "alongM": 22,
+   "wheelchair": null
+  },
+  {
+   "ref": "2",
+   "street": "Голосіївський проспект",
+   "alongM": -26,
+   "wheelchair": null
+  },
+  {
+   "ref": "3",
+   "street": "Голосіївський проспект",
+   "alongM": -44,
+   "wheelchair": "yes"
+  },
+  {
+   "ref": "4",
+   "street": "Голосіївський проспект",
+   "alongM": -6,
+   "wheelchair": "yes"
+  }
+ ],
+ "holosiivska": [
+  {
+   "ref": "1",
+   "street": "Голосіївська площа",
+   "alongM": -19,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "2",
+   "street": "Голосіївська площа",
+   "alongM": -110,
+   "wheelchair": "yes"
+  },
+  {
+   "ref": "3",
+   "street": "Голосіївський проспект",
+   "alongM": -123,
+   "wheelchair": "yes"
+  },
+  {
+   "ref": "4",
+   "street": "Голосіївська площа",
+   "alongM": -35,
+   "wheelchair": null
+  },
+  {
+   "ref": null,
+   "street": "Голосіївська площа",
+   "alongM": -38,
+   "wheelchair": "yes"
+  }
+ ],
+ "nyvky": [
+  {
+   "ref": null,
+   "street": "вулиця Данила Щербаківського",
+   "alongM": 195,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "вулиця Данила Щербаківського",
+   "alongM": 172,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Ґалаґанівська вулиця",
+   "alongM": -56,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "вулиця Данила Щербаківського",
+   "alongM": 108,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Берестейський проспект",
+   "alongM": -66,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Берестейський проспект",
+   "alongM": -32,
+   "wheelchair": "no"
+  }
+ ],
+ "ploshcha-ukrainskykh-heroiv": [
+  {
+   "ref": "5",
+   "street": "Велика Васильківська вулиця",
+   "alongM": -27,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Велика Васильківська вулиця",
+   "alongM": 31,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "вулиця Гетьмана Павла Скоропадського",
+   "alongM": 5,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "вулиця Гетьмана Павла Скоропадського",
+   "alongM": -16,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "площа Українських Героїв",
+   "alongM": -17,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Велика Васильківська вулиця",
+   "alongM": 10,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "площа Українських Героїв",
+   "alongM": 34,
+   "wheelchair": "no"
+  }
+ ],
+ "teatralna": [
+  {
+   "ref": "119",
+   "street": "вулиця Євгена Чикаленка",
+   "alongM": -3,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "вулиця Богдана Хмельницького",
+   "alongM": -23,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "вулиця Богдана Хмельницького",
+   "alongM": 34,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "вулиця Богдана Хмельницького",
+   "alongM": 23,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "вулиця Богдана Хмельницького",
+   "alongM": -34,
+   "wheelchair": "no"
+  }
+ ],
+ "vokzalna": [
+  {
+   "ref": "1",
+   "street": null,
+   "alongM": 11,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": null,
+   "alongM": 2,
+   "wheelchair": null
+  }
+ ],
+ "vydubychi": [
+  {
+   "ref": "1",
+   "street": "Залізничне шосе",
+   "alongM": -110,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "2",
+   "street": "Наддніпрянське шосе",
+   "alongM": 13,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "3",
+   "street": "Набережно-Печерська дорога",
+   "alongM": 128,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "4",
+   "street": "Набережно-Печерська дорога",
+   "alongM": 97,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "5",
+   "street": "Південний міст",
+   "alongM": 96,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Наддніпрянське шосе",
+   "alongM": -4,
+   "wheelchair": "no"
+  }
+ ],
+ "lisova": [
+  {
+   "ref": "1",
+   "street": "Броварський проспект",
+   "alongM": -86,
+   "wheelchair": "yes"
+  },
+  {
+   "ref": "2",
+   "street": "Броварський проспект",
+   "alongM": -81,
+   "wheelchair": "yes"
+  },
+  {
+   "ref": "3",
+   "street": "Броварський проспект",
+   "alongM": -58,
+   "wheelchair": "yes"
+  },
+  {
+   "ref": "4",
+   "street": "Броварський проспект",
+   "alongM": 104,
+   "wheelchair": null
+  },
+  {
+   "ref": "5",
+   "street": "Броварський проспект",
+   "alongM": 124,
+   "wheelchair": "yes"
+  }
+ ],
+ "beresteiska": [
+  {
+   "ref": "1",
+   "street": "Табірна вулиця",
+   "alongM": -203,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "4",
+   "street": "Табірна вулиця",
+   "alongM": -123,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "5",
+   "street": "Табірна вулиця",
+   "alongM": -102,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "2-3",
+   "street": "Берестейський проспект",
+   "alongM": -188,
+   "wheelchair": "no"
+  }
+ ],
+ "sviatoshyn": [
+  {
+   "ref": "1",
+   "street": "Берестейський проспект",
+   "alongM": 67,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "2",
+   "street": "Берестейський проспект",
+   "alongM": 73,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "3",
+   "street": "Берестейський проспект",
+   "alongM": 42,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "4",
+   "street": "Берестейський проспект",
+   "alongM": -122,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "5",
+   "street": "Чорнобаївська площа",
+   "alongM": -149,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "6",
+   "street": "Берестейський проспект",
+   "alongM": -149,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "7",
+   "street": "Чорнобаївська площа",
+   "alongM": -177,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "8",
+   "street": "Берестейський проспект",
+   "alongM": -179,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "9",
+   "street": "Чорнобаївська площа",
+   "alongM": -210,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "10",
+   "street": "Чорнобаївська площа",
+   "alongM": -243,
+   "wheelchair": null
+  },
+  {
+   "ref": "11",
+   "street": "Депутатська вулиця",
+   "alongM": -239,
+   "wheelchair": "yes"
+  },
+  {
+   "ref": "12",
+   "street": "Чорнобаївська площа",
+   "alongM": -255,
+   "wheelchair": "yes"
+  },
+  {
+   "ref": null,
+   "street": "Берестейський проспект",
+   "alongM": -78,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Берестейський проспект",
+   "alongM": 58,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Берестейський проспект",
+   "alongM": 62,
+   "wheelchair": "yes"
+  },
+  {
+   "ref": null,
+   "street": "Берестейський проспект",
+   "alongM": 39,
+   "wheelchair": "yes"
+  }
+ ],
+ "teremky": [
+  {
+   "ref": "1",
+   "street": "проспект Академіка Глушкова",
+   "alongM": 57,
+   "wheelchair": null
+  },
+  {
+   "ref": "2",
+   "street": "проспект Академіка Глушкова",
+   "alongM": 99,
+   "wheelchair": null
+  },
+  {
+   "ref": "3",
+   "street": "проспект Академіка Глушкова",
+   "alongM": 97,
+   "wheelchair": null
+  },
+  {
+   "ref": "4",
+   "street": "проспект Академіка Глушкова",
+   "alongM": 35,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "5",
+   "street": "проспект Академіка Глушкова",
+   "alongM": -66,
+   "wheelchair": "yes"
+  },
+  {
+   "ref": "6",
+   "street": "проспект Академіка Глушкова",
+   "alongM": -118,
+   "wheelchair": "yes"
+  },
+  {
+   "ref": null,
+   "street": "проспект Академіка Глушкова",
+   "alongM": -107,
+   "wheelchair": "yes"
+  },
+  {
+   "ref": null,
+   "street": "проспект Академіка Глушкова",
+   "alongM": 55,
+   "wheelchair": "yes"
+  }
+ ],
+ "poshtova-ploshcha": [
+  {
+   "ref": null,
+   "street": "вулиця Петра Сагайдачного",
+   "alongM": -17,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Боричів узвіз",
+   "alongM": -99,
+   "wheelchair": "no"
+  }
+ ],
+ "osokorky": [
+  {
+   "ref": "1",
+   "street": "проспект Миколи Бажана",
+   "alongM": -42,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "2",
+   "street": "проспект Миколи Бажана",
+   "alongM": -74,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "3",
+   "street": "проспект Миколи Бажана",
+   "alongM": -75,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "4",
+   "street": "проспект Миколи Бажана",
+   "alongM": -43,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "5",
+   "street": "проспект Миколи Бажана",
+   "alongM": 69,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "6",
+   "street": "проспект Миколи Бажана",
+   "alongM": 36,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "7",
+   "street": "проспект Миколи Бажана",
+   "alongM": 34,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "8",
+   "street": "проспект Миколи Бажана",
+   "alongM": 67,
+   "wheelchair": "no"
+  }
+ ],
+ "zvirynetska": [
+  {
+   "ref": "1",
+   "street": "бульвар Миколи Міхновського",
+   "alongM": -22,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "2",
+   "street": "бульвар Миколи Міхновського",
+   "alongM": -15,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "3",
+   "street": "бульвар Миколи Міхновського",
+   "alongM": 21,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "4",
+   "street": "бульвар Миколи Міхновського",
+   "alongM": 14,
+   "wheelchair": "no"
+  }
+ ],
+ "vasylkivska": [
+  {
+   "ref": null,
+   "street": "Васильківська вулиця",
+   "alongM": -84,
+   "wheelchair": "yes"
+  },
+  {
+   "ref": null,
+   "street": "Васильківська вулиця",
+   "alongM": 83,
+   "wheelchair": null
+  },
+  {
+   "ref": null,
+   "street": "Васильківська вулиця",
+   "alongM": 79,
+   "wheelchair": null
+  },
+  {
+   "ref": null,
+   "street": "Васильківська вулиця",
+   "alongM": -126,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Васильківська вулиця",
+   "alongM": 26,
+   "wheelchair": "yes"
+  }
+ ],
+ "palats-ukraina": [
+  {
+   "ref": null,
+   "street": "Велика Васильківська вулиця",
+   "alongM": 12,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Велика Васильківська вулиця",
+   "alongM": 19,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Велика Васильківська вулиця",
+   "alongM": -13,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Німецька вулиця",
+   "alongM": -18,
+   "wheelchair": "no"
+  }
+ ],
+ "khreshchatyk": [
+  {
+   "ref": "1",
+   "street": "вулиця Хрещатик",
+   "alongM": 20,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "1",
+   "street": "вулиця Хрещатик",
+   "alongM": 23,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "2",
+   "street": "вулиця Архітектора Городецького",
+   "alongM": 320,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "3",
+   "street": "алея Героїв Небесної Сотні",
+   "alongM": 435,
+   "wheelchair": "no"
+  }
+ ],
+ "maidan-nezalezhnosti": [
+  {
+   "ref": "4",
+   "street": "вулиця Хрещатик",
+   "alongM": -20,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "5",
+   "street": "вулиця Хрещатик",
+   "alongM": 47,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "6",
+   "street": "вулиця Архітектора Городецького",
+   "alongM": 88,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "7",
+   "street": "вулиця Архітектора Городецького",
+   "alongM": 119,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "8",
+   "street": "вулиця Хрещатик",
+   "alongM": 40,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "9",
+   "street": "вулиця Хрещатик",
+   "alongM": 15,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "10",
+   "street": "вулиця Хрещатик",
+   "alongM": -22,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "11",
+   "street": "майдан Незалежності",
+   "alongM": -49,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "12",
+   "street": "вулиця Хрещатик",
+   "alongM": -87,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "13",
+   "street": "вулиця Хрещатик",
+   "alongM": -78,
+   "wheelchair": "no"
+  }
+ ],
+ "vystavkovyi-tsentr": [
+  {
+   "ref": "1",
+   "street": "Васильківська вулиця",
+   "alongM": 16,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "2",
+   "street": "Васильківська вулиця",
+   "alongM": 7,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Васильківська вулиця",
+   "alongM": 26,
+   "wheelchair": "yes"
+  },
+  {
+   "ref": null,
+   "street": "Васильківська вулиця",
+   "alongM": 28,
+   "wheelchair": null
+  }
+ ],
+ "boryspilska": [
+  {
+   "ref": "1",
+   "street": "Харківське шосе",
+   "alongM": -34,
+   "wheelchair": "yes"
+  },
+  {
+   "ref": "2",
+   "street": "Харківська площа",
+   "alongM": 17,
+   "wheelchair": "yes"
+  },
+  {
+   "ref": "3",
+   "street": "Ташкентська вулиця",
+   "alongM": 172,
+   "wheelchair": null
+  },
+  {
+   "ref": "4",
+   "street": "Старобориспільська вулиця",
+   "alongM": 223,
+   "wheelchair": null
+  },
+  {
+   "ref": "5",
+   "street": "Старобориспільська вулиця",
+   "alongM": 161,
+   "wheelchair": "yes"
+  }
+ ],
+ "kharkivska": [
+  {
+   "ref": "1",
+   "street": "проспект Миколи Бажана",
+   "alongM": -113,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "2",
+   "street": "проспект Миколи Бажана",
+   "alongM": -133,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "3",
+   "street": "проспект Миколи Бажана",
+   "alongM": -61,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "4",
+   "street": "проспект Миколи Бажана",
+   "alongM": 66,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "5",
+   "street": "проспект Миколи Бажана",
+   "alongM": 94,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "6",
+   "street": "проспект Миколи Бажана",
+   "alongM": 67,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "7",
+   "street": "проспект Миколи Бажана",
+   "alongM": 93,
+   "wheelchair": "no"
+  }
+ ],
+ "hidropark": [
+  {
+   "ref": "1",
+   "street": "Броварський проспект",
+   "alongM": -82,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "2",
+   "street": "Броварський проспект",
+   "alongM": -83,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "3",
+   "street": "Броварський проспект",
+   "alongM": 76,
+   "wheelchair": "no"
+  }
+ ],
+ "tarasa-shevchenka": [
+  {
+   "ref": "1",
+   "street": "Межигірська вулиця",
+   "alongM": -61,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "2",
+   "street": "Межигірська вулиця",
+   "alongM": -21,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "3",
+   "street": "Межигірська вулиця",
+   "alongM": -33,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "4",
+   "street": "Межигірська вулиця",
+   "alongM": -73,
+   "wheelchair": "no"
+  }
+ ],
+ "dnipro": [
+  {
+   "ref": "1",
+   "street": "Набережне шосе",
+   "alongM": -28,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "2",
+   "street": "Набережне шосе",
+   "alongM": -18,
+   "wheelchair": "no"
+  }
+ ],
+ "akademmistechko": [
+  {
+   "ref": null,
+   "street": "проспект Академіка Палладіна",
+   "alongM": -139,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "проспект Академіка Палладіна",
+   "alongM": -52,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "проспект Академіка Палладіна",
+   "alongM": 37,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "проспект Академіка Палладіна",
+   "alongM": 87,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "вулиця Академіка Єфремова",
+   "alongM": -75,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "проспект Академіка Палладіна",
+   "alongM": 39,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "вулиця Академіка Єфремова",
+   "alongM": 9,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "проспект Академіка Палладіна",
+   "alongM": 52,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "проспект Академіка Палладіна",
+   "alongM": -83,
+   "wheelchair": "no"
+  }
+ ],
+ "dorohozhychi": [
+  {
+   "ref": null,
+   "street": "вулиця Юрія Іллєнка",
+   "alongM": -61,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "вулиця Юрія Іллєнка",
+   "alongM": -8,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "вулиця Олени Теліги",
+   "alongM": -66,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "вулиця Олени Теліги",
+   "alongM": -69,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "вулиця Олени Теліги",
+   "alongM": -46,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "вулиця Юрія Іллєнка",
+   "alongM": -15,
+   "wheelchair": null
+  }
+ ],
+ "olimpiiska": [
+  {
+   "ref": "1",
+   "street": "вулиця Фізкультури",
+   "alongM": -29,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "2",
+   "street": "вулиця Фізкультури",
+   "alongM": -15,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "3",
+   "street": "Велика Васильківська вулиця",
+   "alongM": -58,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "4",
+   "street": "Велика Васильківська вулиця",
+   "alongM": -25,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "5",
+   "street": "Велика Васильківська вулиця",
+   "alongM": -49,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Велика Васильківська вулиця",
+   "alongM": -39,
+   "wheelchair": null
+  }
+ ],
+ "ipodrom": [
+  {
+   "ref": "1",
+   "street": "проспект Академіка Глушкова",
+   "alongM": 111,
+   "wheelchair": "yes"
+  },
+  {
+   "ref": "2",
+   "street": "проспект Академіка Глушкова",
+   "alongM": 113,
+   "wheelchair": "yes"
+  },
+  {
+   "ref": "3",
+   "street": "проспект Академіка Глушкова",
+   "alongM": -92,
+   "wheelchair": "yes"
+  }
+ ],
+ "klovska": [
+  {
+   "ref": "1",
+   "street": "вулиця Мечникова",
+   "alongM": -35,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "2",
+   "street": "вулиця Мечникова",
+   "alongM": -88,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "3",
+   "street": "вулиця Мечникова",
+   "alongM": -80,
+   "wheelchair": "no"
+  }
+ ],
+ "shuliavska": [
+  {
+   "ref": null,
+   "street": "Берестейський проспект",
+   "alongM": 9,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Берестейський проспект",
+   "alongM": -16,
+   "wheelchair": null
+  }
+ ],
+ "pecherska": [
+  {
+   "ref": "1",
+   "street": "вулиця Генерала Алмазова",
+   "alongM": -6,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "2",
+   "street": "площа Лесі Українки",
+   "alongM": 26,
+   "wheelchair": "no"
+  }
+ ],
+ "zhytomyrska": [
+  {
+   "ref": "1",
+   "street": "вулиця Мирослава Поповича",
+   "alongM": -93,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "2",
+   "street": "Берестейський проспект",
+   "alongM": -50,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "3",
+   "street": "Берестейський проспект",
+   "alongM": -101,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "4",
+   "street": "Берестейський проспект",
+   "alongM": -63,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "5",
+   "street": "Берестейський проспект",
+   "alongM": -120,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "6",
+   "street": "Берестейський проспект",
+   "alongM": 35,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "7",
+   "street": "Берестейський проспект",
+   "alongM": 69,
+   "wheelchair": "no"
+  }
+ ],
+ "heroiv-dnipra": [
+  {
+   "ref": null,
+   "street": "Оболонський проспект",
+   "alongM": 34,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Оболонський проспект",
+   "alongM": 34,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Оболонський проспект",
+   "alongM": -5,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Оболонський проспект",
+   "alongM": -5,
+   "wheelchair": "no"
+  }
+ ],
+ "politekhnichnyi-instytut": [
+  {
+   "ref": null,
+   "street": "Берестейський проспект",
+   "alongM": 6,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "Політехнічний провулок",
+   "alongM": 15,
+   "wheelchair": "no"
+  }
+ ],
+ "chernihivska": [
+  {
+   "ref": "1",
+   "street": "вулиця Гната Хоткевича",
+   "alongM": -30,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "1",
+   "street": "вулиця Гната Хоткевича",
+   "alongM": -30,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "2",
+   "street": "вулиця Гната Хоткевича",
+   "alongM": 25,
+   "wheelchair": "no"
+  },
+  {
+   "ref": "2",
+   "street": "вулиця Гната Хоткевича",
+   "alongM": 25,
+   "wheelchair": "no"
+  }
+ ],
+ "syrets": [
+  {
+   "ref": null,
+   "street": "вулиця Щусєва",
+   "alongM": -13,
+   "wheelchair": "no"
+  },
+  {
+   "ref": null,
+   "street": "вулиця Щусєва",
+   "alongM": -7,
+   "wheelchair": "no"
+  }
+ ]
+}

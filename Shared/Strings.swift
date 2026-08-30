@@ -134,6 +134,16 @@ enum L10n {
     static var mapReset: String { tr("Скинути", "Reset") }
     static var mapHintFrom: String { tr("Торкніться станції відправлення", "Tap your departure station") }
     static var mapHintTo: String { tr("Тепер — станцію призначення", "Now tap your destination") }
+    // Виходи зі станції (дані OSM)
+    static func exitsOn(_ station: String) -> String { tr("Виходи — \(station)", "Exits — \(station)") }
+    static func exitRef(_ n: String) -> String { tr("Вихід \(n)", "Exit \(n)") }
+    static var exitNoRef: String { tr("Вихід", "Exit") }
+    static var exitCarsFirst: String { tr("перші вагони", "front cars") }
+    static var exitCarsLast: String { tr("останні вагони", "rear cars") }
+    static var exitCarsMiddle: String { tr("середина потяга", "middle of the train") }
+    static var exitsFootnote: String {
+        tr("Орієнтовно · дані © OpenStreetMap", "Approximate · data © OpenStreetMap")
+    }
     static var rateApp: String { tr("Оцінити в App Store", "Rate on the App Store") }
     static var rateAppNote: String {
         tr("Оцінки допомагають іншим пасажирам знайти застосунок.", "Ratings help other riders find the app.")

@@ -1,0 +1,57 @@
+import Foundation
+
+// Виходи зі станцій: дані © OpenStreetMap contributors (ODbL), збірка —
+// Scripts/build_exits.py. Все офлайн: вулиці геокодовано на етапі збірки,
+// застосунок лише читає готовий JSON із бандла.
+struct StationExit: Codable, Hashable {
+    let ref: String?            // офіційний номер виходу з табличок (як в OSM)
+    let street: String?         // найближча іменована вулиця
+    let alongM: Int             // метри вздовж осі платформи у «forward»-напрямку лінії
+    let wheelchair: String?     // yes / no / limited — як в OSM
+
+    // Далі за ~60 м від центру платформи — це вже перехід або окремий
+    // вестибюль: підказка про вагони там радше збреше, ніж допоможе.
+    static let carHintLimitM = 60
+}
+
+// Порада «в які вагони сідати», розгорнута відносно напрямку ЦІЄЇ поїздки.
+enum CarPosition: Equatable {
+    case first, middle, last
+
+    init?(alongM: Int, travellingForward: Bool) {
+        let along = travellingForward ? alongM : -alongM
+        guard abs(along) <= StationExit.carHintLimitM else { return nil }
+        // Голова поїзда — куди він їде: додатний along у напрямку руху.
+        if along > 20 { self = .first }
+        else if along < -20 { self = .last }
+        else { self = .middle }
+    }
+}
+
+final class ExitStore {
+    static let shared = ExitStore()
+
+    private let byStation: [String: [StationExit]]
+
+    private init() {
+        guard let url = Bundle.main.url(forResource: "kyiv_exits", withExtension: "json"),
+              let data = try? Data(contentsOf: url),
+              let decoded = try? JSONDecoder().decode([String: [StationExit]].self, from: data)
+        else {
+            // Відсутність довідника не має валити поїздку: функція просто зникає.
+            byStation = [:]
+            return
+        }
+        byStation = decoded
+    }
+
+    // Виходи станції без дублів: у великих вестибюлів по кілька дверей одного
+    // виходу — пасажиру потрібен список виходів, а не список дверей.
+    func exits(for stationId: String) -> [StationExit] {
+        var seen = Set<String>()
+        return (byStation[stationId] ?? []).filter { exit in
+            let key = "\(exit.ref ?? "?")|\(exit.street ?? "?")"
+            return seen.insert(key).inserted
+        }
+    }
+}
