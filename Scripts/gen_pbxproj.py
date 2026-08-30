@@ -20,7 +20,7 @@ TEAM_ID = os.environ.get("MT_TEAM_ID", "JC2G64UQ8N")
 # с тем же номером — а во время беты их будет несколько:
 #   MT_BUILD=2 MT_PAID_TEAM=1 python3 Scripts/gen_pbxproj.py
 # Версию для витрины (1.0) меняем руками здесь же, когда пойдёт 1.1.
-MARKETING_VERSION = "1.0"
+MARKETING_VERSION = "1.1"
 BUILD_NUMBER = os.environ.get("MT_BUILD", "1")
 
 SHARED = [
@@ -46,12 +46,16 @@ APP_SRC = [
     "App/Views/CalibrationView.swift",
     "App/Views/TripLogView.swift",
     "App/Views/AboutView.swift",
+    "App/Views/ReminderSheet.swift",
+    "App/Views/MetroMapView.swift",
+    "App/Views/MetroMapLayout.swift",
     "App/Services/MotionRecorder.swift",
     "App/Services/LocationRecorder.swift",
     "App/Services/CalibrationViewModel.swift",
     "App/Services/LocationCorrector.swift",
     "App/Services/NotificationPresenter.swift",
     "App/Services/AlertService.swift",
+    "App/Services/ReminderService.swift",
     "App/Services/Shortcuts.swift",
 ]
 WIDGET_SRC = ["Widget/MetroActivityWidget.swift"]
@@ -62,7 +66,8 @@ APP_RES = ["App/Resources/kyiv_metro.json", "App/Resources/uk.lproj",
 # файла в бандле. 48 КБ — дешевле, чем крэш расширения в чужих руках.
 WIDGET_RES = ["Widget/PrivacyInfo.xcprivacy", "App/Resources/kyiv_metro.json"]
 TEST_SRC = ["Tests/PlannerTests.swift", "Tests/DataTests.swift", "Tests/ScheduleTests.swift",
-            "Tests/LocalizationTests.swift", "Tests/RouteTests.swift"]
+            "Tests/LocalizationTests.swift", "Tests/RouteTests.swift", "Tests/MapLayoutTests.swift",
+]
 OTHER = ["App/Info.plist", "App/MetroTimer.entitlements", "Widget/Info.plist"]
 
 for p in SHARED + APP_SRC + WIDGET_SRC + TEST_SRC + APP_RES + WIDGET_RES + OTHER:

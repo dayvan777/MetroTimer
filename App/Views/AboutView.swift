@@ -102,6 +102,12 @@ struct AboutView: View {
                     .font(.footnote)
                 }
 
+                Section(L10n.aboutAlertFAQTitle) {
+                    Text(L10n.aboutAlertFAQBody)
+                        .font(.callout)
+                        .foregroundColor(.secondary)
+                }
+
                 Section(L10n.aboutPrivacyTitle) {
                     Text(L10n.aboutPrivacyBody)
                         .font(.subheadline)
@@ -109,6 +115,18 @@ struct AboutView: View {
                     NavigationLink(L10n.aboutPrivacyFull) {
                         PrivacyPolicyView()
                     }
+                }
+
+                Section {
+                    // Прямий лінк на форму відгуку. Автоматичний запит оцінки має
+                    // суворі ворота (3 поїздки, медіана ≤ 30 с) — а це двері для тих,
+                    // хто хоче сказати щось сам, у будь-який момент.
+                    Link(destination: URL(string:
+                        "itms-apps://itunes.apple.com/app/id6804173309?action=write-review")!) {
+                        Label(L10n.rateApp, systemImage: "star")
+                    }
+                } footer: {
+                    Text(L10n.rateAppNote)
                 }
 
                 Section {

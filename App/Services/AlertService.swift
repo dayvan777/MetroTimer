@@ -126,8 +126,13 @@ final class AlertService: ObservableObject {
             // поза поїздкою для цього є спеціалізовані застосунки.
             // .unknown (щойно відкрили застосунок) не рахується за початок:
             // тривога могла тривати вже годину.
-            if newState == .alert, wasQuiet, TripEngine.shared.trip != nil {
-                Self.notifyAlertStarted()
+            if newState == .alert, wasQuiet, let trip = TripEngine.shared.trip {
+                // Маршрут із наземною ділянкою отримує предметний текст:
+                // що саме тривога означає для ЦІЄЇ поїздки.
+                let surface = trip.events.contains {
+                    MetroRepository.shared.station(id: $0.stationId)?.isSurface == true
+                }
+                Self.notifyAlertStarted(surfaceRoute: surface)
             }
         }
     }
@@ -147,10 +152,10 @@ final class AlertService: ObservableObject {
         return active
     }
 
-    private static func notifyAlertStarted() {
+    private static func notifyAlertStarted(surfaceRoute: Bool) {
         let content = UNMutableNotificationContent()
         content.title = L10n.alertNotifTitle
-        content.body = L10n.alertNotifBody
+        content.body = surfaceRoute ? L10n.alertNotifBodySurface : L10n.alertNotifBody
         content.sound = .default
         content.interruptionLevel = .timeSensitive
         let request = UNNotificationRequest(

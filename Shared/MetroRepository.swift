@@ -40,6 +40,7 @@ final class MetroRepository {
     }
 
     var lines: [Line] { data.lines }
+    var transfers: [Transfer] { data.transfers }
 
     func line(id: String) -> Line? {
         data.lines.first(where: { $0.id == id })

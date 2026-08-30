@@ -15,6 +15,8 @@ struct SelectionView: View {
     @State private var toId: String?
     @State private var showRouteError = false
     @State private var showNotifExplain = false
+    @State private var reminderRoute: RecentTrip?
+    @State private var showMap = false
     @State private var showCalibration = false
     @State private var showJournal = false
     @State private var showAbout = false
@@ -72,6 +74,12 @@ struct SelectionView: View {
                     .accessibilityLabel(L10n.aboutMenu)
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
+                    Button { showMap = true } label: {
+                        Image(systemName: "map")
+                    }
+                    .accessibilityLabel(L10n.mapOpen)
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
                     if fromId != nil || toId != nil {
                         Button(L10n.reset) {
                             animated {
@@ -86,7 +94,18 @@ struct SelectionView: View {
             .sheet(isPresented: $showCalibration) { CalibrationView() }
             .sheet(isPresented: $showJournal) { TripLogView() }
             .sheet(isPresented: $showAbout) { AboutView() }
+            .fullScreenCover(isPresented: $showMap) {
+                MetroMapView(fromId: $fromId, toId: $toId) {
+                    // Кнопка «Поїхали» на мапі — той самий шлях, що й головна:
+                    // момент натискання = точка прив'язки розрахунку.
+                    requestStart()
+                }
+                .environmentObject(engine)
+            }
             .sheet(isPresented: $showOnboarding) { OnboardingView() }
+            .sheet(item: $reminderRoute) { route in
+                ReminderSheet(route: route)
+            }
             .alert(L10n.routeError, isPresented: $showRouteError) {
                 Button("OK", role: .cancel) {}
             } message: {
@@ -294,6 +313,11 @@ struct SelectionView: View {
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
+                if station.isSurface {
+                    Text(L10n.surfaceStationTag)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
                 Spacer()
                 if let marker {
                     // Цвет в этом приложении всегда означает линию — вкладки,
@@ -400,6 +424,7 @@ struct SelectionView: View {
                 }
                 if let plan {
                     Text([L10n.routeMinutes(plan.minutes),
+                          L10n.routeStops(plan.stops),
                           plan.transfer.map(L10n.routeTransfer),
                           plan.headway.map(L10n.routeInterval)]
                         .compactMap { $0 }.joined(separator: " · "))
@@ -458,7 +483,7 @@ struct SelectionView: View {
     }
 
     // Тот же планировщик, что и при старте: превью не расходится с фактом.
-    private func plannedPreview() -> (minutes: Int, transfer: String?, hasSurface: Bool,
+    private func plannedPreview() -> (minutes: Int, stops: Int, transfer: String?, hasSurface: Bool,
                                       serviceIssue: ServiceIssue?, headway: Int?)? {
         #if DEBUG
         // Сдвиг «зараз» для проверки часов работы: -MTPreviewOffset <секунды>.
@@ -485,7 +510,8 @@ struct SelectionView: View {
             }
             break
         }
-        return (minutes, trip.events.first(where: \.isTransfer)?.displayName, hasSurface,
+        return (minutes, trip.stopsRemaining(at: trip.startDate),
+                trip.events.first(where: \.isTransfer)?.displayName, hasSurface,
                 TripPlanner.serviceIssue(for: trip, repo: repo), headway)
     }
 
@@ -573,6 +599,15 @@ struct SelectionView: View {
             } label: {
                 Label(pinned ? L10n.unpinRoute : L10n.pinRoute,
                       systemImage: pinned ? "star.slash" : "star")
+            }
+            if pinned {
+                // Нагадування має сенс лише для закріпленого: знявши зірку,
+                // людина знімає і розклад (див. togglingFavorite).
+                Button {
+                    reminderRoute = recent
+                } label: {
+                    Label(L10n.reminderMenu, systemImage: "bell")
+                }
             }
         }
     }

@@ -8,6 +8,8 @@ struct MetroTimerApp: App {
     init() {
         // Делегат должен стоять до окончания запуска — иначе foreground-показ не работает.
         NotificationPresenter.shared.install()
+        // Категория с кнопкой «Поїхали» — тоже до конца запуска.
+        ReminderService.registerCategory()
     }
 
     var body: some Scene {
@@ -38,6 +40,8 @@ struct MetroTimerApp: App {
         engine.refresh()
         // Тривоги опитуємо лише поки застосунок відкритий.
         AlertService.shared.startIfEnabled()
+        // Розклад нагадувань синхронізуємо з книжкою маршрутів (ідемпотентно).
+        ReminderService.shared.resync()
     }
 }
 

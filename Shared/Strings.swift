@@ -92,6 +92,52 @@ enum L10n {
     static var alertsQuiet: String { tr("Тривоги немає", "No alert") }
     static var alertsUnknown: String { tr("Статус невідомий", "Status unknown") }
     static var alertNotifTitle: String { tr("Повітряна тривога в Києві", "Air-raid alert in Kyiv") }
+    // Коли тривога застала активну поїздку з наземною ділянкою, загальний текст
+    // «почалася тривога» марний: людині треба знати, що це означає для ЇЇ маршруту.
+    static var alertNotifBodySurface: String {
+        tr("Ваш маршрут має наземну ділянку — поїзди там зараз не курсують. Відлік може відставати: за потреби «+1 зупинка».",
+           "Your route has an above-ground section — trains are not running there right now. The countdown may fall behind; use “+1 stop” if needed.")
+    }
+    static var surfaceStationTag: String { tr("наземна", "above ground") }
+    static var aboutAlertFAQTitle: String { tr("Що відбувається під час тривоги?", "What happens during an alert?") }
+    static var aboutAlertFAQBody: String {
+        tr("Підземні станції працюють як укриття. Наземними ділянками (лівий берег червоної лінії, «Видубичі» та «Славутич» на зеленій) поїзди під час тривоги не курсують. Застосунок попереджає про це на маршруті та під час поїздки — якщо ввімкнено показ тривог.",
+           "Underground stations serve as shelters. Above-ground sections (the left-bank part of the red line, Vydubychi and Slavutych on the green line) have no service during an alert. The app warns about this on the route preview and during the trip — when alerts are enabled.")
+    }
+    // Кількість зупинок у резюме маршруту — та сама семантика, що в острові:
+    // stopsRemaining на момент старту.
+    static func routeStops(_ n: Int) -> String {
+        let form: String
+        if n % 10 == 1 && n % 100 != 11 { form = "зупинка" }
+        else if (2...4).contains(n % 10) && !(12...14).contains(n % 100) { form = "зупинки" }
+        else { form = "зупинок" }
+        return tr("\(n) \(form)", n == 1 ? "1 stop" : "\(n) stops")
+    }
+    static var reminderMenu: String { tr("Нагадування…", "Reminder…") }
+    static var reminderTitle: String { tr("Нагадування", "Reminder") }
+    static var reminderNotifTitle: String { tr("Час у метро?", "Time for the metro?") }
+    static var reminderGo: String { tr("Поїхали", "Go") }
+    static var reminderTime: String { tr("Час", "Time") }
+    static var reminderSave: String { tr("Зберегти", "Save") }
+    static var reminderRemove: String { tr("Прибрати нагадування", "Remove reminder") }
+    static var reminderFooter: String {
+        tr("Локальне сповіщення у вибрані дні. Відлік стартує лише коли ви натиснете «Поїхали» — у сповіщенні або в застосунку.",
+           "A local notification on the days you pick. The countdown starts only when you tap “Go” — in the notification or in the app.")
+    }
+    static var reminderNeedsPermission: String {
+        tr("Потрібен дозвіл на сповіщення — увімкніть його в Параметрах iOS.",
+           "Notifications permission is required — enable it in iOS Settings.")
+    }
+    static var mapTitle: String { tr("Схема", "Map") }
+    static var mapOpen: String { tr("Схема метро", "Metro map") }
+    static var mapClose: String { tr("Закрити", "Close") }
+    static var mapReset: String { tr("Скинути", "Reset") }
+    static var mapHintFrom: String { tr("Торкніться станції відправлення", "Tap your departure station") }
+    static var mapHintTo: String { tr("Тепер — станцію призначення", "Now tap your destination") }
+    static var rateApp: String { tr("Оцінити в App Store", "Rate on the App Store") }
+    static var rateAppNote: String {
+        tr("Оцінки допомагають іншим пасажирам знайти застосунок.", "Ratings help other riders find the app.")
+    }
     static var alertNotifBody: String {
         tr("Наземними ділянками поїзди не курсують — відлік може відставати.",
            "Trains do not run on above-ground sections — the countdown may fall behind.")

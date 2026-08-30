@@ -5,9 +5,23 @@ import Foundation
 // лежить не в UserDefaults (той потрапляє в резервні копії завжди), а в
 // зашифрованому файлі, виключеному з бекапів, — за тим самим правилом, що
 // журнал поїздок і калібрування.
+// Модель нагадування лежить у Shared: RouteBook (спільний із віджетом код)
+// мусить її бачити, а UN-логіка лишається в застосунку (ReminderService).
+struct RouteReminder: Codable, Equatable, Hashable {
+    // Calendar.weekday: 1 = неділя … 7 = субота.
+    var weekdays: Set<Int>
+    var hour: Int
+    var minute: Int
+}
+
 struct RouteBook: Codable, Equatable {
     var favorites: [RecentTrip] = []
     var recents: [RecentTrip] = []
+    // Нагадування живуть поруч із маршрутами не випадково: «щобудня о 8:15
+    // з Оболоні» — такий самий чутливий факт, як і сам маршрут, тож і захист
+    // у нього той самий (шифрований файл поза бекапами). Optional — щоб файли
+    // версії 1.0 декодувалися без міграції.
+    var reminders: [String: RouteReminder]? = nil
 
     // Шість закріплених покривають «додому/на роботу» всієї родини; довший
     // ряд чипів перестає читатися одним поглядом.
@@ -32,6 +46,7 @@ struct RouteBook: Codable, Equatable {
         var book = self
         if favorites.contains(route) {
             book.favorites = favorites.filter { $0 != route }
+            book.reminders?[Self.reminderKey(route)] = nil
         } else {
             book.favorites = Array(([route] + favorites).prefix(Self.maxFavorites))
         }
@@ -39,6 +54,20 @@ struct RouteBook: Codable, Equatable {
     }
 
     func isFavorite(_ route: RecentTrip) -> Bool { favorites.contains(route) }
+
+    static func reminderKey(_ route: RecentTrip) -> String { "\(route.fromId)>\(route.toId)" }
+
+    func reminder(for route: RecentTrip) -> RouteReminder? {
+        reminders?[Self.reminderKey(route)]
+    }
+
+    func settingReminder(_ reminder: RouteReminder?, for route: RecentTrip) -> RouteBook {
+        var book = self
+        var map = book.reminders ?? [:]
+        map[Self.reminderKey(route)] = reminder
+        book.reminders = map
+        return book
+    }
 
     // Закріплений маршрут не дублюється серед «останніх»: ряд чипів
     // читається один раз, а не двічі.
@@ -77,6 +106,11 @@ final class RouteStore {
 
     func toggleFavorite(_ route: RecentTrip) {
         book = book.togglingFavorite(route)
+        save()
+    }
+
+    func setReminder(_ reminder: RouteReminder?, for route: RecentTrip) {
+        book = book.settingReminder(reminder, for: route)
         save()
     }
 
