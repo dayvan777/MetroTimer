@@ -10,9 +10,10 @@ import UserNotifications
 final class ReminderService {
     static let shared = ReminderService()
 
-    static let categoryId = "MT_REMINDER"
-    static let actionGoId = "MT_REMINDER_GO"
-    private static let idPrefix = "MT_REMINDER_"
+    // Константи nonisolated: делегат сповіщень читає їх поза головним актором.
+    nonisolated static let categoryId = "MT_REMINDER"
+    nonisolated static let actionGoId = "MT_REMINDER_GO"
+    private nonisolated static let idPrefix = "MT_REMINDER_"
 
     private init() {}
 
@@ -30,16 +31,17 @@ final class ReminderService {
     // Єдина точка правди — RouteBook. Кожен виклик знімає всі наші запити
     // і ставить заново: ідемпотентно, тому можна смикати при кожній активації.
     func resync() {
-        let book = RouteStore.shared.book
-        let center = UNUserNotificationCenter.current()
-        center.getPendingNotificationRequests { pending in
+        Task { @MainActor in
+            let book = RouteStore.shared.book
+            let center = UNUserNotificationCenter.current()
+            // async-версія API замість колбека: без @Sendable-замикань і
+            // без пересилання non-Sendable center між ізоляціями.
+            let pending = await center.pendingNotificationRequests()
             let stale = pending.map(\.identifier).filter { $0.hasPrefix(Self.idPrefix) }
             center.removePendingNotificationRequests(withIdentifiers: stale)
-            Task { @MainActor in
-                for route in book.favorites {
-                    guard let reminder = book.reminder(for: route) else { continue }
-                    Self.schedule(reminder, for: route)
-                }
+            for route in book.favorites {
+                guard let reminder = book.reminder(for: route) else { continue }
+                Self.schedule(reminder, for: route)
             }
         }
     }
