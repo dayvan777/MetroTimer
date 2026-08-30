@@ -28,7 +28,10 @@ struct MetroMapView: View {
         NavigationStack {
             GeometryReader { geo in
                 canvas(in: geo.size)
-                    .background(Color(red: 0.05, green: 0.055, blue: 0.07))
+                    .background(
+                        LinearGradient(colors: [Color(red: 0.055, green: 0.06, blue: 0.082),
+                                                Color(red: 0.03, green: 0.033, blue: 0.045)],
+                                       startPoint: .top, endPoint: .bottom))
                     .contentShape(Rectangle())
                     .onTapGesture(count: 2) {
                         withAnimation(.easeInOut(duration: 0.25)) {
@@ -81,20 +84,38 @@ struct MetroMapView: View {
             ctx.translateBy(x: effectiveOffset.width, y: effectiveOffset.height)
             ctx.scaleBy(x: effectiveScale, y: effectiveScale)
 
+            drawPaperGrid(&ctx)
             drawRiver(&ctx)
+            drawHeading(&ctx)
             let dimmed = route != nil
             for line in repo.lines {
                 drawLine(line, in: &ctx, route: route, dimmed: dimmed)
             }
             drawTransfers(&ctx, route: route)
+            if route == nil { drawLineBadges(&ctx) }
             for line in repo.lines {
                 for stationId in line.stationIds {
                     drawStation(stationId, line: line, in: &ctx,
                                 route: route, dimmed: dimmed,
                                 labelsVisible: effectiveScale >= Self.labelScale,
-                                fontSize: min(34, max(6, 14 / effectiveScale)))
+                                fontSize: min(36, max(7, 15.5 / effectiveScale)))
                 }
             }
+        }
+    }
+
+    // Точкова сітка: «папір», на якому надруковано схему.
+    private func drawPaperGrid(_ ctx: inout GraphicsContext) {
+        let step: CGFloat = 52
+        var x: CGFloat = 28
+        while x < MetroMapLayout.canvasSize.width {
+            var y: CGFloat = 28
+            while y < MetroMapLayout.canvasSize.height {
+                ctx.fill(Path(ellipseIn: CGRect(x: x, y: y, width: 2.2, height: 2.2)),
+                         with: .color(.white.opacity(0.045)))
+                y += step
+            }
+            x += step
         }
     }
 
@@ -104,8 +125,32 @@ struct MetroMapView: View {
         path.addCurve(to: MetroMapLayout.riverEnd,
                       control1: MetroMapLayout.riverControl1,
                       control2: MetroMapLayout.riverControl2)
-        ctx.stroke(path, with: .color(Color(red: 0.16, green: 0.24, blue: 0.36).opacity(0.55)),
+        // Дві напівпрозорі стрічки замість однієї: м'який «акварельний» берег.
+        ctx.stroke(path, with: .color(Color(red: 0.15, green: 0.25, blue: 0.42).opacity(0.30)),
+                   style: StrokeStyle(lineWidth: MetroMapLayout.riverWidth * 1.9, lineCap: .round))
+        ctx.stroke(path, with: .color(Color(red: 0.18, green: 0.30, blue: 0.50).opacity(0.35)),
                    style: StrokeStyle(lineWidth: MetroMapLayout.riverWidth, lineCap: .round))
+        // Підпис уздовж течії.
+        ctx.drawLayer { layer in
+            layer.translateBy(x: 742, y: 236)
+            layer.rotate(by: .degrees(83))
+            layer.draw(Text("Д Н І П Р О")
+                        .font(.system(size: 15, weight: .medium).italic())
+                        .foregroundColor(Color(red: 0.45, green: 0.58, blue: 0.78).opacity(0.5)),
+                       at: .zero, anchor: .leading)
+        }
+    }
+
+    // Шапка схеми — скромна, без претензій на офіційність.
+    private func drawHeading(_ ctx: inout GraphicsContext) {
+        ctx.draw(Text("МЕТРО · КИЇВ")
+                    .font(.system(size: 30, weight: .heavy))
+                    .foregroundColor(.white.opacity(0.92)),
+                 at: CGPoint(x: 64, y: 64), anchor: .topLeading)
+        ctx.draw(Text("3 лінії · 52 станції")
+                    .font(.system(size: 15, weight: .medium))
+                    .foregroundColor(.white.opacity(0.4)),
+                 at: CGPoint(x: 64, y: 102), anchor: .topLeading)
     }
 
     private func drawLine(_ line: Line, in ctx: inout GraphicsContext,
@@ -121,10 +166,15 @@ struct MetroMapView: View {
             let surface = repo.station(id: a)?.isSurface == true
                        && repo.station(id: b)?.isSurface == true
             // Під час тривоги наземні перегони гаснуть пунктиром: там не курсують.
-            let style = StrokeStyle(lineWidth: onRoute ? 9 : 7,
+            let width: CGFloat = onRoute ? 13 : 10
+            let style = StrokeStyle(lineWidth: width,
                                     lineCap: .round,
-                                    dash: alertActive && surface ? [4, 8] : [])
-            let opacity: Double = dimmed && !onRoute ? 0.22 : 1
+                                    dash: alertActive && surface ? [5, 10] : [])
+            let opacity: Double = dimmed && !onRoute ? 0.2 : 1
+            // Темна «канва» під стрічкою — ефект друкованої схеми.
+            ctx.stroke(segment, with: .color(Color(red: 0.03, green: 0.033, blue: 0.045)
+                        .opacity(dimmed && !onRoute ? 0.3 : 0.9)),
+                       style: StrokeStyle(lineWidth: width + 5, lineCap: .round))
             ctx.stroke(segment, with: .color(color.opacity(opacity)), style: style)
         }
     }
@@ -138,9 +188,12 @@ struct MetroMapView: View {
             path.addLine(to: pb)
             let onRoute = route?.contains(transfer.fromId) == true
                        && route?.contains(transfer.toId) == true
-            let opacity: Double = route != nil && !onRoute ? 0.25 : 0.9
+            let opacity: Double = route != nil && !onRoute ? 0.22 : 0.92
+            ctx.stroke(path, with: .color(Color(red: 0.03, green: 0.033, blue: 0.045)
+                        .opacity(0.9)),
+                       style: StrokeStyle(lineWidth: 10, lineCap: .round))
             ctx.stroke(path, with: .color(.white.opacity(opacity)),
-                       style: StrokeStyle(lineWidth: 4, dash: [1, 6], dashPhase: 3))
+                       style: StrokeStyle(lineWidth: 6, lineCap: .round))
         }
     }
 
@@ -156,23 +209,29 @@ struct MetroMapView: View {
         let isEndpoint = stationId == fromId || stationId == toId
         let faded = dimmed && !onRoute
 
-        // Точка: кільце в колір лінії; наземна — з подвійним обведенням.
-        let radius: CGFloat = isEndpoint ? 11 : 6.5
+        // «Бусина»: біла серцевина з обводкою в колір лінії — канон друкованих
+        // схем. Пересадкова — більша; A/B — залитий кольором пін із літерою.
+        let isTransfer = isTransferStation(stationId)
+        let radius: CGFloat = isEndpoint ? 13 : (isTransfer ? 8.5 : 6)
         let dot = Path(ellipseIn: CGRect(x: point.x - radius, y: point.y - radius,
                                          width: radius * 2, height: radius * 2))
-        ctx.fill(dot, with: .color(Color(red: 0.05, green: 0.055, blue: 0.07)))
-        ctx.stroke(dot, with: .color(color.opacity(faded ? 0.25 : 1)),
-                   lineWidth: isEndpoint ? 5 : 3.5)
-        if station.isSurface {
-            let halo = Path(ellipseIn: CGRect(x: point.x - radius - 4, y: point.y - radius - 4,
-                                              width: (radius + 4) * 2, height: (radius + 4) * 2))
-            ctx.stroke(halo, with: .color(color.opacity(faded ? 0.15 : 0.45)), lineWidth: 1.2)
-        }
         if isEndpoint {
+            ctx.fill(dot, with: .color(color))
+            ctx.stroke(dot, with: .color(.white), lineWidth: 3.5)
             let marker = stationId == fromId ? "A" : "B"
-            ctx.draw(Text(marker).font(.system(size: min(24, max(6, 13 / currentScale)), weight: .black))
+            ctx.draw(Text(marker).font(.system(size: 15, weight: .black))
                         .foregroundColor(.white),
                      at: CGPoint(x: point.x, y: point.y))
+        } else {
+            ctx.fill(dot, with: .color(.white.opacity(faded ? 0.35 : 0.96)))
+            ctx.stroke(dot, with: .color(color.opacity(faded ? 0.3 : 1)),
+                       lineWidth: isTransfer ? 4 : 3.2)
+        }
+        if station.isSurface {
+            let halo = Path(ellipseIn: CGRect(x: point.x - radius - 4.5, y: point.y - radius - 4.5,
+                                              width: (radius + 4.5) * 2, height: (radius + 4.5) * 2))
+            ctx.stroke(halo, with: .color(color.opacity(faded ? 0.15 : 0.5)),
+                       style: StrokeStyle(lineWidth: 1.4, dash: [3, 3.5]))
         }
 
         // На оглядовому зумі тісний центральний вузол підписуємо ОДИН раз —
@@ -184,10 +243,10 @@ struct MetroMapView: View {
             || isEndpoint
         guard showLabel else { return }
         let name = station.localizedName
-        let opacity: Double = faded ? 0.3 : (labelsVisible ? 0.95 : 0.8)
+        let opacity: Double = faded ? 0.3 : (labelsVisible ? 0.97 : 0.85)
         let text = Text(name)
             .font(.system(size: fontSize,
-                          weight: isEndpoint || isTransferStation(stationId) ? .bold : .medium))
+                          weight: isEndpoint || isTransfer ? .bold : .semibold))
             .foregroundColor(.white.opacity(opacity))
         switch spot?.label ?? .right {
         case .right:
@@ -225,6 +284,32 @@ struct MetroMapView: View {
         ctx.draw(resolved, at: point, anchor: anchor)
     }
 
+    // Кружечки «М1/М2/М3» біля кінцевих: миттєво зрозуміло, який промінь чий.
+    private func drawLineBadges(_ ctx: inout GraphicsContext) {
+        for line in repo.lines {
+            guard let firstId = line.stationIds.first, let lastId = line.stationIds.last,
+                  let first = MetroMapLayout.point(firstId),
+                  let afterFirst = line.stationIds.dropFirst().first
+                    .flatMap(MetroMapLayout.point),
+                  let last = MetroMapLayout.point(lastId),
+                  let beforeLast = line.stationIds.dropLast().last
+                    .flatMap(MetroMapLayout.point) else { continue }
+            let color = Color(hex: line.colorHex)
+            let name = line.id.uppercased()
+            for (end, prev) in [(first, afterFirst), (last, beforeLast)] {
+                let dx = end.x - prev.x, dy = end.y - prev.y
+                let len = max(1, (dx * dx + dy * dy).squareRoot())
+                let center = CGPoint(x: end.x + dx / len * 34, y: end.y + dy / len * 34)
+                let badge = Path(ellipseIn: CGRect(x: center.x - 13, y: center.y - 13,
+                                                   width: 26, height: 26))
+                ctx.fill(badge, with: .color(color))
+                ctx.draw(Text(name).font(.system(size: 12.5, weight: .heavy))
+                            .foregroundColor(.white),
+                         at: center)
+            }
+        }
+    }
+
     private func isTransferStation(_ id: String) -> Bool {
         repo.transfers.contains { $0.fromId == id || $0.toId == id }
     }
@@ -252,8 +337,10 @@ struct MetroMapView: View {
 
     private func fitIfNeeded(in viewSize: CGSize) {
         guard scale == 0, viewSize.width > 0, viewSize.height > 0 else { return }
-        let fit = min(viewSize.width / MetroMapLayout.canvasSize.width,
-                      viewSize.height / MetroMapLayout.canvasSize.height)
+        // Поля з боків: підписи кінцевих і бейджі ліній виступають за холст.
+        let padX: CGFloat = 150, padY: CGFloat = 60
+        let fit = min(viewSize.width / (MetroMapLayout.canvasSize.width + padX * 2),
+                      viewSize.height / (MetroMapLayout.canvasSize.height + padY * 2))
         scale = fit
         offset = CGSize(
             width: (viewSize.width - MetroMapLayout.canvasSize.width * fit) / 2,
