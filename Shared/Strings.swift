@@ -138,11 +138,14 @@ enum L10n {
     static func exitsOn(_ station: String) -> String { tr("Виходи — \(station)", "Exits — \(station)") }
     static func exitRef(_ n: String) -> String { tr("Вихід \(n)", "Exit \(n)") }
     static var exitNoRef: String { tr("Вихід", "Exit") }
-    static var exitCarsFirst: String { tr("перші вагони", "front cars") }
-    static var exitCarsLast: String { tr("останні вагони", "rear cars") }
-    static var exitCarsMiddle: String { tr("середина потяга", "middle of the train") }
+    // Формулювання «куди йти», а не «де сідати»: картка з'являється, коли
+    // людина вже їде і зараз вставатиме — їй потрібен напрямок на платформі.
+    static var exitCarsFirst: String { tr("попереду поїзда", "at the front of the train") }
+    static var exitCarsLast: String { tr("у хвості поїзда", "at the rear of the train") }
+    static var exitCarsMiddle: String { tr("посередині", "in the middle") }
     static var exitsFootnote: String {
-        tr("Орієнтовно · дані © OpenStreetMap", "Approximate · data © OpenStreetMap")
+        tr("Напрямки — за рухом вашого поїзда · орієнтовно · © OpenStreetMap",
+           "Directions follow your train's travel · approximate · © OpenStreetMap")
     }
     static var rateApp: String { tr("Оцінити в App Store", "Rate on the App Store") }
     static var rateAppNote: String {
