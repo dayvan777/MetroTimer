@@ -35,6 +35,17 @@ final class DataTests: XCTestCase {
         XCTAssertGreaterThan(total, 200, "датасет підозріло малий: \(total)")
     }
 
+    func testDirectionalHintsGating() {
+        // Глибокі станції з одним вестибюлем — без напрямків: «Арсенальна»
+        // збрехала б «посередині». Мілкі з виходами в обох торцях — з ними.
+        XCTAssertFalse(ExitStore.shared.directionalHintsAllowed(for: "arsenalna"))
+        XCTAssertFalse(ExitStore.shared.directionalHintsAllowed(for: "khreshchatyk"))
+        XCTAssertFalse(ExitStore.shared.directionalHintsAllowed(for: "universytet"))
+        XCTAssertTrue(ExitStore.shared.directionalHintsAllowed(for: "pozniaky"))
+        XCTAssertTrue(ExitStore.shared.directionalHintsAllowed(for: "obolon"))
+        XCTAssertTrue(ExitStore.shared.directionalHintsAllowed(for: "akademmistechko"))
+    }
+
     func testCarPositionRespectsTravelDirection() {
         // Вихід у «голові» forward-осі: їдемо forward → перші вагони,
         // їдемо назад → останні. Далекий перехід — без порад.

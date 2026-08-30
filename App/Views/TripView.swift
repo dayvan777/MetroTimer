@@ -83,6 +83,7 @@ struct TripView: View {
         let exits = ExitStore.shared.exits(for: destId)
         if !exits.isEmpty {
             let forward = arrivalIsForward(trip: trip)
+            let hintsOK = ExitStore.shared.directionalHintsAllowed(for: destId)
             VStack(alignment: .leading, spacing: 6) {
                 Text(L10n.exitsOn(trip.destinationName))
                     .font(.footnote.weight(.semibold))
@@ -98,7 +99,7 @@ struct TripView: View {
                                 .lineLimit(1)
                                 .minimumScaleFactor(0.75)
                         }
-                        if let forward,
+                        if hintsOK, let forward,
                            let cars = CarPosition(alongM: exit.alongM, travellingForward: forward) {
                             Text("· " + carsText(cars))
                                 .font(.caption)
@@ -113,7 +114,7 @@ struct TripView: View {
                         Spacer(minLength: 0)
                     }
                 }
-                Text(L10n.exitsFootnote)
+                Text(hintsOK ? L10n.exitsFootnote : L10n.exitsFootnoteNoDir)
                     .font(.caption2)
                     .foregroundColor(Color.secondary.opacity(0.7))
             }

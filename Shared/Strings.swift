@@ -143,6 +143,9 @@ enum L10n {
     static var exitCarsFirst: String { tr("попереду поїзда", "at the front of the train") }
     static var exitCarsLast: String { tr("у хвості поїзда", "at the rear of the train") }
     static var exitCarsMiddle: String { tr("посередині", "in the middle") }
+    static var exitsFootnoteNoDir: String {
+        tr("Орієнтовно · © OpenStreetMap", "Approximate · © OpenStreetMap")
+    }
     static var exitsFootnote: String {
         tr("Напрямки — за рухом вашого поїзда · орієнтовно · © OpenStreetMap",
            "Directions follow your train's travel · approximate · © OpenStreetMap")
