@@ -8,6 +8,7 @@ struct StationExit: Codable, Hashable {
     let street: String?         // найближча іменована вулиця
     let alongM: Int             // метри вздовж осі платформи у «forward»-напрямку лінії
     let wheelchair: String?     // yes / no / limited — як в OSM
+    let poi: String?            // орієнтир міського масштабу (вокзал, ринок, стадіон)
 
     // Далі за ~60 м від центру платформи — це вже перехід або окремий
     // вестибюль: підказка про вагони там радше збреше, ніж допоможе.
@@ -25,6 +26,39 @@ enum CarPosition: Equatable {
         if along > 20 { self = .first }
         else if along < -20 { self = .last }
         else { self = .middle }
+    }
+}
+
+// Рядок картки: кілька виходів з однаковою підказкою складаються в один —
+// «Виходи 2–4 · проспект Бажана» замість трьох однакових рядків.
+struct ExitRow: Equatable {
+    let refs: [String]
+    let label: String?          // орієнтир (якщо є) або вулиця
+    let cars: CarPosition?
+    let wheelchair: Bool
+
+    static func build(from exits: [StationExit],
+                      hintsAllowed: Bool,
+                      travellingForward: Bool?) -> [ExitRow] {
+        var rows: [ExitRow] = []
+        for exit in exits {
+            let cars: CarPosition? = {
+                guard hintsAllowed, let forward = travellingForward else { return nil }
+                return CarPosition(alongM: exit.alongM, travellingForward: forward)
+            }()
+            let label = exit.poi ?? exit.street
+            let accessible = exit.wheelchair == "yes"
+            if let i = rows.lastIndex(where: { $0.label == label && $0.cars == cars }) {
+                let merged = rows[i]
+                rows[i] = ExitRow(refs: merged.refs + [exit.ref].compactMap { $0 },
+                                  label: label, cars: cars,
+                                  wheelchair: merged.wheelchair || accessible)
+            } else {
+                rows.append(ExitRow(refs: [exit.ref].compactMap { $0 },
+                                    label: label, cars: cars, wheelchair: accessible))
+            }
+        }
+        return rows
     }
 }
 

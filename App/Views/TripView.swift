@@ -84,28 +84,29 @@ struct TripView: View {
         if !exits.isEmpty {
             let forward = arrivalIsForward(trip: trip)
             let hintsOK = ExitStore.shared.directionalHintsAllowed(for: destId)
+            let rows = ExitRow.build(from: exits, hintsAllowed: hintsOK,
+                                     travellingForward: forward)
             VStack(alignment: .leading, spacing: 6) {
                 Text(L10n.exitsOn(trip.destinationName))
                     .font(.footnote.weight(.semibold))
                     .foregroundColor(.secondary)
-                ForEach(Array(exits.prefix(4)), id: \.self) { exit in
+                ForEach(Array(rows.prefix(6).enumerated()), id: \.offset) { _, row in
                     HStack(spacing: 6) {
-                        Text(exit.ref.map(L10n.exitRef) ?? L10n.exitNoRef)
+                        Text(refsTitle(row.refs))
                             .font(.caption.weight(.bold))
                             .foregroundColor(accent)
-                        if let street = exit.street {
-                            Text(street)
+                        if let label = row.label {
+                            Text(label)
                                 .font(.caption)
                                 .lineLimit(1)
                                 .minimumScaleFactor(0.75)
                         }
-                        if hintsOK, let forward,
-                           let cars = CarPosition(alongM: exit.alongM, travellingForward: forward) {
+                        if let cars = row.cars {
                             Text("· " + carsText(cars))
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                         }
-                        if exit.wheelchair == "yes" {
+                        if row.wheelchair {
                             Image(systemName: "figure.roll")
                                 .font(.caption2)
                                 .foregroundColor(.secondary)
@@ -125,6 +126,20 @@ struct TripView: View {
             .padding(.bottom, 4)
             .transition(.move(edge: .bottom).combined(with: .opacity))
         }
+    }
+
+    // «Вихід 2» / «Виходи 2–4» (суцільний ряд) / «Виходи 2, 5».
+    private func refsTitle(_ refs: [String]) -> String {
+        let nums = refs.compactMap { Int($0) }.sorted()
+        if nums.count == refs.count, nums.count > 1 {
+            let consecutive = zip(nums, nums.dropFirst()).allSatisfy { $1 - $0 == 1 }
+            let list = consecutive && nums.count > 2
+                ? "\(nums.first!)–\(nums.last!)"
+                : nums.map(String.init).joined(separator: ", ")
+            return L10n.exitRefs(list)
+        }
+        if let single = refs.first, refs.count == 1 { return L10n.exitRef(single) }
+        return L10n.exitNoRef
     }
 
     private func carsText(_ cars: CarPosition) -> String {

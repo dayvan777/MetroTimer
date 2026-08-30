@@ -408,7 +408,8 @@
    "ref": null,
    "street": "Мінська площа",
    "alongM": 92,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Явір-95"
   },
   {
    "ref": null,
@@ -426,7 +427,8 @@
    "ref": null,
    "street": "Мінська площа",
    "alongM": 70,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Явір-95"
   }
  ],
  "lybidska": [
@@ -548,13 +550,15 @@
    "ref": "2",
    "street": "Броварський проспект",
    "alongM": 82,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Лівобережний ринок"
   },
   {
    "ref": "2",
    "street": "Броварський проспект",
    "alongM": 78,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Лівобережний ринок"
   }
  ],
  "lukianivska": [
@@ -562,13 +566,15 @@
    "ref": "1",
    "street": "Лукʼянівська площа",
    "alongM": -4,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Лук'янівський ринок"
   },
   {
    "ref": "2",
    "street": "Лукʼянівська площа",
    "alongM": -10,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Лук'янівський ринок"
   }
  ],
  "demiivska": [
@@ -748,13 +754,15 @@
    "ref": "1",
    "street": null,
    "alongM": 11,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Київ-Пасажирський"
   },
   {
    "ref": null,
    "street": null,
    "alongM": 2,
-   "wheelchair": null
+   "wheelchair": null,
+   "poi": "Київ-Пасажирський"
   }
  ],
  "vydubychi": [
@@ -800,7 +808,8 @@
    "ref": "1",
    "street": "Броварський проспект",
    "alongM": -86,
-   "wheelchair": "yes"
+   "wheelchair": "yes",
+   "poi": "Базар на Лісовій"
   },
   {
    "ref": "2",
@@ -1006,13 +1015,15 @@
    "ref": null,
    "street": "вулиця Петра Сагайдачного",
    "alongM": -17,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Нижня станція"
   },
   {
    "ref": null,
    "street": "Боричів узвіз",
    "alongM": -99,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Нижня станція"
   }
  ],
  "osokorky": [
@@ -1390,13 +1401,15 @@
    "ref": "1",
    "street": "Набережне шосе",
    "alongM": -28,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Ринок \"Рибалка\""
   },
   {
    "ref": "2",
    "street": "Набережне шосе",
    "alongM": -18,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Ринок \"Рибалка\""
   }
  ],
  "akademmistechko": [

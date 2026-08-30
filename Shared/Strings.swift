@@ -137,6 +137,7 @@ enum L10n {
     // Виходи зі станції (дані OSM)
     static func exitsOn(_ station: String) -> String { tr("Виходи — \(station)", "Exits — \(station)") }
     static func exitRef(_ n: String) -> String { tr("Вихід \(n)", "Exit \(n)") }
+    static func exitRefs(_ list: String) -> String { tr("Виходи \(list)", "Exits \(list)") }
     static var exitNoRef: String { tr("Вихід", "Exit") }
     // Формулювання «куди йти», а не «де сідати»: картка з'являється, коли
     // людина вже їде і зараз вставатиме — їй потрібен напрямок на платформі.

@@ -35,6 +35,30 @@ final class DataTests: XCTestCase {
         XCTAssertGreaterThan(total, 200, "датасет підозріло малий: \(total)")
     }
 
+    func testExitRowsGroupIdenticalHints() {
+        // Три виходи на одну вулицю з однаковою підказкою → один рядок 2–4;
+        // інша вулиця чи інша підказка розривають групу.
+        let exits = [
+            StationExit(ref: "2", street: "проспект", alongM: -33, wheelchair: nil, poi: nil),
+            StationExit(ref: "3", street: "проспект", alongM: -59, wheelchair: "yes", poi: nil),
+            StationExit(ref: "4", street: "проспект", alongM: -31, wheelchair: nil, poi: nil),
+            StationExit(ref: "5", street: "інша", alongM: -40, wheelchair: nil, poi: nil),
+        ]
+        let rows = ExitRow.build(from: exits, hintsAllowed: true, travellingForward: true)
+        XCTAssertEqual(rows.count, 2)
+        XCTAssertEqual(rows[0].refs, ["2", "3", "4"])
+        XCTAssertTrue(rows[0].wheelchair, "доступність групи — «хоч один вихід»")
+        XCTAssertEqual(rows[0].cars, .last)
+        XCTAssertEqual(rows[1].refs, ["5"])
+    }
+
+    func testExitRowPrefersLandmarkOverStreet() {
+        let exits = [StationExit(ref: "1", street: "вулиця", alongM: 0,
+                                 wheelchair: nil, poi: "Центральний вокзал")]
+        let rows = ExitRow.build(from: exits, hintsAllowed: false, travellingForward: nil)
+        XCTAssertEqual(rows[0].label, "Центральний вокзал")
+    }
+
     func testDirectionalHintsGating() {
         // Глибокі станції з одним вестибюлем — без напрямків: «Арсенальна»
         // збрехала б «посередині». Мілкі з виходами в обох торцях — з ними.

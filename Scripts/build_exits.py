@@ -17,9 +17,22 @@ BBOX = "50.30,30.30,50.55,30.75"
 STREET_CLASSES = "primary|secondary|tertiary|residential|pedestrian|unclassified|living_street|trunk"
 
 def overpass(query: str):
+    import time
     data = urllib.parse.urlencode({"data": query}).encode()
-    with urllib.request.urlopen(urllib.request.Request(OVERPASS, data=data), timeout=120) as r:
-        return json.load(r)["elements"]
+    req = urllib.request.Request(OVERPASS, data=data, headers={
+        "User-Agent": "MetroTimer-exits-builder/1.0 (+https://github.com/dayvan777/MetroTimer)"})
+    for attempt in range(5):
+        try:
+            with urllib.request.urlopen(req, timeout=120) as r:
+                return json.load(r)["elements"]
+        except urllib.error.HTTPError as e:
+            if e.code in (429, 504) and attempt < 4:
+                wait = 45 * (attempt + 1)
+                print(f"Overpass {e.code}, чекаю {wait}с…")
+                time.sleep(wait)
+            else:
+                raise
+
 
 def m_xy(lat, lon, lat0):
     return (lon * math.cos(math.radians(lat0)) * 111320, lat * 111320)
@@ -57,6 +70,45 @@ pts = ",".join(f'{e["lat"]:.6f},{e["lon"]:.6f}' for v in matched.values() for e 
 streets = overpass(
     f'[out:json][timeout:90];way["highway"~"^({STREET_CLASSES})$"]["name"]'
     f'(around:80,{pts});out geom tags;')
+
+# Орієнтири біля виходів: лише класи, які впізнають миттєво. Університетські
+# корпуси, лікарні й музеї навмисно пропущені — вони поруч із КОЖНИМ виходом
+# у центрі та перетворюють підказку на шум.
+POI_PRIORITY = ["station", "bus_station", "marketplace", "stadium"]
+pois_raw = overpass(
+    f'[out:json][timeout:90];('
+    f'nwr["railway"="station"]["station"!="subway"]["name"](around:150,{pts});'
+    f'nwr["amenity"="bus_station"]["name"](around:150,{pts});'
+    f'nwr["shop"="mall"]["name"](around:150,{pts});'
+    f'nwr["amenity"="marketplace"]["name"](around:120,{pts});'
+    f'nwr["leisure"="stadium"]["name"](around:150,{pts});'
+    f');out center tags;')
+pois = []
+for p in pois_raw:
+    t = p.get("tags", {})
+    kind = ("station" if t.get("railway") == "station" else
+            t.get("amenity") or t.get("shop") or t.get("leisure"))
+    name = t.get("name", "")
+    lat = p.get("lat") or p.get("center", {}).get("lat")
+    lon = p.get("lon") or p.get("center", {}).get("lon")
+    if kind in POI_PRIORITY and name and 2 < len(name) <= 28 and lat:
+        pois.append({"kind": kind, "name": name, "lat": lat, "lon": lon})
+
+def nearest_poi(lat, lon, station_name=""):
+    best = None
+    sn = norm(station_name)
+    for p in pois:
+        # Ж/д «Святошин» біля метро «Святошин» — тавтологія, не орієнтир.
+        if sn and (norm(p["name"]) == sn or sn in norm(p["name"])):
+            continue
+        d = dist_m(lat, lon, p["lat"], p["lon"])
+        limit = 250 if p["kind"] == "station" else 150 if p["kind"] == "bus_station" else 120
+        if d > limit:
+            continue
+        rank = (POI_PRIORITY.index(p["kind"]), d)
+        if best is None or rank < best[0]:
+            best = (rank, p["name"])
+    return best[1] if best else None
 
 def nearest_street(lat, lon):
     best = None
@@ -96,12 +148,15 @@ for st_id, exits in matched.items():
     for e in exits:
         ex, ey = m_xy(e["lat"], e["lon"], st["lat"])
         t = e.get("tags", {})
-        rows.append({
+        row = {
             "ref": t.get("ref"),
             "street": nearest_street(e["lat"], e["lon"]),
             "alongM": round((ex - sx) * fx + (ey - sy) * fy),
             "wheelchair": t.get("wheelchair"),
-        })
+        }
+        if (poi := nearest_poi(e["lat"], e["lon"], st["nameUk"])):
+            row["poi"] = poi
+        rows.append(row)
     rows.sort(key=lambda x: (0, int(x["ref"])) if x["ref"] and x["ref"].isdigit() else (1, 0))
     out[st_id] = rows
 
