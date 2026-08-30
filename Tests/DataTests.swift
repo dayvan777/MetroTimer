@@ -46,6 +46,35 @@ final class DataTests: XCTestCase {
         XCTAssertTrue(ExitStore.shared.directionalHintsAllowed(for: "akademmistechko"))
     }
 
+    // Наскрізний тест усього ланцюжка знаків на РЕАЛЬНИХ даних:
+    // датасет (alongM) → isForward (порядок станцій лінії) → CarPosition.
+    // Інверсія в будь-якій ланці перевертає «голову» з «хвостом» — цей тест
+    // зафіксує семантику: Позняки, виходи №1–4 у вестибюлі з боку Осокорків
+    // (alongM < 0). Їдемо Осокорки→Позняки (у бік зростання порядку M3,
+    // forward) — вестибюль позаду руху: «у хвості поїзда». Їдемо назад,
+    // Харківська→Позняки, — той самий вестибюль попереду.
+    func testHeadTailMatchesTravelDirectionEndToEnd() {
+        let repo = MetroRepository.shared
+        let exits = ExitStore.shared.exits(for: "pozniaky")
+            .filter { ["1", "2", "3", "4"].contains($0.ref ?? "") }
+        XCTAssertFalse(exits.isEmpty)
+        XCTAssertTrue(ExitStore.shared.directionalHintsAllowed(for: "pozniaky"))
+
+        let towardTerminus = repo.isForward(lineId: "m3", from: "osokorky", to: "pozniaky")
+        XCTAssertEqual(towardTerminus, true, "порядок M3 змінився — перевір датасет!")
+        for exit in exits where abs(exit.alongM) <= StationExit.carHintLimitM {
+            XCTAssertEqual(CarPosition(alongM: exit.alongM, travellingForward: true), .last,
+                           "вихід \(exit.ref ?? "?"): їдемо forward, вестибюль позаду")
+        }
+
+        let backToCentre = repo.isForward(lineId: "m3", from: "kharkivska", to: "pozniaky")
+        XCTAssertEqual(backToCentre, false)
+        for exit in exits where abs(exit.alongM) <= StationExit.carHintLimitM {
+            XCTAssertEqual(CarPosition(alongM: exit.alongM, travellingForward: false), .first,
+                           "вихід \(exit.ref ?? "?"): їдемо backward, вестибюль попереду")
+        }
+    }
+
     func testCarPositionRespectsTravelDirection() {
         // Вихід у «голові» forward-осі: їдемо forward → перші вагони,
         // їдемо назад → останні. Далекий перехід — без порад.
