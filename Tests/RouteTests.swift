@@ -61,6 +61,60 @@ final class RouteTests: XCTestCase {
     }
 
     // 5. Пошук: без регістру, апострофа і мови.
+    // ── Нагадування (1.1) ─────────────────────────────────────────────
+
+    func testReminderStoredAndRemoved() {
+        var book = RouteBook()
+        book = book.togglingFavorite(home)
+        let reminder = RouteReminder(weekdays: [2, 3, 4, 5, 6], hour: 8, minute: 15)
+        book = book.settingReminder(reminder, for: home)
+        XCTAssertEqual(book.reminder(for: home), reminder)
+        book = book.settingReminder(nil, for: home)
+        XCTAssertNil(book.reminder(for: home))
+    }
+
+    func testUnpinDropsReminder() {
+        // Знята зірка забирає і розклад: «привидні» сповіщення про маршрут,
+        // якого немає в закріплених, — найгірше, що може зробити ця функція.
+        var book = RouteBook()
+        book = book.togglingFavorite(home)
+        book = book.settingReminder(RouteReminder(weekdays: [2], hour: 7, minute: 0), for: home)
+        book = book.togglingFavorite(home)   // unpin
+        XCTAssertNil(book.reminder(for: home))
+    }
+
+    func testBookV10DecodesWithoutReminders() {
+        // Файл, записаний версією 1.0 (без ключа reminders), мусить читатися.
+        let legacyJSON = """
+        {"favorites": [], "recents": []}
+        """.data(using: .utf8)!
+        let decoded = try? JSONDecoder().decode(RouteBook.self, from: legacyJSON)
+        XCTAssertNotNil(decoded)
+        XCTAssertNil(decoded?.reminders)
+    }
+
+    func testReminderRoundTripsThroughJSON() {
+        var book = RouteBook()
+        book = book.togglingFavorite(work)
+        book = book.settingReminder(RouteReminder(weekdays: [6, 7], hour: 22, minute: 45), for: work)
+        let data = try! JSONEncoder().encode(book)
+        let decoded = try! JSONDecoder().decode(RouteBook.self, from: data)
+        XCTAssertEqual(decoded.reminder(for: work),
+                       RouteReminder(weekdays: [6, 7], hour: 22, minute: 45))
+    }
+
+    func testUkrainianStopsPluralization() {
+        // 1/21 зупинка · 2–4/22 зупинки · 5–20/11–14 зупинок.
+        XCTAssertTrue(L10n.routeStops(1).contains("зупинка") || L10n.routeStops(1).contains("stop"))
+        for (n, form) in [(2, "зупинки"), (4, "зупинки"), (5, "зупинок"), (11, "зупинок"),
+                          (12, "зупинок"), (14, "зупинок"), (21, "зупинка"), (22, "зупинки"),
+                          (25, "зупинок")] {
+            let text = L10n.routeStops(n)
+            if text.contains("stop") { continue }   // англійська локаль симулятора
+            XCTAssertTrue(text.hasSuffix(form), "\(n) → \(text)")
+        }
+    }
+
     func testStationSearch() {
         XCTAssertEqual(repo.stations(matching: "вокз").map(\.station.id), ["vokzalna"])
         // «Лукʼянівська» в даних — з модифікаторним апострофом U+02BC;
