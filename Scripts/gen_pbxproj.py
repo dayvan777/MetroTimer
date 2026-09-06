@@ -20,7 +20,7 @@ TEAM_ID = os.environ.get("MT_TEAM_ID", "JC2G64UQ8N")
 # с тем же номером — а во время беты их будет несколько:
 #   MT_BUILD=2 MT_PAID_TEAM=1 python3 Scripts/gen_pbxproj.py
 # Версию для витрины (1.0) меняем руками здесь же, когда пойдёт 1.1.
-MARKETING_VERSION = "1.1"
+MARKETING_VERSION = "1.2"
 BUILD_NUMBER = os.environ.get("MT_BUILD", "1")
 
 SHARED = [
