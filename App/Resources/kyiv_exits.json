@@ -15,13 +15,15 @@
    "ref": "1",
    "street": "Броварський проспект",
    "alongM": -84,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Doma Center"
   },
   {
    "ref": "1",
    "street": "Броварський проспект",
    "alongM": -90,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Doma Center"
   },
   {
    "ref": "2",
@@ -39,7 +41,8 @@
    "ref": "4",
    "street": "Броварський проспект",
    "alongM": 90,
-   "wheelchair": null
+   "wheelchair": null,
+   "poi": "Будинок іграшок"
   },
   {
    "ref": "5",
@@ -117,7 +120,8 @@
    "ref": "1",
    "street": "проспект Петра Григоренка",
    "alongM": -53,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "ТРЦ «Аладдін»"
   },
   {
    "ref": "2",
@@ -147,19 +151,22 @@
    "ref": "6",
    "street": "проспект Миколи Бажана",
    "alongM": 103,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "ТРЦ «Піраміда»"
   },
   {
    "ref": "7",
    "street": "проспект Миколи Бажана",
    "alongM": 142,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "ТРЦ «Піраміда»"
   },
   {
    "ref": "8",
    "street": "проспект Миколи Бажана",
    "alongM": 117,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "ТРЦ «Піраміда»"
   }
  ],
  "arsenalna": [
@@ -190,7 +197,8 @@
    "wheelchair": "no",
    "transport": [
     "tram"
-   ]
+   ],
+   "poi": "Сквер ім. Григорія Сковороди"
   },
   {
    "ref": null,
@@ -199,7 +207,8 @@
    "wheelchair": "no",
    "transport": [
     "tram"
-   ]
+   ],
+   "poi": "Сквер ім. Григорія Сковороди"
   },
   {
    "ref": null,
@@ -208,7 +217,8 @@
    "wheelchair": "no",
    "transport": [
     "tram"
-   ]
+   ],
+   "poi": "Житній ринок"
   },
   {
    "ref": null,
@@ -226,7 +236,8 @@
    "wheelchair": "no",
    "transport": [
     "tram"
-   ]
+   ],
+   "poi": "Сквер ім. Григорія Сковороди"
   },
   {
    "ref": null,
@@ -235,7 +246,8 @@
    "wheelchair": "no",
    "transport": [
     "tram"
-   ]
+   ],
+   "poi": "Сквер ім. Григорія Сковороди"
   },
   {
    "ref": null,
@@ -244,7 +256,8 @@
    "wheelchair": "no",
    "transport": [
     "tram"
-   ]
+   ],
+   "poi": "Сквер ім. Григорія Сковороди"
   },
   {
    "ref": null,
@@ -271,7 +284,8 @@
    "wheelchair": "no",
    "transport": [
     "tram"
-   ]
+   ],
+   "poi": "Kino42"
   },
   {
    "ref": null,
@@ -280,7 +294,8 @@
    "wheelchair": "no",
    "transport": [
     "tram"
-   ]
+   ],
+   "poi": "Kino42"
   },
   {
    "ref": null,
@@ -298,7 +313,8 @@
    "wheelchair": "no",
    "transport": [
     "tram"
-   ]
+   ],
+   "poi": "Сквер ім. Григорія Сковороди"
   },
   {
    "ref": null,
@@ -365,7 +381,8 @@
    "wheelchair": "no",
    "transport": [
     "tram"
-   ]
+   ],
+   "poi": "Lake Plaza"
   },
   {
    "ref": null,
@@ -375,7 +392,8 @@
    "transport": [
     "tram",
     "trolleybus"
-   ]
+   ],
+   "poi": "Дивосвіт"
   },
   {
    "ref": null,
@@ -384,7 +402,8 @@
    "wheelchair": "no",
    "transport": [
     "tram"
-   ]
+   ],
+   "poi": "Lake Plaza"
   },
   {
    "ref": null,
@@ -430,7 +449,8 @@
    "wheelchair": "no",
    "transport": [
     "tram"
-   ]
+   ],
+   "poi": "Lake Plaza"
   }
  ],
  "pochaina": [
@@ -514,13 +534,15 @@
    "ref": null,
    "street": "Мінська площа",
    "alongM": 92,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Сквер на Мінський"
   },
   {
    "ref": null,
    "street": "вулиця Левка Лукʼяненка",
    "alongM": 63,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Сквер на Мінський"
   },
   {
    "ref": null,
@@ -574,7 +596,8 @@
    "wheelchair": "no",
    "transport": [
     "trolleybus"
-   ]
+   ],
+   "poi": "Ocean Plaza"
   },
   {
    "ref": "5",
@@ -583,7 +606,8 @@
    "wheelchair": "no",
    "transport": [
     "trolleybus"
-   ]
+   ],
+   "poi": "Ocean Plaza"
   },
   {
    "ref": "6",
@@ -592,7 +616,8 @@
    "wheelchair": "no",
    "transport": [
     "trolleybus"
-   ]
+   ],
+   "poi": "Growtek"
   },
   {
    "ref": "7",
@@ -601,7 +626,8 @@
    "wheelchair": "no",
    "transport": [
     "trolleybus"
-   ]
+   ],
+   "poi": "Growtek"
   }
  ],
  "vyrlytsia": [
@@ -661,27 +687,29 @@
    "ref": "1",
    "street": "Броварський проспект",
    "alongM": -74,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Лівобережний"
   },
   {
    "ref": "1",
    "street": "Броварський проспект",
    "alongM": -65,
-   "wheelchair": null
+   "wheelchair": null,
+   "poi": "БЦ \"Лівобережний\""
   },
   {
    "ref": "2",
    "street": "Броварський проспект",
    "alongM": 82,
    "wheelchair": "no",
-   "poi": "Лівобережний ринок"
+   "poi": "Мультиплекс"
   },
   {
    "ref": "2",
    "street": "Броварський проспект",
    "alongM": 78,
    "wheelchair": "no",
-   "poi": "Лівобережний ринок"
+   "poi": "Мультиплекс"
   }
  ],
  "lukianivska": [
@@ -690,7 +718,6 @@
    "street": "Лукʼянівська площа",
    "alongM": -4,
    "wheelchair": "no",
-   "poi": "Лук'янівський ринок",
    "transport": [
     "tram",
     "trolleybus"
@@ -701,7 +728,6 @@
    "street": "Лукʼянівська площа",
    "alongM": -10,
    "wheelchair": "no",
-   "poi": "Лук'янівський ринок",
    "transport": [
     "tram",
     "trolleybus"
@@ -771,13 +797,15 @@
    "ref": null,
    "street": "вулиця Данила Щербаківського",
    "alongM": 195,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "ТОВ Василек"
   },
   {
    "ref": null,
    "street": "вулиця Данила Щербаківського",
    "alongM": 172,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "ТОВ Василек"
   },
   {
    "ref": null,
@@ -789,7 +817,8 @@
    "ref": null,
    "street": "вулиця Данила Щербаківського",
    "alongM": 108,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "ТОВ Василек"
   },
   {
    "ref": null,
@@ -830,7 +859,8 @@
    "wheelchair": "no",
    "transport": [
     "trolleybus"
-   ]
+   ],
+   "poi": "Сквер"
   },
   {
    "ref": null,
@@ -839,7 +869,8 @@
    "wheelchair": "no",
    "transport": [
     "trolleybus"
-   ]
+   ],
+   "poi": "Музей мистецтв ім. Ханенків"
   },
   {
    "ref": null,
@@ -906,15 +937,13 @@
    "ref": "1",
    "street": null,
    "alongM": 11,
-   "wheelchair": "no",
-   "poi": "Київ-Пасажирський"
+   "wheelchair": "no"
   },
   {
    "ref": null,
    "street": null,
    "alongM": 2,
-   "wheelchair": null,
-   "poi": "Київ-Пасажирський"
+   "wheelchair": null
   }
  ],
  "vydubychi": [
@@ -929,7 +958,8 @@
    "ref": "2",
    "street": "Наддніпрянське шосе",
    "alongM": 13,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Автостанція \"Видубичі\""
   },
   {
    "ref": "3",
@@ -978,7 +1008,8 @@
    "ref": "3",
    "street": "Броварський проспект",
    "alongM": -58,
-   "wheelchair": "yes"
+   "wheelchair": "yes",
+   "poi": "Базар на Лісовій"
   },
   {
    "ref": "4",
@@ -1060,8 +1091,7 @@
    "ref": "5",
    "street": "Чорнобаївська площа",
    "alongM": -149,
-   "wheelchair": "no",
-   "poi": "Речовий ринок"
+   "wheelchair": "no"
   },
   {
    "ref": "6",
@@ -1080,35 +1110,36 @@
    "ref": "8",
    "street": "Берестейський проспект",
    "alongM": -179,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Територія мінімальних цін Мін"
   },
   {
    "ref": "9",
    "street": "Чорнобаївська площа",
    "alongM": -210,
    "wheelchair": "no",
-   "poi": "Речовий ринок"
+   "poi": "Ринок \"Західний\""
   },
   {
    "ref": "10",
    "street": "Чорнобаївська площа",
    "alongM": -243,
    "wheelchair": null,
-   "poi": "Речовий ринок"
+   "poi": "Ринок \"Західний\""
   },
   {
    "ref": "11",
    "street": "Депутатська вулиця",
    "alongM": -239,
    "wheelchair": "yes",
-   "poi": "Речовий ринок"
+   "poi": "Ринок \"Західний\""
   },
   {
    "ref": "12",
    "street": "Чорнобаївська площа",
    "alongM": -255,
    "wheelchair": "yes",
-   "poi": "Речовий ринок"
+   "poi": "Ринок \"Західний\""
   },
   {
    "ref": null,
@@ -1170,13 +1201,15 @@
    "ref": "6",
    "street": "проспект Академіка Глушкова",
    "alongM": -118,
-   "wheelchair": "yes"
+   "wheelchair": "yes",
+   "poi": "Магелан"
   },
   {
    "ref": null,
    "street": "проспект Академіка Глушкова",
    "alongM": -107,
-   "wheelchair": "yes"
+   "wheelchair": "yes",
+   "poi": "Лінія кіно"
   },
   {
    "ref": null,
@@ -1197,8 +1230,7 @@
    "ref": null,
    "street": "Боричів узвіз",
    "alongM": -99,
-   "wheelchair": "no",
-   "poi": "Нижня станція"
+   "wheelchair": "no"
   }
  ],
  "osokorky": [
@@ -1206,57 +1238,49 @@
    "ref": "1",
    "street": "проспект Миколи Бажана",
    "alongM": -42,
-   "wheelchair": "no",
-   "poi": "Автостанція \"Осокорки\""
+   "wheelchair": "no"
   },
   {
    "ref": "2",
    "street": "проспект Миколи Бажана",
    "alongM": -74,
-   "wheelchair": "no",
-   "poi": "Автостанція \"Осокорки\""
+   "wheelchair": "no"
   },
   {
    "ref": "3",
    "street": "проспект Миколи Бажана",
    "alongM": -75,
-   "wheelchair": "no",
-   "poi": "Автостанція \"Осокорки\""
+   "wheelchair": "no"
   },
   {
    "ref": "4",
    "street": "проспект Миколи Бажана",
    "alongM": -43,
-   "wheelchair": "no",
-   "poi": "Автостанція \"Осокорки\""
+   "wheelchair": "no"
   },
   {
    "ref": "5",
    "street": "проспект Миколи Бажана",
    "alongM": 69,
-   "wheelchair": "no",
-   "poi": "Автостанція \"Осокорки\""
+   "wheelchair": "no"
   },
   {
    "ref": "6",
    "street": "проспект Миколи Бажана",
    "alongM": 36,
-   "wheelchair": "no",
-   "poi": "Автостанція \"Осокорки\""
+   "wheelchair": "no"
   },
   {
    "ref": "7",
    "street": "проспект Миколи Бажана",
    "alongM": 34,
-   "wheelchair": "no",
-   "poi": "Автостанція \"Осокорки\""
+   "wheelchair": "no"
   },
   {
    "ref": "8",
    "street": "проспект Миколи Бажана",
    "alongM": 67,
-   "wheelchair": "no",
-   "poi": "Автостанція \"Осокорки\""
+   "wheelchair": "no"
   }
  ],
  "zvirynetska": [
@@ -1360,25 +1384,29 @@
    "ref": "1",
    "street": "вулиця Хрещатик",
    "alongM": 20,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Українського радіо"
   },
   {
    "ref": "1",
    "street": "вулиця Хрещатик",
    "alongM": 23,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Українського радіо"
   },
   {
    "ref": "2",
    "street": "вулиця Архітектора Городецького",
    "alongM": 320,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Україна"
   },
   {
    "ref": "3",
    "street": "алея Героїв Небесної Сотні",
    "alongM": 435,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Україна"
   }
  ],
  "maidan-nezalezhnosti": [
@@ -1440,7 +1468,8 @@
    "ref": "13",
    "street": "вулиця Хрещатик",
    "alongM": -78,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Drink Market"
   }
  ],
  "vystavkovyi-tsentr": [
@@ -1518,43 +1547,50 @@
    "ref": "1",
    "street": "проспект Миколи Бажана",
    "alongM": -113,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Clever"
   },
   {
    "ref": "2",
    "street": "проспект Миколи Бажана",
    "alongM": -133,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Clever"
   },
   {
    "ref": "3",
    "street": "проспект Миколи Бажана",
    "alongM": -61,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Clever"
   },
   {
    "ref": "4",
    "street": "проспект Миколи Бажана",
    "alongM": 66,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Min"
   },
   {
    "ref": "5",
    "street": "проспект Миколи Бажана",
    "alongM": 94,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Min"
   },
   {
    "ref": "6",
    "street": "проспект Миколи Бажана",
    "alongM": 67,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Ринок «Вирлиця»"
   },
   {
    "ref": "7",
    "street": "проспект Миколи Бажана",
    "alongM": 93,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "ХарьОк"
   }
  ],
  "hidropark": [
@@ -1608,15 +1644,13 @@
    "ref": "1",
    "street": "Набережне шосе",
    "alongM": -28,
-   "wheelchair": "no",
-   "poi": "Ринок \"Рибалка\""
+   "wheelchair": "no"
   },
   {
    "ref": "2",
    "street": "Набережне шосе",
    "alongM": -18,
-   "wheelchair": "no",
-   "poi": "Ринок \"Рибалка\""
+   "wheelchair": "no"
   }
  ],
  "akademmistechko": [
@@ -1786,7 +1820,8 @@
    "ref": "3",
    "street": "проспект Академіка Глушкова",
    "alongM": -92,
-   "wheelchair": "yes"
+   "wheelchair": "yes",
+   "poi": "Автостанція \"Південна\" (АС-3)"
   }
  ],
  "klovska": [

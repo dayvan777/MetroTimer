@@ -74,7 +74,11 @@ streets = overpass(
 # Орієнтири біля виходів: лише класи, які впізнають миттєво. Університетські
 # корпуси, лікарні й музеї навмисно пропущені — вони поруч із КОЖНИМ виходом
 # у центрі та перетворюють підказку на шум.
-POI_PRIORITY = ["station", "bus_station", "marketplace", "stadium"]
+# Орієнтир — те, що знають, а не те, що ближче. Супермаркети свідомо
+# виключені: «Фора» і «АТБ» стоять біля кожної станції міста.
+POI_CLASSES = {"station": 70, "bus_station": 60, "mall": 55, "marketplace": 50,
+               "department_store": 40, "cinema": 35, "stadium": 35, "museum": 30,
+               "park": 20}
 pois_raw = overpass(
     f'[out:json][timeout:90];('
     f'nwr["railway"="station"]["station"!="subway"]["name"](around:150,{pts});'
@@ -186,6 +190,19 @@ for st_id, exits in matched.items():
         rows.append(row)
     rows.sort(key=lambda x: (0, int(x["ref"])) if x["ref"] and x["ref"].isdigit() else (1, 0))
     out[st_id] = rows
+
+# Ручні орієнтири, названі киянами, мають пріоритет над автоматикою:
+# алгоритм знає, що ближче, люди знають, що впізнають.
+ov_path = ROOT / "Scripts/exits_overrides.json"
+if ov_path.exists():
+    overrides = json.load(open(ov_path, encoding="utf-8"))
+    for sid, table in overrides.items():
+        if sid.startswith("_") or sid not in out:
+            continue
+        for i, row in enumerate(out[sid]):
+            key = str(row.get("ref") or i)
+            if key in table:
+                row["poi"] = table[key]
 
 dest = ROOT / "App/Resources/kyiv_exits.json"
 json.dump(out, open(dest, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
