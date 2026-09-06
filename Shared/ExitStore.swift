@@ -9,6 +9,7 @@ struct StationExit: Codable, Hashable {
     let alongM: Int             // метри вздовж осі платформи у «forward»-напрямку лінії
     let wheelchair: String?     // yes / no / limited — як в OSM
     let poi: String?            // орієнтир міського масштабу (вокзал, ринок, стадіон)
+    let transport: [String]?     // пересадка на поверхні: tram / trolleybus
 
     // Далі за ~60 м від центру платформи — це вже перехід або окремий
     // вестибюль: підказка про вагони там радше збреше, ніж допоможе.
@@ -36,6 +37,7 @@ struct ExitRow: Equatable {
     let label: String?          // орієнтир (якщо є) або вулиця
     let cars: CarPosition?
     let wheelchair: Bool
+    let transport: [String]     // tram / trolleybus — пересадка нагорі
 
     static func build(from exits: [StationExit],
                       hintsAllowed: Bool,
@@ -48,14 +50,17 @@ struct ExitRow: Equatable {
             }()
             let label = exit.poi ?? exit.street
             let accessible = exit.wheelchair == "yes"
+            let modes = exit.transport ?? []
             if let i = rows.lastIndex(where: { $0.label == label && $0.cars == cars }) {
                 let merged = rows[i]
                 rows[i] = ExitRow(refs: merged.refs + [exit.ref].compactMap { $0 },
                                   label: label, cars: cars,
-                                  wheelchair: merged.wheelchair || accessible)
+                                  wheelchair: merged.wheelchair || accessible,
+                                  transport: Array(Set(merged.transport + modes)).sorted())
             } else {
                 rows.append(ExitRow(refs: [exit.ref].compactMap { $0 },
-                                    label: label, cars: cars, wheelchair: accessible))
+                                    label: label, cars: cars, wheelchair: accessible,
+                                    transport: modes.sorted()))
             }
         }
         return rows
@@ -96,7 +101,7 @@ final class ExitStore {
     func exits(for stationId: String) -> [StationExit] {
         var seen = Set<String>()
         return (byStation[stationId] ?? []).filter { exit in
-            let key = "\(exit.ref ?? "?")|\(exit.street ?? "?")"
+            let key = "\(exit.ref ?? "?")|\(exit.street ?? "?")|\(exit.poi ?? "")"
             return seen.insert(key).inserted
         }
     }

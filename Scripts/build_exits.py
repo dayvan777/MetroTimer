@@ -94,6 +94,30 @@ for p in pois_raw:
     if kind in POI_PRIORITY and name and 2 < len(name) <= 28 and lat:
         pois.append({"kind": kind, "name": name, "lat": lat, "lon": lon})
 
+# Пересадка на поверхні. Трамвай і тролейбус — саме те, заради чого люди
+# шукають «той самий» вихід («Контрактова: зробіть позначку, де трамвай»).
+# Автобусні зупинки навмисно НЕ беремо: вони біля кожного виходу — шум.
+transport_raw = overpass(
+    f'[out:json][timeout:120];('
+    f'node["railway"="tram_stop"](around:200,{pts});'
+    f'node["highway"="bus_stop"]["trolleybus"="yes"](around:150,{pts});'
+    f');out center tags;')
+TRANSPORT_LIMITS = {"tram": 150, "trolleybus": 120}
+transport = []
+for s in transport_raw:
+    t = s.get("tags", {})
+    lat = s.get("lat") or s.get("center", {}).get("lat")
+    lon = s.get("lon") or s.get("center", {}).get("lon")
+    kind = ("tram" if t.get("railway") == "tram_stop"
+            else "trolleybus" if t.get("trolleybus") == "yes" else None)
+    if kind and lat:
+        transport.append((kind, lat, lon))
+
+def nearby_transport(lat, lon):
+    modes = {k for k, tlat, tlon in transport
+             if dist_m(lat, lon, tlat, tlon) <= TRANSPORT_LIMITS[k]}
+    return sorted(modes)
+
 def nearest_poi(lat, lon, station_name=""):
     best = None
     sn = norm(station_name)
@@ -157,6 +181,8 @@ for st_id, exits in matched.items():
         }
         if (poi := nearest_poi(e["lat"], e["lon"], st["nameUk"])):
             row["poi"] = poi
+        if (modes := nearby_transport(e["lat"], e["lon"])):
+            row["transport"] = modes
         rows.append(row)
     rows.sort(key=lambda x: (0, int(x["ref"])) if x["ref"] and x["ref"].isdigit() else (1, 0))
     out[st_id] = rows

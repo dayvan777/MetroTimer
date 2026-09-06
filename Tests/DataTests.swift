@@ -39,10 +39,10 @@ final class DataTests: XCTestCase {
         // Три виходи на одну вулицю з однаковою підказкою → один рядок 2–4;
         // інша вулиця чи інша підказка розривають групу.
         let exits = [
-            StationExit(ref: "2", street: "проспект", alongM: -33, wheelchair: nil, poi: nil),
-            StationExit(ref: "3", street: "проспект", alongM: -59, wheelchair: "yes", poi: nil),
-            StationExit(ref: "4", street: "проспект", alongM: -31, wheelchair: nil, poi: nil),
-            StationExit(ref: "5", street: "інша", alongM: -40, wheelchair: nil, poi: nil),
+            StationExit(ref: "2", street: "проспект", alongM: -33, wheelchair: nil, poi: nil, transport: nil),
+            StationExit(ref: "3", street: "проспект", alongM: -59, wheelchair: "yes", poi: nil, transport: nil),
+            StationExit(ref: "4", street: "проспект", alongM: -31, wheelchair: nil, poi: nil, transport: nil),
+            StationExit(ref: "5", street: "інша", alongM: -40, wheelchair: nil, poi: nil, transport: nil),
         ]
         let rows = ExitRow.build(from: exits, hintsAllowed: true, travellingForward: true)
         XCTAssertEqual(rows.count, 2)
@@ -52,9 +52,28 @@ final class DataTests: XCTestCase {
         XCTAssertEqual(rows[1].refs, ["5"])
     }
 
+    func testKontraktovaHasTramInterchange() {
+        // Прямий запит із коментарів: «Контрактова — зробіть позначку, де трамвай».
+        let exits = ExitStore.shared.exits(for: "kontraktova-ploshcha")
+        XCTAssertTrue(exits.contains { $0.transport?.contains("tram") == true },
+                      "трамвай на Контрактовій зник із датасету")
+    }
+
+    func testExitRowMergesTransportModes() {
+        let exits = [
+            StationExit(ref: "1", street: "вулиця", alongM: 0, wheelchair: nil,
+                        poi: nil, transport: ["tram"]),
+            StationExit(ref: "2", street: "вулиця", alongM: 0, wheelchair: nil,
+                        poi: nil, transport: ["trolleybus"]),
+        ]
+        let rows = ExitRow.build(from: exits, hintsAllowed: false, travellingForward: nil)
+        XCTAssertEqual(rows.count, 1)
+        XCTAssertEqual(rows[0].transport, ["tram", "trolleybus"])
+    }
+
     func testExitRowPrefersLandmarkOverStreet() {
         let exits = [StationExit(ref: "1", street: "вулиця", alongM: 0,
-                                 wheelchair: nil, poi: "Центральний вокзал")]
+                                 wheelchair: nil, poi: "Центральний вокзал", transport: nil)]
         let rows = ExitRow.build(from: exits, hintsAllowed: false, travellingForward: nil)
         XCTAssertEqual(rows[0].label, "Центральний вокзал")
     }

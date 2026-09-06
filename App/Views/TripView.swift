@@ -106,6 +106,14 @@ struct TripView: View {
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                         }
+                        // Пересадка нагорі — те, заради чого люди й шукають
+                        // «той самий» вихід: трамвай на Контрактовій тощо.
+                        ForEach(row.transport, id: \.self) { mode in
+                            Label(transportText(mode), systemImage: transportIcon(mode))
+                                .font(.caption2.weight(.medium))
+                                .foregroundColor(accent.opacity(0.9))
+                                .labelStyle(.titleAndIcon)
+                        }
                         if row.wheelchair {
                             Image(systemName: "figure.roll")
                                 .font(.caption2)
@@ -115,7 +123,11 @@ struct TripView: View {
                         Spacer(minLength: 0)
                     }
                 }
-                Text(hintsOK ? L10n.exitsFootnote : L10n.exitsFootnoteNoDir)
+                // Підпис про напрямки — лише коли напрямки справді є в картці:
+                // ворота станції можуть бути відкриті, але всі виходи —
+                // дальні переходи, і жоден рядок поради не отримав.
+                Text(rows.contains { $0.cars != nil }
+                     ? L10n.exitsFootnote : L10n.exitsFootnoteNoDir)
                     .font(.caption2)
                     .foregroundColor(Color.secondary.opacity(0.7))
             }
@@ -140,6 +152,14 @@ struct TripView: View {
         }
         if let single = refs.first, refs.count == 1 { return L10n.exitRef(single) }
         return L10n.exitNoRef
+    }
+
+    private func transportText(_ mode: String) -> String {
+        mode == "tram" ? L10n.exitTram : L10n.exitTrolleybus
+    }
+
+    private func transportIcon(_ mode: String) -> String {
+        mode == "tram" ? "tram.fill" : "bus.doubledecker.fill"
     }
 
     private func carsText(_ cars: CarPosition) -> String {

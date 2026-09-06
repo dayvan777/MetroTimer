@@ -141,6 +141,8 @@ enum L10n {
     static var exitNoRef: String { tr("Вихід", "Exit") }
     // Формулювання «куди йти», а не «де сідати»: картка з'являється, коли
     // людина вже їде і зараз вставатиме — їй потрібен напрямок на платформі.
+    static var exitTram: String { tr("трамвай", "tram") }
+    static var exitTrolleybus: String { tr("тролейбус", "trolleybus") }
     static var exitCarsFirst: String { tr("попереду поїзда", "at the front of the train") }
     static var exitCarsLast: String { tr("у хвості поїзда", "at the rear of the train") }
     static var exitCarsMiddle: String { tr("посередині", "in the middle") }

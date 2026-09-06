@@ -4,7 +4,10 @@
    "ref": "1",
    "street": "бульвар Тараса Шевченка",
    "alongM": 26,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   }
  ],
  "darnytsia": [
@@ -184,91 +187,136 @@
    "ref": null,
    "street": "Спаська вулиця",
    "alongM": 142,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "tram"
+   ]
   },
   {
    "ref": null,
    "street": "Спаська вулиця",
    "alongM": 144,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "tram"
+   ]
   },
   {
    "ref": null,
    "street": "вулиця Нижній Вал",
    "alongM": -151,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "tram"
+   ]
   },
   {
    "ref": null,
    "street": "вулиця Нижній Вал",
    "alongM": -186,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "tram"
+   ]
   },
   {
    "ref": null,
    "street": "Спаська вулиця",
    "alongM": 132,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "tram"
+   ]
   },
   {
    "ref": null,
    "street": "Спаська вулиця",
    "alongM": 135,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "tram"
+   ]
   },
   {
    "ref": null,
    "street": "Спаська вулиця",
    "alongM": 101,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "tram"
+   ]
   },
   {
    "ref": null,
    "street": "вулиця Верхній Вал",
    "alongM": -99,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "tram"
+   ]
   },
   {
    "ref": null,
    "street": "вулиця Хорива",
    "alongM": -66,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "tram"
+   ]
   },
   {
    "ref": null,
    "street": "вулиця Верхній Вал",
    "alongM": -128,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "tram"
+   ]
   },
   {
    "ref": null,
    "street": "Костянтинівська вулиця",
    "alongM": -118,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "tram"
+   ]
   },
   {
    "ref": null,
    "street": "вулиця Нижній Вал",
    "alongM": -159,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "tram"
+   ]
   },
   {
    "ref": null,
    "street": "Спаська вулиця",
    "alongM": 99,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "tram"
+   ]
   },
   {
    "ref": null,
    "street": "вулиця Верхній Вал",
    "alongM": -129,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "tram"
+   ]
   },
   {
    "ref": null,
    "street": "Костянтинівська вулиця",
    "alongM": -210,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "tram"
+   ]
   }
  ],
  "palats-sportu": [
@@ -276,25 +324,37 @@
    "ref": null,
    "street": "Еспланадна вулиця",
    "alongM": -10,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   },
   {
    "ref": null,
    "street": "Еспланадна вулиця",
    "alongM": 24,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   },
   {
    "ref": null,
    "street": "Еспланадна вулиця",
    "alongM": 13,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   },
   {
    "ref": null,
    "street": "Еспланадна вулиця",
    "alongM": -23,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   }
  ],
  "obolon": [
@@ -302,49 +362,75 @@
    "ref": null,
    "street": "Оболонський проспект",
    "alongM": 38,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "tram"
+   ]
   },
   {
    "ref": null,
    "street": "Оболонський проспект",
    "alongM": 65,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "tram",
+    "trolleybus"
+   ]
   },
   {
    "ref": null,
    "street": "Оболонський проспект",
    "alongM": 79,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "tram"
+   ]
   },
   {
    "ref": null,
    "street": "Оболонський проспект",
    "alongM": -81,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "tram"
+   ]
   },
   {
    "ref": null,
    "street": "Оболонський проспект",
    "alongM": -115,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "tram"
+   ]
   },
   {
    "ref": null,
    "street": "Оболонський проспект",
    "alongM": -122,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   },
   {
    "ref": null,
    "street": "Оболонський проспект",
    "alongM": -82,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "tram",
+    "trolleybus"
+   ]
   },
   {
    "ref": null,
    "street": "Оболонський проспект",
    "alongM": 59,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "tram"
+   ]
   }
  ],
  "pochaina": [
@@ -359,25 +445,37 @@
    "ref": "2",
    "street": "Оболонський проспект",
    "alongM": -68,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   },
   {
    "ref": "3",
    "street": "Оболонський проспект",
    "alongM": -102,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   },
   {
    "ref": "4",
    "street": "Оболонський проспект",
    "alongM": -110,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   },
   {
    "ref": "5",
    "street": "Оболонський проспект",
    "alongM": -77,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   }
  ],
  "minska": [
@@ -437,49 +535,73 @@
    "ref": "1",
    "street": "Либідська площа",
    "alongM": -82,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   },
   {
    "ref": "2",
    "street": "Либідська площа",
    "alongM": -63,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   },
   {
    "ref": "3",
    "street": "вулиця Антоновича",
    "alongM": -7,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   },
   {
    "ref": "3",
    "street": "Либідська площа",
    "alongM": -14,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   },
   {
    "ref": "4",
    "street": "вулиця Антоновича",
    "alongM": 12,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   },
   {
    "ref": "5",
    "street": "вулиця Антоновича",
    "alongM": 28,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   },
   {
    "ref": "6",
    "street": "Велика Васильківська вулиця",
    "alongM": -42,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   },
   {
    "ref": "7",
    "street": "Велика Васильківська вулиця",
    "alongM": -61,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   }
  ],
  "vyrlytsia": [
@@ -568,14 +690,22 @@
    "street": "Лукʼянівська площа",
    "alongM": -4,
    "wheelchair": "no",
-   "poi": "Лук'янівський ринок"
+   "poi": "Лук'янівський ринок",
+   "transport": [
+    "tram",
+    "trolleybus"
+   ]
   },
   {
    "ref": "2",
    "street": "Лукʼянівська площа",
    "alongM": -10,
    "wheelchair": "no",
-   "poi": "Лук'янівський ринок"
+   "poi": "Лук'янівський ринок",
+   "transport": [
+    "tram",
+    "trolleybus"
+   ]
   }
  ],
  "demiivska": [
@@ -679,43 +809,64 @@
    "ref": "5",
    "street": "Велика Васильківська вулиця",
    "alongM": -27,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   },
   {
    "ref": null,
    "street": "Велика Васильківська вулиця",
    "alongM": 31,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   },
   {
    "ref": null,
    "street": "вулиця Гетьмана Павла Скоропадського",
    "alongM": 5,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   },
   {
    "ref": null,
    "street": "вулиця Гетьмана Павла Скоропадського",
    "alongM": -16,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   },
   {
    "ref": null,
    "street": "площа Українських Героїв",
    "alongM": -17,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   },
   {
    "ref": null,
    "street": "Велика Васильківська вулиця",
    "alongM": 10,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   },
   {
    "ref": null,
    "street": "площа Українських Героїв",
    "alongM": 34,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   }
  ],
  "teatralna": [
@@ -812,7 +963,10 @@
    "street": "Броварський проспект",
    "alongM": -86,
    "wheelchair": "yes",
-   "poi": "Базар на Лісовій"
+   "poi": "Базар на Лісовій",
+   "transport": [
+    "tram"
+   ]
   },
   {
    "ref": "2",
@@ -844,25 +998,37 @@
    "ref": "1",
    "street": "Табірна вулиця",
    "alongM": -203,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "tram"
+   ]
   },
   {
    "ref": "4",
    "street": "Табірна вулиця",
    "alongM": -123,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "tram"
+   ]
   },
   {
    "ref": "5",
    "street": "Табірна вулиця",
    "alongM": -102,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "tram"
+   ]
   },
   {
    "ref": "2-3",
    "street": "Берестейський проспект",
    "alongM": -188,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "tram"
+   ]
   }
  ],
  "sviatoshyn": [
@@ -1156,25 +1322,37 @@
    "ref": null,
    "street": "Велика Васильківська вулиця",
    "alongM": 12,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   },
   {
    "ref": null,
    "street": "Велика Васильківська вулиця",
    "alongM": 19,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   },
   {
    "ref": null,
    "street": "Велика Васильківська вулиця",
    "alongM": -13,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   },
   {
    "ref": null,
    "street": "Німецька вулиця",
    "alongM": -18,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   }
  ],
  "khreshchatyk": [
@@ -1302,25 +1480,37 @@
    "ref": "2",
    "street": "Харківська площа",
    "alongM": 17,
-   "wheelchair": "yes"
+   "wheelchair": "yes",
+   "transport": [
+    "tram"
+   ]
   },
   {
    "ref": "3",
    "street": "Ташкентська вулиця",
    "alongM": 172,
-   "wheelchair": null
+   "wheelchair": null,
+   "transport": [
+    "tram"
+   ]
   },
   {
    "ref": "4",
    "street": "Старобориспільська вулиця",
    "alongM": 223,
-   "wheelchair": null
+   "wheelchair": null,
+   "transport": [
+    "tram"
+   ]
   },
   {
    "ref": "5",
    "street": "Старобориспільська вулиця",
    "alongM": 161,
-   "wheelchair": "yes"
+   "wheelchair": "yes",
+   "transport": [
+    "tram"
+   ]
   }
  ],
  "kharkivska": [
@@ -1528,37 +1718,55 @@
    "ref": "1",
    "street": "вулиця Фізкультури",
    "alongM": -29,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   },
   {
    "ref": "2",
    "street": "вулиця Фізкультури",
    "alongM": -15,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   },
   {
    "ref": "3",
    "street": "Велика Васильківська вулиця",
    "alongM": -58,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   },
   {
    "ref": "4",
    "street": "Велика Васильківська вулиця",
    "alongM": -25,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   },
   {
    "ref": "5",
    "street": "Велика Васильківська вулиця",
    "alongM": -49,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   },
   {
    "ref": null,
    "street": "Велика Васильківська вулиця",
    "alongM": -39,
-   "wheelchair": null
+   "wheelchair": null,
+   "transport": [
+    "trolleybus"
+   ]
   }
  ],
  "ipodrom": [
@@ -1620,13 +1828,19 @@
    "ref": "1",
    "street": "вулиця Генерала Алмазова",
    "alongM": -6,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   },
   {
    "ref": "2",
    "street": "площа Лесі Українки",
    "alongM": 26,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   }
  ],
  "zhytomyrska": [
@@ -1690,7 +1904,10 @@
    "ref": null,
    "street": "Оболонський проспект",
    "alongM": -5,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "tram"
+   ]
   },
   {
    "ref": null,
@@ -1704,13 +1921,19 @@
    "ref": null,
    "street": "Берестейський проспект",
    "alongM": 6,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   },
   {
    "ref": null,
    "street": "Політехнічний провулок",
    "alongM": 15,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   }
  ],
  "chernihivska": [
@@ -1718,25 +1941,37 @@
    "ref": "1",
    "street": "вулиця Гната Хоткевича",
    "alongM": -30,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "tram"
+   ]
   },
   {
    "ref": "1",
    "street": "вулиця Гната Хоткевича",
    "alongM": -30,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "tram"
+   ]
   },
   {
    "ref": "2",
    "street": "вулиця Гната Хоткевича",
    "alongM": 25,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "tram"
+   ]
   },
   {
    "ref": "2",
    "street": "вулиця Гната Хоткевича",
    "alongM": 25,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "tram"
+   ]
   }
  ],
  "syrets": [
@@ -1744,13 +1979,19 @@
    "ref": null,
    "street": "вулиця Щусєва",
    "alongM": -13,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   },
   {
    "ref": null,
    "street": "вулиця Щусєва",
    "alongM": -7,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "transport": [
+    "trolleybus"
+   ]
   }
  ]
 }
