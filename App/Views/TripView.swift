@@ -94,6 +94,10 @@ struct TripView: View {
                 guard all.count == 1, let only = all.first, let cars = only else { return nil }
                 return cars
             }()
+            // «Дальній перехід» пояснює КОНТРАСТ: цей вихід далі, ніж сусідні.
+            // Коли напрямку немає в жодного рядка, контрасту немає — і п'ять
+            // однакових приміток стають тим самим шумом, який ми щойно прибрали.
+            let explainFar = shown.contains { $0.cars != nil }
             let sharedModes: [String]? = {
                 let all = Set(shown.map { $0.transport })
                 guard all.count == 1, let only = all.first, !only.isEmpty else { return nil }
@@ -152,7 +156,7 @@ struct TripView: View {
                                     .font(.caption2)
                                     .foregroundColor(.secondary)
                                     .labelStyle(.titleAndIcon)
-                            } else if hintsOK {
+                            } else if hintsOK, explainFar {
                                 // Порожнє місце поруч із сусідніми напрямками
                                 // читалося б як «те саме» — називаємо причину.
                                 Label(L10n.exitFarPassage, systemImage: "figure.walk.motion")
