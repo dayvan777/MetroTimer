@@ -352,7 +352,8 @@
    "wheelchair": "no",
    "transport": [
     "trolleybus"
-   ]
+   ],
+   "poi": "Кінотеатр «Оскар»"
   },
   {
    "ref": null,
@@ -361,7 +362,8 @@
    "wheelchair": "no",
    "transport": [
     "trolleybus"
-   ]
+   ],
+   "poi": "ТРЦ «Гулівер»"
   },
   {
    "ref": null,
@@ -459,7 +461,7 @@
    "street": "Вербова вулиця",
    "alongM": 75,
    "wheelchair": "no",
-   "poi": "Речовий ринок «Почайна»"
+   "poi": "Ринок «Почайна»"
   },
   {
    "ref": "2",
@@ -486,7 +488,8 @@
    "wheelchair": "no",
    "transport": [
     "trolleybus"
-   ]
+   ],
+   "poi": "Господарський ринок"
   },
   {
    "ref": "5",
@@ -495,7 +498,8 @@
    "wheelchair": "no",
    "transport": [
     "trolleybus"
-   ]
+   ],
+   "poi": "Книжковий ринок"
   }
  ],
  "minska": [
@@ -679,7 +683,8 @@
    "ref": "2",
    "street": "Володимирська вулиця",
    "alongM": 65,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Оперний театр"
   }
  ],
  "livoberezhna": [
@@ -905,7 +910,8 @@
    "ref": "119",
    "street": "вулиця Євгена Чикаленка",
    "alongM": -3,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Музей історії Києва"
   },
   {
    "ref": null,
@@ -917,19 +923,22 @@
    "ref": null,
    "street": "вулиця Богдана Хмельницького",
    "alongM": 34,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "ЦУМ"
   },
   {
    "ref": null,
    "street": "вулиця Богдана Хмельницького",
    "alongM": 23,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "ЦУМ"
   },
   {
    "ref": null,
    "street": "вулиця Богдана Хмельницького",
    "alongM": -34,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Музей історії Києва"
   }
  ],
  "vokzalna": [
@@ -1195,14 +1204,15 @@
    "ref": "5",
    "street": "проспект Академіка Глушкова",
    "alongM": -66,
-   "wheelchair": "yes"
+   "wheelchair": "yes",
+   "poi": "ТРЦ «Магелан»"
   },
   {
    "ref": "6",
    "street": "проспект Академіка Глушкова",
    "alongM": -118,
    "wheelchair": "yes",
-   "poi": "Магелан"
+   "poi": "ТРЦ «Магелан»"
   },
   {
    "ref": null,
@@ -1250,13 +1260,15 @@
    "ref": "3",
    "street": "проспект Миколи Бажана",
    "alongM": -75,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "ТРЦ «Appetite»"
   },
   {
    "ref": "4",
    "street": "проспект Миколи Бажана",
    "alongM": -43,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "ТРЦ «Appetite»"
   },
   {
    "ref": "5",
@@ -1294,13 +1306,15 @@
    "ref": "2",
    "street": "бульвар Миколи Міхновського",
    "alongM": -15,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "ТЦ «Навігатор»"
   },
   {
    "ref": "3",
    "street": "бульвар Миколи Міхновського",
    "alongM": 21,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "ТЦ «Навігатор»"
   },
   {
    "ref": "4",
@@ -1367,7 +1381,8 @@
    "wheelchair": "no",
    "transport": [
     "trolleybus"
-   ]
+   ],
+   "poi": "Володимирський ринок"
   },
   {
    "ref": null,
@@ -1376,7 +1391,8 @@
    "wheelchair": "no",
    "transport": [
     "trolleybus"
-   ]
+   ],
+   "poi": "Володимирський ринок"
   }
  ],
  "khreshchatyk": [
@@ -1604,7 +1620,8 @@
    "ref": "2",
    "street": "Броварський проспект",
    "alongM": -83,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "Дитячий пляж"
   },
   {
    "ref": "3",
@@ -1773,7 +1790,8 @@
    "wheelchair": "no",
    "transport": [
     "trolleybus"
-   ]
+   ],
+   "poi": "ТЦ «Троїцький»"
   },
   {
    "ref": "4",
@@ -1782,7 +1800,8 @@
    "wheelchair": "no",
    "transport": [
     "trolleybus"
-   ]
+   ],
+   "poi": "ТЦ «Олімпійський»"
   },
   {
    "ref": "5",
@@ -1791,7 +1810,8 @@
    "wheelchair": "no",
    "transport": [
     "trolleybus"
-   ]
+   ],
+   "poi": "ТЦ «Олімпійський»"
   },
   {
    "ref": null,
@@ -1883,7 +1903,8 @@
    "ref": "1",
    "street": "вулиця Мирослава Поповича",
    "alongM": -93,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "ТЦ «ХІТ MALL»"
   },
   {
    "ref": "2",
@@ -1895,7 +1916,8 @@
    "ref": "3",
    "street": "Берестейський проспект",
    "alongM": -101,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "ТЦ «ХІТ MALL»"
   },
   {
    "ref": "4",
@@ -1907,7 +1929,8 @@
    "ref": "5",
    "street": "Берестейський проспект",
    "alongM": -120,
-   "wheelchair": "no"
+   "wheelchair": "no",
+   "poi": "ТЦ «ХІТ MALL»"
   },
   {
    "ref": "6",
