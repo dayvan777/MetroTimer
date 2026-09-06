@@ -86,33 +86,58 @@ struct TripView: View {
             let hintsOK = ExitStore.shared.directionalHintsAllowed(for: destId)
             let rows = ExitRow.build(from: exits, hintsAllowed: hintsOK,
                                      travellingForward: forward)
-            VStack(alignment: .leading, spacing: 6) {
-                Text(L10n.exitsOn(trip.destinationName))
-                    .font(.footnote.weight(.semibold))
-                    .foregroundColor(.secondary)
-                ForEach(Array(rows.prefix(6).enumerated()), id: \.offset) { _, row in
-                    HStack(spacing: 6) {
-                        Text(refsTitle(row.refs))
-                            .font(.caption.weight(.bold))
-                            .foregroundColor(accent)
-                        if let label = row.label {
-                            Text(label)
-                                .font(.caption)
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.75)
-                        }
-                        if let cars = row.cars {
-                            Text("· " + carsText(cars))
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
-                        // Пересадка нагорі — те, заради чого люди й шукають
-                        // «той самий» вихід: трамвай на Контрактовій тощо.
-                        ForEach(row.transport, id: \.self) { mode in
-                            Label(transportText(mode), systemImage: transportIcon(mode))
-                                .font(.caption2.weight(.medium))
-                                .foregroundColor(accent.opacity(0.9))
-                                .labelStyle(.titleAndIcon)
+            let shown = Array(rows.prefix(6))
+            // Один напрямок на всі виходи — виносимо в шапку. Повторений
+            // чотири рази поспіль, він читається як шум і губить рядки.
+            let shared: CarPosition? = {
+                let all = Set(shown.map(\.cars))
+                guard all.count == 1, let only = all.first, let cars = only else { return nil }
+                return cars
+            }()
+            let sharedModes: [String]? = {
+                let all = Set(shown.map { $0.transport })
+                guard all.count == 1, let only = all.first, !only.isEmpty else { return nil }
+                return only
+            }()
+            VStack(alignment: .leading, spacing: 9) {
+                HStack(spacing: 6) {
+                    Image(systemName: "figure.walk")
+                        .font(.caption2.weight(.bold))
+                        .foregroundColor(.secondary)
+                    Text(L10n.exitsOn(trip.destinationName))
+                        .font(.footnote.weight(.semibold))
+                        .foregroundColor(.secondary)
+                }
+                if let shared {
+                    Label(sharedCarsText(shared), systemImage: carsIcon(shared))
+                        .font(.caption.weight(.semibold))
+                        .foregroundColor(accent)
+                }
+                // Той самий трюк для пересадки: коли трамвай біля кожного
+                // виходу (Контрактова), п'ять однакових піктограм у стовпчик
+                // не кажуть нічого — один рядок словами каже все.
+                if let sharedModes {
+                    Label(L10n.exitsAllTransport(sharedModes.map(transportText).joined(separator: " і ")),
+                          systemImage: transportIcon(sharedModes[0]))
+                        .font(.caption.weight(.semibold))
+                        .foregroundColor(accent)
+                }
+                ForEach(Array(shown.enumerated()), id: \.offset) { _, row in
+                    HStack(alignment: .firstTextBaseline, spacing: 8) {
+                        exitBadge(row.refs, accent: accent)
+                        // Герой рядка — куди вихід веде: саме за цим люди
+                        // орієнтуються в переході, а номер лише підтверджує.
+                        Text(row.label ?? L10n.exitNoRef)
+                            .font(.callout.weight(.medium))
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.7)
+                        if sharedModes == nil {
+                            ForEach(row.transport, id: \.self) { mode in
+                                Label(transportText(mode), systemImage: transportIcon(mode))
+                                    .font(.caption2.weight(.medium))
+                                    .foregroundColor(accent.opacity(0.95))
+                                    .labelStyle(.titleAndIcon)
+                            }
                         }
                         if row.wheelchair {
                             Image(systemName: "figure.roll")
@@ -121,6 +146,21 @@ struct TripView: View {
                                 .accessibilityLabel("wheelchair")
                         }
                         Spacer(minLength: 0)
+                        if shared == nil {
+                            if let cars = row.cars {
+                                Label(carsText(cars), systemImage: carsIcon(cars))
+                                    .font(.caption2)
+                                    .foregroundColor(.secondary)
+                                    .labelStyle(.titleAndIcon)
+                            } else if hintsOK {
+                                // Порожнє місце поруч із сусідніми напрямками
+                                // читалося б як «те саме» — називаємо причину.
+                                Label(L10n.exitFarPassage, systemImage: "figure.walk.motion")
+                                    .font(.caption2)
+                                    .foregroundColor(Color.secondary.opacity(0.75))
+                                    .labelStyle(.titleAndIcon)
+                            }
+                        }
                     }
                 }
                 // Підпис про напрямки — лише коли напрямки справді є в картці:
@@ -137,6 +177,47 @@ struct TripView: View {
             .padding(.horizontal)
             .padding(.bottom, 4)
             .transition(.move(edge: .bottom).combined(with: .opacity))
+        }
+    }
+
+    // Номер виходу — як табличка в переході: капсула з цифрою. Там, де
+    // метрополітен виходи не нумерує (Контрактова), замість цифри — стрілка:
+    // порожня капсула «Вихід» у кожному рядку нічого не додавала б.
+    @ViewBuilder
+    private func exitBadge(_ refs: [String], accent: Color) -> some View {
+        let nums = refs.compactMap { Int($0) }.sorted()
+        if nums.isEmpty {
+            Image(systemName: "arrow.up.forward")
+                .font(.caption2.weight(.semibold))
+                .foregroundColor(.secondary)
+                .frame(width: 30, height: 20)
+        } else {
+            let consecutive = zip(nums, nums.dropFirst()).allSatisfy { $1 - $0 == 1 }
+            let text = nums.count == 1 ? "\(nums[0])"
+                : (consecutive && nums.count > 2 ? "\(nums.first!)–\(nums.last!)"
+                   : nums.map(String.init).joined(separator: ","))
+            Text(text)
+                .font(.caption.weight(.bold))
+                .foregroundColor(.black)
+                .padding(.horizontal, 7)
+                .frame(minWidth: 30, minHeight: 20)
+                .background(Capsule().fill(accent))
+        }
+    }
+
+    private func carsIcon(_ cars: CarPosition) -> String {
+        switch cars {
+        case .first: return "arrow.up.to.line"
+        case .last: return "arrow.down.to.line"
+        case .middle: return "arrow.left.and.right"
+        }
+    }
+
+    private func sharedCarsText(_ cars: CarPosition) -> String {
+        switch cars {
+        case .first: return L10n.exitsAllFirst
+        case .middle: return L10n.exitsAllMiddle
+        case .last: return L10n.exitsAllLast
         }
     }
 

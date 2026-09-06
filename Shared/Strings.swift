@@ -141,8 +141,19 @@ enum L10n {
     static var exitNoRef: String { tr("Вихід", "Exit") }
     // Формулювання «куди йти», а не «де сідати»: картка з'являється, коли
     // людина вже їде і зараз вставатиме — їй потрібен напрямок на платформі.
+    // Спільний напрямок виносимо в шапку картки: коли всі виходи в одному
+    // кінці, повторювати це в кожному рядку — шум, а не інформація.
+    static var exitsAllFirst: String { tr("Усі виходи — попереду поїзда", "All exits are at the front of the train") }
+    static var exitsAllLast: String { tr("Усі виходи — у хвості поїзда", "All exits are at the rear of the train") }
+    static var exitsAllMiddle: String { tr("Виходи — посередині платформи", "Exits are in the middle of the platform") }
     static var exitTram: String { tr("трамвай", "tram") }
+    static func exitsAllTransport(_ modes: String) -> String {
+        tr("Біля кожного виходу — \(modes)", "Every exit has \(modes) nearby")
+    }
     static var exitTrolleybus: String { tr("тролейбус", "trolleybus") }
+    // Мовчання про напрямок на станції, де напрямки в принципі є, читалося б
+    // як «те саме, що вище». Насправді це дальній перехід — так і кажемо.
+    static var exitFarPassage: String { tr("дальній перехід", "long passage") }
     static var exitCarsFirst: String { tr("попереду поїзда", "at the front of the train") }
     static var exitCarsLast: String { tr("у хвості поїзда", "at the rear of the train") }
     static var exitCarsMiddle: String { tr("посередині", "in the middle") }
