@@ -191,7 +191,15 @@ xcodebuild -project MetroTimer.xcodeproj -scheme MetroTimer \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max' test
 ```
 
-The Xcode project is committed and has no dependencies — clone and open. Generators,
+The Xcode project is committed and has no dependencies — clone and open.
+
+**On another machine.** `git clone git@github.com:dayvan777/MetroTimer.git`, open
+`MetroTimer.xcodeproj`, sign in with the team's Apple ID in Xcode → Settings → Accounts;
+automatic signing recreates certificates. Build folders are not in git — Xcode rebuilds
+them. Uploading to App Store Connect also needs the API key, which is never committed:
+copy `AuthKey_*.p8` to `~/.appstoreconnect/private_keys/` by hand, or issue a new key in
+App Store Connect. On Windows the code, the Python data scripts and the site can be
+edited, but building and running the iOS app requires macOS with Xcode. Generators,
 data derivation, debug hooks and repository layout are in **[docs/BUILD.md](docs/BUILD.md)**.
 The GPS correction design is in [docs/GPS.md](docs/GPS.md).
 What is left before the App Store, and why, is in [docs/READINESS.md](docs/READINESS.md).
