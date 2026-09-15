@@ -76,8 +76,36 @@ final class MetroRepository {
 
     // Движение по перегону приостановлено (в обе стороны — путь один).
     func isSuspended(from: String, to: String) -> Bool {
-        let seed = seedSegments[Segment.key(from, to)] ?? seedSegments[Segment.key(to, from)]
-        return seed?.isSuspended == true
+        seedSegment(from, to)?.isSuspended == true
+    }
+
+    private func seedSegment(_ from: String, _ to: String) -> Segment? {
+        seedSegments[Segment.key(from, to)] ?? seedSegments[Segment.key(to, from)]
+    }
+
+    // Перегін не працює під час тривоги: "any" — при тривозі будь-якого рівня,
+    // "red" — лише при червоному. Коли рівень невідомий (поточний фід його не
+    // повідомляє), міст вважаємо робочим: не лякати пунктиром, а пояснити словами.
+    func isStopped(from: String, to: String, alertLevel: AlertLevel?) -> Bool {
+        switch seedSegment(from, to)?.alertStopRule {
+        case .any: return true
+        case .red: return alertLevel == .red
+        case nil: return false
+        }
+    }
+
+    // Що тривога означає для маршруту. Лівий берег важливіший за міст: він стоїть
+    // при будь-якій тривозі, тому його текст перекриває текст про міст.
+    func alertImpact(for trip: ActiveTrip) -> AlertImpact {
+        var impact = AlertImpact.none
+        for (a, b) in zip(trip.events, trip.events.dropFirst()) {
+            switch seedSegment(a.stationId, b.stationId)?.alertStopRule {
+            case .any: return .leftBank
+            case .red: impact = .bridge
+            case nil: continue
+            }
+        }
+        return impact
     }
 
     // Сид-времена перегона (без калибровки): прямое направление → зеркальное → дефолт.
@@ -150,13 +178,17 @@ final class MetroRepository {
         guard let hour = parts.hour, let minute = parts.minute,
               let weekday = parts.weekday else { return nil }
         let isHoliday = weekday == 1 || weekday == 7      // неділя / субота
-        let clamped = min(max(hour, hours.lowerBound), hours.upperBound)
+        // Після опівночі поїзди ще їдуть (останні прибувають близько 00:13), і це
+        // хвіст попереднього дня, а не ранок: 0-та година — це «24-та».
+        let serviceHour = hour < 3 ? hour + 24 : hour
+        let clamped = min(max(serviceHour, hours.lowerBound), hours.upperBound)
         guard let row = headwayByKey[Self.headwayKey(lineId: lineId, hour: clamped,
                                                      isHoliday: isHoliday)] else { return nil }
         let start = forward ? row.forwardStart : row.backwardStart
         let end = forward ? row.forwardEnd : row.backwardEnd
         // До открытия — интервал на начало первого часа, после закрытия — на конец последнего.
-        let fraction: Double = hour < clamped ? 0 : (hour > clamped ? 1 : Double(minute) / 60)
+        let fraction: Double = serviceHour < clamped ? 0
+            : (serviceHour > clamped ? 1 : Double(minute) / 60)
         return Int((Double(start) + (Double(end) - Double(start)) * fraction).rounded())
     }
 
@@ -191,7 +223,9 @@ final class MetroRepository {
         headwaySeconds(lineId: lineId, forward: forward, at: date).map { $0 / 2 }
     }
 
-    // Перший/останній поїзд зі станції в бік станции toward, на календарный день date.
+    // Перший/останній поїзд зі станції в бік станции toward, на службовий день date.
+    // Службовий день починається о 03:00: о 00:05 останні поїзди ще їдуть, і це
+    // хвіст учорашнього розкладу, а не сьогоднішній ранок.
     func serviceWindow(fromId: String, towardId: String,
                        on date: Date = Date()) -> (first: Date, last: Date)? {
         guard let lineId = line(ofStation: fromId)?.id,
@@ -207,6 +241,7 @@ final class MetroRepository {
     }
 
     private static func kyivTime(secondsFromMidnight seconds: Int, on date: Date) -> Date? {
-        kyivCalendar.startOfDay(for: date).addingTimeInterval(TimeInterval(seconds))
+        let serviceDay = kyivCalendar.startOfDay(for: date.addingTimeInterval(-3 * 3600))
+        return serviceDay.addingTimeInterval(TimeInterval(seconds))
     }
 }

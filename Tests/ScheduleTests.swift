@@ -36,38 +36,44 @@ final class ScheduleTests: XCTestCase {
     // MARK: - Интервалы движения
 
     func testHeadwayTableCoversSchedule() throws {
-        // 3 линии × 17 часов (06:00–22:00) × рабочий/выходной.
-        XCTAssertEqual(repo.data.headways.count, 3 * 17 * 2)
+        // 3 линии × 18 часов (06:00–24:00, з 10.09.2026 метро працює на годину довше)
+        // × рабочий/выходной.
+        XCTAssertEqual(repo.data.headways.count, 3 * 18 * 2)
         for line in repo.lines {
             for isHoliday in [false, true] {
                 let hours = repo.data.headways
                     .filter { $0.lineId == line.id && $0.isHoliday == isHoliday }
                     .map(\.hour).sorted()
-                XCTAssertEqual(hours, Array(6...22), "\(line.id) holiday=\(isHoliday)")
+                XCTAssertEqual(hours, Array(6...23), "\(line.id) holiday=\(isHoliday)")
             }
         }
-        // Правдоподобность: от 2:45 в час пик до 11 минут поздно вечером.
+        // Правдоподобность: от 3 минут в час пик до 12 минут поздно вечером.
         for row in repo.data.headways {
             for value in [row.forwardStart, row.forwardEnd, row.backwardStart, row.backwardEnd] {
-                XCTAssertTrue((150...700).contains(value), "\(row.lineId) \(row.hour): \(value)")
+                XCTAssertTrue((150...780).contains(value), "\(row.lineId) \(row.hour): \(value)")
             }
         }
     }
 
     func testHeadwayInterpolatesInsideHour() throws {
-        // M1, рабочий день, 08:00–09:00 прямий: 3:30 → 2:45 (210 → 165 сек).
+        // M1, рабочий день, 08:00–09:00 прямий: 4:00 → 3:00 (240 → 180 сек).
         let start = try XCTUnwrap(repo.headwaySeconds(lineId: "m1", forward: true, at: kyiv(17, 8)))
         let middle = try XCTUnwrap(repo.headwaySeconds(lineId: "m1", forward: true, at: kyiv(17, 8, 30)))
         let end = try XCTUnwrap(repo.headwaySeconds(lineId: "m1", forward: true, at: kyiv(17, 9)))
-        XCTAssertEqual(start, 210)
-        XCTAssertEqual(middle, 188, "середина часа — середина между 210 и 165")
-        XCTAssertEqual(end, 165, "09:00 — уже начало следующего часа")
+        XCTAssertEqual(start, 240)
+        XCTAssertEqual(middle, 210, "середина часа — середина между 240 и 180")
+        XCTAssertEqual(end, 180, "09:00 — уже начало следующего часа")
 
         // Вне расписания берётся ближайший известный час, а не nil и не ноль.
         let night = try XCTUnwrap(repo.headwaySeconds(lineId: "m1", forward: true, at: kyiv(17, 3)))
-        XCTAssertEqual(night, 540, "до открытия — интервал на 06:00")
+        XCTAssertEqual(night, 435, "до открытия — интервал на 06:00")
+        // 23-й час — уже в расписании: 6:30 → 9:00, в 23:40 — две трети пути.
         let late = try XCTUnwrap(repo.headwaySeconds(lineId: "m1", forward: true, at: kyiv(17, 23, 40)))
-        XCTAssertEqual(late, 540, "после закрытия — интервал на конец 22-го часа")
+        XCTAssertEqual(late, 490, "внутри 23-го часа интервал интерполируется")
+        // После полуночи последние поезда ещё едут: это хвост 23-го часа, а не утро.
+        let afterMidnight = try XCTUnwrap(repo.headwaySeconds(lineId: "m1", forward: true,
+                                                              at: kyiv(18, 0, 10)))
+        XCTAssertEqual(afterMidnight, 540, "00:10 — интервал на конец 23-го часа, не на 06:00")
     }
 
     func testHeadwayDependsOnDayType() throws {
@@ -87,7 +93,9 @@ final class ScheduleTests: XCTestCase {
                                                     start: kyiv(17, 22), repo: repo))
         let peakDuration = peak.arrivalDate.timeIntervalSince(peak.startDate)
         let eveningDuration = evening.arrivalDate.timeIntervalSince(evening.startDate)
-        XCTAssertGreaterThan(eveningDuration, peakDuration + 60,
+        // На платформу Золотих воріт виходимо о 08:24 і 22:25: інтервали M3 за
+        // розкладом з 10.09.2026 — 222 і 445 с, чверть різниці — 56 с.
+        XCTAssertGreaterThan(eveningDuration, peakDuration + 45,
                              "вечером ожидание поезда на пересадке заметно больше")
 
         // Ход и стоянки одинаковы — разница только в ожидании на пересадке.
@@ -197,8 +205,9 @@ final class ScheduleTests: XCTestCase {
             let known = [hours.forwardFirst, hours.forwardLast,
                          hours.backwardFirst, hours.backwardLast].compactMap { $0 }
             XCTAssertFalse(known.isEmpty, "\(hours.stationId): нет ни одного направления")
+            // Последние поезда доезжают после полуночи (до 00:13) — это те же сутки.
             for seconds in known {
-                XCTAssertTrue((5 * 3600...24 * 3600).contains(seconds), "\(hours.stationId): \(seconds)")
+                XCTAssertTrue((5 * 3600...25 * 3600).contains(seconds), "\(hours.stationId): \(seconds)")
             }
             if let first = hours.forwardFirst, let last = hours.forwardLast {
                 XCTAssertLessThan(first, last)
@@ -219,7 +228,22 @@ final class ScheduleTests: XCTestCase {
         let window = try XCTUnwrap(repo.serviceWindow(fromId: "akademmistechko", towardId: "lisova",
                                                       on: kyiv(17, 12)))
         XCTAssertEqual(window.first, kyiv(17, 5, 51), "перший поїзд о 05:51")
-        XCTAssertEqual(window.last, kyiv(17, 22, 30), "останній — о 22:30")
+        XCTAssertEqual(window.last, kyiv(17, 23, 30), "останній — о 23:30")
+    }
+
+    // Службовий день починається о 03:00: о 00:05 поїзд з Бориспільської ще
+    // їде (останній о 00:11), і це вчорашній розклад, а не сьогоднішній ранок.
+    func testServiceWindowCrossesMidnight() throws {
+        let window = try XCTUnwrap(repo.serviceWindow(fromId: "boryspilska", towardId: "chervonyi-khutir",
+                                                      on: kyiv(18, 0, 5)))
+        XCTAssertEqual(window.first, kyiv(17, 6, 20).addingTimeInterval(15), "перший — учора о 06:20")
+        XCTAssertEqual(window.last, kyiv(18, 0, 11).addingTimeInterval(5), "останній — сьогодні о 00:11")
+        XCTAssertGreaterThan(window.last, kyiv(18, 0, 5), "о 00:05 ще можна сісти")
+
+        // А о 04:30 — вже сьогоднішній день: перший поїзд попереду, а не позаду.
+        let morning = try XCTUnwrap(repo.serviceWindow(fromId: "boryspilska", towardId: "chervonyi-khutir",
+                                                       on: kyiv(18, 4, 30)))
+        XCTAssertEqual(morning.first, kyiv(18, 6, 20).addingTimeInterval(15))
     }
 
     func testServiceIssueDetectsClosedAndLastTrain() throws {
@@ -236,12 +260,14 @@ final class ScheduleTests: XCTestCase {
         }
         XCTAssertEqual(time, kyiv(17, 5, 51))
 
-        guard case let .afterLast(_, last)? = issue(at: kyiv(17, 23, 30)) else {
+        XCTAssertNil(issue(at: kyiv(17, 22, 10)), "з 10.09.2026 о 22:10 до останнього ще година з гаком")
+
+        guard case let .afterLast(_, last)? = issue(at: kyiv(18, 0, 30)) else {
             return XCTFail("после последнего поезда — предупреждение")
         }
-        XCTAssertEqual(last, kyiv(17, 22, 30))
+        XCTAssertEqual(last, kyiv(17, 23, 30))
 
-        guard case .lastSoon? = issue(at: kyiv(17, 22, 10)) else {
+        guard case .lastSoon? = issue(at: kyiv(17, 23, 10)) else {
             return XCTFail("за 20 минут до последнего поезда — мягкая подсказка")
         }
     }
@@ -249,7 +275,7 @@ final class ScheduleTests: XCTestCase {
     // Пересадка проверяется отдельно: на первый поезд успеть можно, на второй — нет.
     func testServiceIssueChecksTransferBoarding() throws {
         let trip = try XCTUnwrap(TripPlanner.plan(fromId: "akademmistechko", toId: "pozniaky",
-                                                  start: kyiv(17, 22, 20), repo: repo))
+                                                  start: kyiv(17, 23, 20), repo: repo))
         let index = try XCTUnwrap(trip.transferIndex)
         let boarding = trip.events[index].arrival
         let window = try XCTUnwrap(repo.serviceWindow(fromId: trip.events[index].stationId,

@@ -31,7 +31,10 @@ struct TripView: View {
 
         return VStack(spacing: 0) {
             if alertService.state == .alert {
-                AirAlertBanner(text: L10n.alertsActiveTrip)
+                // Текст — про ЦЕЙ маршрут: лівий берег стоїть при будь-якій тривозі,
+                // міст на зеленій — лише при червоному рівні.
+                AirAlertBanner(text: L10n.alertsActiveTrip(
+                    impact: engine.repo.alertImpact(for: trip), level: alertService.level))
             } else if alertService.state == .unavailable {
                 // Мовчання читалося б як «тривоги немає» — кажемо прямо.
                 AirAlertBanner(text: L10n.alertsUnavailable, muted: true)

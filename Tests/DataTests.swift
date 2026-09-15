@@ -209,6 +209,39 @@ final class DataTests: XCTestCase {
         }
     }
 
+    // 9б. Правила тривог КМДА з 10.09.2026 живуть у перегонах, а не в станціях.
+    func testAlertRulesFollowKmdaFromSeptember2026() throws {
+        // Видубичі — під землею (8 м): тег «наземна» був помилкою даних, яку
+        // помітили пасажири (Threads, 07.09.2026). Наземний — міст ЗА станцією.
+        XCTAssertFalse(try XCTUnwrap(repo.station(id: "vydubychi")).isSurface)
+        XCTAssertTrue(try XCTUnwrap(repo.station(id: "slavutych")).isSurface)
+
+        // Лівий берег червоної стоїть при тривозі будь-якого рівня.
+        XCTAssertTrue(repo.isStopped(from: "arsenalna", to: "dnipro", alertLevel: nil))
+        XCTAssertTrue(repo.isStopped(from: "lisova", to: "chernihivska", alertLevel: .yellow))
+        // Міст на зеленій — лише при червоному; без рівня вважаємо робочим.
+        XCTAssertFalse(repo.isStopped(from: "vydubychi", to: "slavutych", alertLevel: nil))
+        XCTAssertFalse(repo.isStopped(from: "vydubychi", to: "slavutych", alertLevel: .yellow))
+        XCTAssertTrue(repo.isStopped(from: "slavutych", to: "vydubychi", alertLevel: .red))
+        // Підземні перегони тривога не чіпає.
+        XCTAssertFalse(repo.isStopped(from: "khreshchatyk", to: "arsenalna", alertLevel: .red))
+
+        let now = Date()
+        let leftBank = try XCTUnwrap(TripPlanner.plan(fromId: "khreshchatyk", toId: "lisova",
+                                                      start: now, repo: repo))
+        XCTAssertEqual(repo.alertImpact(for: leftBank), .leftBank)
+        let bridge = try XCTUnwrap(TripPlanner.plan(fromId: "pecherska", toId: "pozniaky",
+                                                    start: now, repo: repo))
+        XCTAssertEqual(repo.alertImpact(for: bridge), .bridge)
+        let underground = try XCTUnwrap(TripPlanner.plan(fromId: "heroiv-dnipra", toId: "teremky",
+                                                         start: now, repo: repo))
+        XCTAssertEqual(repo.alertImpact(for: underground), .none)
+        // Маршрут і через лівий берег, і через міст: перший важливіший — він стоїть завжди.
+        let both = try XCTUnwrap(TripPlanner.plan(fromId: "lisova", toId: "slavutych",
+                                                  start: now, repo: repo))
+        XCTAssertEqual(repo.alertImpact(for: both), .leftBank)
+    }
+
     // 10. Калибровка, тайминги и склонение зупинок.
     func testTimingAndPlurals() throws {
         // Незнакомая пара — безопасный дефолт, а не ноль и не крэш.

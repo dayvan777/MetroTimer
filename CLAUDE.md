@@ -15,6 +15,8 @@ id6804173309, bundle `ua.vlad.MetroTimer`, команда `JC2G64UQ8N`. SwiftUI,
 - `docs/READINESS.md` — журнал релизов и отказов App Review (рус.). Читать перед любой
   работой с App Store Connect.
 - `docs/GPS.md` — где и как GPS уточняет поездку (рус.)
+- `docs/FEEDBACK.md` — разбор комментариев Threads и отзывов App Store с приоритетами (рус.).
+  Threads автора — @realvladd, посты о приложении по-украински, строчными буквами.
 
 ## Сборка и тесты
 

@@ -33,6 +33,11 @@ final class AlertService: ObservableObject {
 
     @Published private(set) var state: State = .unknown
     @Published private(set) var updatedAt: Date?
+    // Рівень тривоги (жовтий/червоний, Київ з 06.09.2026). Поточний фід його не
+    // повідомляє, тому тут завжди nil; джерело з рівнем (alerts.in.ua віддає
+    // alert_level, але лише за токеном і через власний проксі) — окреме рішення.
+    // Тексти написані так, щоб бути правдивими і без рівня.
+    @Published private(set) var level: AlertLevel?
 
     private var timer: Timer?
     private var isFetching = false
@@ -127,12 +132,10 @@ final class AlertService: ObservableObject {
             // .unknown (щойно відкрили застосунок) не рахується за початок:
             // тривога могла тривати вже годину.
             if newState == .alert, wasQuiet, let trip = TripEngine.shared.trip {
-                // Маршрут із наземною ділянкою отримує предметний текст:
+                // Маршрут через лівий берег або міст отримує предметний текст:
                 // що саме тривога означає для ЦІЄЇ поїздки.
-                let surface = trip.events.contains {
-                    MetroRepository.shared.station(id: $0.stationId)?.isSurface == true
-                }
-                Self.notifyAlertStarted(surfaceRoute: surface)
+                Self.notifyAlertStarted(impact: MetroRepository.shared.alertImpact(for: trip),
+                                        level: self.level)
             }
         }
     }
@@ -152,10 +155,10 @@ final class AlertService: ObservableObject {
         return active
     }
 
-    private static func notifyAlertStarted(surfaceRoute: Bool) {
+    private static func notifyAlertStarted(impact: AlertImpact, level: AlertLevel?) {
         let content = UNMutableNotificationContent()
         content.title = L10n.alertNotifTitle
-        content.body = surfaceRoute ? L10n.alertNotifBodySurface : L10n.alertNotifBody
+        content.body = L10n.alertNotifBody(impact: impact, level: level)
         content.sound = .default
         content.interruptionLevel = .timeSensitive
         let request = UNNotificationRequest(

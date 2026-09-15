@@ -58,6 +58,22 @@ metro,kyiv,kiev,subway,timer,station,stop,commute,offline,underground,alarm,tran
 ## Age rating
 4+
 
+## What’s new (version 1.3)
+
+The metro runs an hour longer — so does the app.
+
+Since September 10 the last trains leave at 23:30, not 22:30. Timetable, headways and the first/last-train warnings are updated from Kyiv's open data, including trains that arrive after midnight.
+
+Alerts are now yellow or red — and the app explains what that means for your route: during any alert the red line runs only as far as Arsenalna; under a yellow alert the green line crosses the Southern Bridge, under a red one it does not.
+
+From your feedback:
+• Vydubychi is no longer marked above ground — the station is underground.
+• The map no longer jumps when you pinch to zoom.
+• Ukrainian stays Ukrainian even when English is your phone's second language.
+• The Lock Screen shows the arrival time and when the stop counter was last updated — it cannot refresh while the app is asleep, and now that is honest. The progress bar follows the clock.
+
+Thank you for every comment and review.
+
 ## What’s new (version 1.0)
 First release: countdown in the Dynamic Island and on the Lock Screen, a notification one stop before you get off, line changes, station search, pinned routes, a Siri shortcut, GPS correction on above-ground sections, calibration mode and a trip journal. Fully offline.
 

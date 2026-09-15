@@ -49,12 +49,16 @@ struct MetroActivityWidget: Widget {
                             .font(.headline)
                             .foregroundColor(.white)
                             .lineLimit(1)
-                        Text(hasArrived(context)
-                             ? L10n.activityArrived
-                             : L10n.nextStationPrefix + context.state.nextStationName)
-                            .font(.caption2)
-                            .foregroundColor(hasArrived(context) ? accent : .secondary)
-                            .lineLimit(1)
+                        if hasArrived(context) {
+                            Text(L10n.activityArrived)
+                                .font(.caption2)
+                                .foregroundColor(accent)
+                        } else {
+                            nextStationText(context)
+                                .font(.caption2)
+                                .foregroundColor(.secondary)
+                                .lineLimit(1)
+                        }
                     }
                 }
                 DynamicIslandExpandedRegion(.bottom) {
@@ -180,23 +184,47 @@ private func timerText(_ context: ActivityViewContext<MetroActivityAttributes>) 
         .monospacedDigit()
 }
 
-// Сегментная полоса «схемы маршрута»: капсула = остановка, пройденные — в цвете
-// линии. Обновляется вместе с состоянием (перекат numericText рядом).
+// «Наступна: X · станом на 11:53». Назву станції присилає застосунок, а він
+// у фоні спить — тож поруч стоїть час останнього оновлення, і карточка не
+// видає стару станцію за поточну (головна скарга у відгуках 1.1).
+private func nextStationText(_ context: ActivityViewContext<MetroActivityAttributes>) -> Text {
+    let next = Text(L10n.nextStationPrefix + context.state.nextStationName)
+    guard let updated = context.state.updatedAt else { return next }
+    return next + Text(" · ") + Text(L10n.activityUpdatedPrefix) + Text(updated, style: .time)
+}
+
+// «прибуття 12:14» — факт із розкладу, який не старіє без оновлень.
+private func arrivalText(_ context: ActivityViewContext<MetroActivityAttributes>) -> Text {
+    Text(L10n.activityArrivesPrefix) + Text(context.state.arrivalDate, style: .time)
+}
+
+// Полоса прогресса ведётся ВРЕМЕНЕМ, а не счётчиком: SwiftUI сам двигает её
+// от старта до прибытия без единого обновления от приложения — так же, как
+// ведёт отсчёт. Счётчик зупинок в фоне застывает, полоса — нет.
+// Активности, созданные прошлой версией (без startDate), получают прежние капсулы.
+@ViewBuilder
 private func stopsProgress(_ context: ActivityViewContext<MetroActivityAttributes>,
                            tint: Color) -> some View {
-    let total = max(context.attributes.totalStops, 1)
-    let passed = max(0, total - context.state.stopsRemaining)
-    return HStack(spacing: 3) {
-        ForEach(0..<total, id: \.self) { index in
-            Capsule()
-                .fill(index < passed ? tint : Color.white.opacity(0.38))
-                .frame(height: 5)
-                .frame(maxWidth: .infinity)
+    if let start = context.attributes.startDate, start < context.state.arrivalDate {
+        ProgressView(timerInterval: start...context.state.arrivalDate, countsDown: false,
+                     label: { EmptyView() }, currentValueLabel: { EmptyView() })
+            .tint(tint)
+            .accessibilityHidden(true)
+    } else {
+        let total = max(context.attributes.totalStops, 1)
+        let passed = max(0, total - context.state.stopsRemaining)
+        HStack(spacing: 3) {
+            ForEach(0..<total, id: \.self) { index in
+                Capsule()
+                    .fill(index < passed ? tint : Color.white.opacity(0.38))
+                    .frame(height: 5)
+                    .frame(maxWidth: .infinity)
+            }
         }
+        // Декор: то же самое уже сказано счётчиком зупинок. Без этого VoiceOver
+        // перечисляет два десятка безымянных фигур перед полезным текстом.
+        .accessibilityHidden(true)
     }
-    // Декор: то же самое уже сказано счётчиком зупинок. Без этого VoiceOver
-    // перечисляет два десятка безымянных фигур перед полезным текстом.
-    .accessibilityHidden(true)
 }
 
 // Локскрин / баннер: та же информация в одну-две строки.
@@ -220,13 +248,18 @@ private struct LockScreenView: View {
                         .foregroundColor(accent)
                         .accessibilityHidden(true)
                 } else {
-                    timerText(context)
-                        .font(.title2.bold())
-                        .foregroundColor(accent)
-                        .frame(maxWidth: 96, alignment: .trailing)
+                    VStack(alignment: .trailing, spacing: 1) {
+                        timerText(context)
+                            .font(.title2.bold())
+                            .foregroundColor(accent)
+                            .frame(maxWidth: 96, alignment: .trailing)
+                        arrivalText(context)
+                            .font(.caption2)
+                            .foregroundColor(.secondary)
+                    }
                 }
             }
-            HStack {
+            HStack(alignment: .firstTextBaseline) {
                 // «0 зупинок» і «0:00» читалися як поломка, а не як прибуття.
                 Text(hasArrived(context)
                      ? L10n.activityArrived
@@ -236,7 +269,7 @@ private struct LockScreenView: View {
                     .rollingDigits()
                 Spacer()
                 if !hasArrived(context) {
-                    Text(L10n.nextStationPrefix + context.state.nextStationName)
+                    nextStationText(context)
                         .font(.caption)
                         .foregroundColor(.secondary)
                         .lineLimit(1)

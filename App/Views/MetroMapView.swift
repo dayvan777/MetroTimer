@@ -163,13 +163,15 @@ struct MetroMapView: View {
             segment.move(to: pa)
             segment.addLine(to: pb)
             let onRoute = route?.contains(a) == true && route?.contains(b) == true
-            let surface = repo.station(id: a)?.isSurface == true
-                       && repo.station(id: b)?.isSurface == true
-            // Під час тривоги наземні перегони гаснуть пунктиром: там не курсують.
+            // Під час тривоги перегони, де не курсують, гаснуть пунктиром. Міст на
+            // зеленій зупиняється лише при червоному рівні — а рівня фід не знає,
+            // тож міст малюємо суцільним і пояснюємо словами на маршруті.
+            let stopped = alertActive
+                && repo.isStopped(from: a, to: b, alertLevel: alertService.level)
             let width: CGFloat = onRoute ? 13 : 10
             let style = StrokeStyle(lineWidth: width,
                                     lineCap: .round,
-                                    dash: alertActive && surface ? [5, 10] : [])
+                                    dash: stopped ? [5, 10] : [])
             let opacity: Double = dimmed && !onRoute ? 0.2 : 1
             // Темна «канва» під стрічкою — ефект друкованої схеми.
             ctx.stroke(segment, with: .color(Color(red: 0.03, green: 0.033, blue: 0.045)
@@ -328,11 +330,24 @@ struct MetroMapView: View {
 
     // MARK: - Жести
 
-    private var currentScale: CGFloat { scale * gestureScale }
+    private static func clamp(_ value: CGFloat) -> CGFloat {
+        min(max(value, minScale), maxScale)
+    }
 
+    private var currentScale: CGFloat { Self.clamp(scale * gestureScale) }
+
+    // Під час щипка малюємо РІВНО те, що стане станом після жесту: масштаб
+    // навколо центру екрана, з тими самими межами. Раніше під час жесту схема
+    // росла від свого лівого верхнього кута, а в onEnded перераховувалась
+    // навколо центру — і в момент відпускання «стрибала» на середину.
     private func currentOffset(viewSize: CGSize) -> CGSize {
-        CGSize(width: offset.width + gestureOffset.width,
-               height: offset.height + gestureOffset.height)
+        let base = CGSize(width: offset.width + gestureOffset.width,
+                          height: offset.height + gestureOffset.height)
+        guard scale > 0 else { return base }
+        let factor = currentScale / scale
+        let center = CGPoint(x: viewSize.width / 2, y: viewSize.height / 2)
+        return CGSize(width: center.x - (center.x - base.width) * factor,
+                      height: center.y - (center.y - base.height) * factor)
     }
 
     private func fitIfNeeded(in viewSize: CGSize) {
@@ -362,8 +377,9 @@ struct MetroMapView: View {
         MagnificationGesture()
             .onChanged { value in gestureScale = value }
             .onEnded { value in
-                let target = min(max(scale * value, Self.minScale), Self.maxScale)
-                // Масштабуємо навколо центру екрана, щоб карта не «тікала».
+                // Та сама формула, що й у currentOffset під час жесту, — тому
+                // кадр після відпускання збігається з останнім кадром жесту.
+                let target = Self.clamp(scale * value)
                 let center = CGPoint(x: viewSize.width / 2, y: viewSize.height / 2)
                 let factor = target / scale
                 offset.width = center.x - (center.x - offset.width) * factor

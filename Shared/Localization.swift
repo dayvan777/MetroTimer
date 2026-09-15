@@ -13,15 +13,18 @@ enum Language {
 var appLanguage: Language = detectLanguage()
 
 func detectLanguage() -> Language {
-    // preferredLocalizations учитывает и язык системы, и выбор языка
-    // конкретного приложения в Параметрах iOS.
-    let preferred = Bundle.main.preferredLocalizations.first ?? "uk"
-    if preferred.hasPrefix("en") { return .en }
-    if preferred.hasPrefix("uk") { return .uk }
-    // Язык, которого в приложении нет, iOS сводит к языку разработки.
-    // Соседним языкам понятнее украинский, остальному миру — английский.
+    // Спочатку — перша мова телефону (або вибір для цього застосунку в
+    // Параметрах iOS: він теж потрапляє сюди). Раніше ми питали
+    // preferredLocalizations, а вона віддає «en», щойно англійська є в списку
+    // мов телефону хоч другою: киянин із телефоном «російська + англійська»
+    // отримував англійський інтерфейс і не розумів, як його перемкнути.
     let system = Locale.preferredLanguages.first ?? "uk"
-    return ["uk", "ru", "be", "pl"].contains(where: system.hasPrefix) ? .uk : .en
+    if system.hasPrefix("en") { return .en }
+    // Соседним языкам понятнее украинский.
+    if ["uk", "ru", "be", "pl"].contains(where: system.hasPrefix) { return .uk }
+    // Остальному миру — то, что iOS сама выберет из наших двух локализаций.
+    let preferred = Bundle.main.preferredLocalizations.first ?? "en"
+    return preferred.hasPrefix("uk") ? .uk : .en
 }
 
 // Единственный способ получить текст: обе версии всегда на виду рядом.

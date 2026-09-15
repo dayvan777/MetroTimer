@@ -40,7 +40,7 @@ no signal down there to check a map.
 
 Three things are unavailable to this app, and only two of them are anyone's fault:
 
-- **No GPS underground.** Physics. Eight of the network's fifty-two stations are
+- **No GPS underground.** Physics. Seven of the network's fifty-two stations are
   above ground; the rest are in tunnels where satellites are not an option.
 - **No network.** Same tunnels.
 - **No background execution.** This one is a decision, not a limitation. Background
@@ -140,7 +140,7 @@ There is no `.strings` file to fall out of sync, because there is no key to forg
 
 ## Testing
 
-57 tests over the core, run inside the app process so they read the real bundled data
+59 tests over the core, run inside the app process so they read the real bundled data
 rather than a fixture:
 
 - **`PlannerTests`** — route composition, monotonic times, dwell placement, transfers,

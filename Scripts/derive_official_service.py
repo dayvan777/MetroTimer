@@ -111,6 +111,11 @@ def service(path):
         last = hhmmss(r.get("last_trn2")) or hhmmss(r.get("last_trn1"))
         if first is None and last is None:
             continue                      # конечная: в эту сторону поезд не отправляется
+        # З 10.09.2026 останні поїзди доїжджають після опівночі («00:11» у джерелі).
+        # Це той самий службовий день, тому рахуємо від опівночі попереднього дня:
+        # 00:11 → 86400 + 665, інакше «останній» опинився б раніше за «перший».
+        if first is not None and last is not None and last < first:
+            last += 24 * 3600
         by_station.setdefault(sid, {})[key] = (first, last)
 
     print()

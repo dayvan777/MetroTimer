@@ -436,8 +436,8 @@ struct SelectionView: View {
                             .foregroundColor(Self.serviceColor(issue))
                             .fixedSize(horizontal: false, vertical: true)
                     }
-                    if plan.hasSurface {
-                        Label(L10n.surfaceAlertWarning, systemImage: "exclamationmark.triangle")
+                    if plan.alertImpact != .none {
+                        Label(L10n.alertRouteWarning(plan.alertImpact), systemImage: "exclamationmark.triangle")
                             .font(.caption2)
                             .foregroundColor(.orange)
                             .fixedSize(horizontal: false, vertical: true)
@@ -483,7 +483,7 @@ struct SelectionView: View {
     }
 
     // Тот же планировщик, что и при старте: превью не расходится с фактом.
-    private func plannedPreview() -> (minutes: Int, stops: Int, transfer: String?, hasSurface: Bool,
+    private func plannedPreview() -> (minutes: Int, stops: Int, transfer: String?, alertImpact: AlertImpact,
                                       serviceIssue: ServiceIssue?, headway: Int?)? {
         #if DEBUG
         // Сдвиг «зараз» для проверки часов работы: -MTPreviewOffset <секунды>.
@@ -496,7 +496,8 @@ struct SelectionView: View {
               let trip = TripPlanner.plan(fromId: from, toId: to, start: now, repo: repo)
         else { return nil }
         let minutes = max(1, Int((trip.initialArrival.timeIntervalSince(trip.startDate) / 60).rounded()))
-        let hasSurface = trip.events.contains { repo.station(id: $0.stationId)?.isSurface == true }
+        // Тривога: що вона означає для цього маршруту (лівий берег, міст, нічого).
+        let alertImpact = repo.alertImpact(for: trip)
         // Інтервал руху на першому перегоні маршруту (лінія посадки, «зараз»).
         // Перша пара сусідніх подій однієї лінії без переходу — це і є перший
         // перегін; на маршруті з посадкою прямо на пересадковому вузлі ним
@@ -511,7 +512,7 @@ struct SelectionView: View {
             break
         }
         return (minutes, trip.stopsRemaining(at: trip.startDate),
-                trip.events.first(where: \.isTransfer)?.displayName, hasSurface,
+                trip.events.first(where: \.isTransfer)?.displayName, alertImpact,
                 TripPlanner.serviceIssue(for: trip, repo: repo), headway)
     }
 

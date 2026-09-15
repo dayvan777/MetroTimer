@@ -34,10 +34,20 @@ enum L10n {
         tr("пересадка: \(station)", "change at \(station)")
     }
     static var swapStations: String { tr("Поміняти місцями", "Swap stations") }
-    // Реальность 2026: во время тревоги наземными участками поезда не ходят.
-    static var surfaceAlertWarning: String {
-        tr("Маршрут має наземну ділянку: під час повітряної тривоги поїзди там не курсують, і відлік може відставати.",
-           "This route has an above-ground section: trains do not run there during an air-raid alert, so the countdown may fall behind.")
+    // Правила КМДА з 10.09.2026: лівий берег червоної стоїть при будь-якій тривозі,
+    // міст на зеленій — лише при червоному рівні. Попередження на маршруті —
+    // ще до тривоги, щоб людина знала, на що підписується.
+    static func alertRouteWarning(_ impact: AlertImpact) -> String {
+        switch impact {
+        case .none:
+            return ""
+        case .leftBank:
+            return tr("Маршрут через лівий берег червоної лінії: під час тривоги будь-якого рівня поїзди ходять лише до «Арсенальної», і відлік може відставати.",
+                      "This route crosses the red line's left bank: during an alert of any level trains run only as far as Arsenalna, so the countdown may fall behind.")
+        case .bridge:
+            return tr("Маршрут через Південний міст: при червоному рівні тривоги поїзди між «Видубичами» і «Славутичем» не курсують, при жовтому — їдуть.",
+                      "This route crosses the Southern Bridge: under a red alert trains do not run between Vydubychi and Slavutych; under a yellow alert they do.")
+        }
     }
     static var routeSuspended: String {
         tr("Рух цією ділянкою тимчасово припинено", "Service on this section is suspended")
@@ -85,25 +95,69 @@ enum L10n {
         tr("Не вдалося перевірити: статус невідомий", "Could not check: status unknown")
     }
     static var alertsActive: String { tr("Повітряна тривога в Києві", "Air-raid alert in Kyiv") }
-    static var alertsActiveTrip: String {
-        tr("Повітряна тривога: наземними ділянками поїзди не курсують, відлік може відставати",
-           "Air-raid alert: trains do not run on above-ground sections, the countdown may fall behind")
+    // Банер під час поїздки — про ЦЕЙ маршрут. Рівень тривоги фід зазвичай не
+    // знає (nil): тоді про міст кажемо обидва варіанти і відсилаємо до застосунку тривог.
+    static func alertsActiveTrip(impact: AlertImpact, level: AlertLevel?) -> String {
+        switch impact {
+        case .none:
+            return tr("Повітряна тривога в Києві: ваш маршрут під землею, поїзди йдуть",
+                      "Air-raid alert in Kyiv: your route is underground, trains keep running")
+        case .leftBank:
+            return tr("Повітряна тривога: червона гілка зараз ходить лише до «Арсенальної», відлік може відставати",
+                      "Air-raid alert: the red line is running only as far as Arsenalna, the countdown may fall behind")
+        case .bridge:
+            switch level {
+            case .red:
+                return tr("Червоний рівень тривоги: через Південний міст поїзди не курсують, відлік може відставати",
+                          "Red alert: trains are not running across the Southern Bridge, the countdown may fall behind")
+            case .yellow:
+                return tr("Жовтий рівень тривоги: через Південний міст поїзди їдуть, маршрут без змін",
+                          "Yellow alert: trains are running across the Southern Bridge, your route is unaffected")
+            case nil:
+                return tr("Повітряна тривога: при червоному рівні поїзди через Південний міст не курсують, при жовтому — їдуть. Рівень — у застосунку тривог",
+                          "Air-raid alert: under a red alert trains do not cross the Southern Bridge, under a yellow one they do. Check the level in your alerts app")
+            }
+        }
     }
     static var alertsQuiet: String { tr("Тривоги немає", "No alert") }
     static var alertsUnknown: String { tr("Статус невідомий", "Status unknown") }
     static var alertNotifTitle: String { tr("Повітряна тривога в Києві", "Air-raid alert in Kyiv") }
-    // Коли тривога застала активну поїздку з наземною ділянкою, загальний текст
-    // «почалася тривога» марний: людині треба знати, що це означає для ЇЇ маршруту.
-    static var alertNotifBodySurface: String {
-        tr("Ваш маршрут має наземну ділянку — поїзди там зараз не курсують. Відлік може відставати: за потреби «+1 зупинка».",
-           "Your route has an above-ground section — trains are not running there right now. The countdown may fall behind; use “+1 stop” if needed.")
+    // Коли тривога застала активну поїздку, загальний текст «почалася тривога»
+    // марний: людині треба знати, що це означає для ЇЇ маршруту.
+    static func alertNotifBody(impact: AlertImpact, level: AlertLevel?) -> String {
+        switch impact {
+        case .none:
+            return tr("Ваш маршрут під землею — поїзди йдуть, відлік без змін.",
+                      "Your route is underground — trains keep running, the countdown is unaffected.")
+        case .leftBank:
+            return tr("Ваш маршрут через лівий берег червоної лінії — поїзди зараз ходять лише до «Арсенальної». Відлік може відставати: за потреби «+1 зупинка».",
+                      "Your route crosses the red line's left bank — trains are running only as far as Arsenalna right now. The countdown may fall behind; use “+1 stop” if needed.")
+        case .bridge:
+            switch level {
+            case .red:
+                return tr("Червоний рівень: через Південний міст поїзди не курсують. Відлік може відставати: за потреби «+1 зупинка».",
+                          "Red alert: trains are not crossing the Southern Bridge. The countdown may fall behind; use “+1 stop” if needed.")
+            case .yellow:
+                return tr("Жовтий рівень: через Південний міст поїзди їдуть, ваш маршрут без змін.",
+                          "Yellow alert: trains are crossing the Southern Bridge, your route is unaffected.")
+            case nil:
+                return tr("Ваш маршрут через Південний міст: при червоному рівні поїзди там не курсують, при жовтому — їдуть. Перевірте рівень у застосунку тривог.",
+                          "Your route crosses the Southern Bridge: under a red alert trains do not run there, under a yellow one they do. Check the level in your alerts app.")
+            }
+        }
     }
     static var surfaceStationTag: String { tr("наземна", "above ground") }
     static var aboutAlertFAQTitle: String { tr("Що відбувається під час тривоги?", "What happens during an alert?") }
     static var aboutAlertFAQBody: String {
-        tr("Підземні станції працюють як укриття. Наземними ділянками (лівий берег червоної лінії, «Видубичі» та «Славутич» на зеленій) поїзди під час тривоги не курсують. Застосунок попереджає про це на маршруті та під час поїздки — якщо ввімкнено показ тривог.",
-           "Underground stations serve as shelters. Above-ground sections (the left-bank part of the red line, Vydubychi and Slavutych on the green line) have no service during an alert. The app warns about this on the route preview and during the trip — when alerts are enabled.")
+        tr("Підземні станції працюють як укриття. З вересня 2026 тривоги мають два рівні: жовтий (дрони) і червоний (ракети, масовані атаки). Червона гілка при тривозі будь-якого рівня курсує лише між «Академмістечком» і «Арсенальною». Зелена при жовтому рівні їде через Південний міст без обмежень, при червоному — розривається на «Сирець»–«Видубичі» та «Славутич»–«Червоний хутір». Синя лінія повністю під землею. Застосунок бачить лише «тривога є чи немає» і попереджає про це на маршруті та під час поїздки, якщо ввімкнено показ тривог; рівень перевіряйте в офіційному застосунку тривог.",
+           "Underground stations serve as shelters. Since September 2026 alerts have two levels: yellow (drones) and red (missiles, massive attacks). During an alert of any level the red line runs only between Akademmistechko and Arsenalna. Under a yellow alert the green line crosses the Southern Bridge as usual; under a red one it splits into Syrets–Vydubychi and Slavutych–Chervonyi Khutir. The blue line is fully underground. The app only knows whether an alert is on and warns about it on the route preview and during the trip when alerts are enabled; check the level in the official alerts app.")
     }
+    static var aboutLanguageTitle: String { tr("Мова", "Language") }
+    static var aboutLanguageBody: String {
+        tr("Застосунок бере мову з налаштувань iOS: першу мову телефону або мову, обрану для цього застосунку. Змінити: Параметри → Застосунки → Метро-таймер → Мова.",
+           "The app follows iOS: the phone's first language, or the language chosen for this app. To change it: Settings → Apps → Metro Timer → Language.")
+    }
+    static var aboutLanguageOpenSettings: String { tr("Відкрити Параметри", "Open Settings") }
     // Кількість зупинок у резюме маршруту — та сама семантика, що в острові:
     // stopsRemaining на момент старту.
     static func routeStops(_ n: Int) -> String {
@@ -167,10 +221,6 @@ enum L10n {
     static var rateApp: String { tr("Оцінити в App Store", "Rate on the App Store") }
     static var rateAppNote: String {
         tr("Оцінки допомагають іншим пасажирам знайти застосунок.", "Ratings help other riders find the app.")
-    }
-    static var alertNotifBody: String {
-        tr("Наземними ділянками поїзди не курсують — відлік може відставати.",
-           "Trains do not run on above-ground sections — the countdown may fall behind.")
     }
     static func alertsUpdated(_ time: String) -> String {
         tr("оновлено о \(time)", "updated at \(time)")
@@ -420,6 +470,10 @@ enum L10n {
         tr("Ще їдете? Натисніть «+1 зупинка»", "Still riding? Tap “+1 stop”")
     }
     static var nextStationPrefix: String { tr("Наступна: ", "Next: ") }
+    // Лічильник зупинок на карточці оновлюється лише коли застосунок прокидається;
+    // час поруч каже чесно, наскільки він свіжий. Прибуття — факт, який не старіє.
+    static var activityUpdatedPrefix: String { tr("станом на ", "as of ") }
+    static var activityArrivesPrefix: String { tr("прибуття ", "arrives ") }
     static var lastStopAhead: String { tr("Наступна — ваша", "Yours is next") }
 
     // Live Activity: в острове места мало, поэтому свои короткие подписи.

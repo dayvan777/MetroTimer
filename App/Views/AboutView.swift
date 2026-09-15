@@ -108,6 +108,19 @@ struct AboutView: View {
                         .foregroundColor(.secondary)
                 }
 
+                // Мову перемикає сама iOS — для застосунку з кількома локалізаціями
+                // вона додає рядок «Мова» в його налаштування. Свій перемикач був би
+                // гірший: віджет острова читає мову з системи і розійшовся б із застосунком.
+                Section(L10n.aboutLanguageTitle) {
+                    Text(L10n.aboutLanguageBody)
+                        .font(.callout)
+                        .foregroundColor(.secondary)
+                    if let url = URL(string: UIApplication.openSettingsURLString) {
+                        Link(L10n.aboutLanguageOpenSettings, destination: url)
+                            .font(.subheadline)
+                    }
+                }
+
                 Section(L10n.aboutPrivacyTitle) {
                     Text(L10n.aboutPrivacyBody)
                         .font(.subheadline)

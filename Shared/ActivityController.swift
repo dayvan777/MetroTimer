@@ -39,7 +39,8 @@ final class ActivityController {
 
         let attributes = MetroActivityAttributes(destinationName: trip.destinationName,
                                                  lineColorHex: line.colorHex,
-                                                 totalStops: trip.stopsRemaining(at: trip.startDate))
+                                                 totalStops: trip.stopsRemaining(at: trip.startDate),
+                                                 startDate: trip.startDate)
         let state = MetroActivityAttributes.ContentState(trip: trip, now: Date())
         lastPushedState = state
         if #available(iOS 16.2, *) {
