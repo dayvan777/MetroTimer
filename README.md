@@ -9,7 +9,7 @@
 ![UI](https://img.shields.io/badge/UI-SwiftUI-0072bc)
 ![Dependencies](https://img.shields.io/badge/dependencies-none-00a651)
 ![Localization](https://img.shields.io/badge/localization-uk%20%C2%B7%20en-0072bc)
-![Status](https://img.shields.io/badge/status-pre--release-ed1c24)
+[![App Store](https://img.shields.io/badge/App%20Store-live-00a651?logo=apple&logoColor=white)](https://apps.apple.com/ua/app/id6804173309)
 
 **[→ Project page](https://dayvan777.github.io/MetroTimer/)**
 
@@ -20,11 +20,11 @@ the phone buzzes.
 
 <table>
   <tr>
-    <td><img src="AppStore/screenshots/framed/store_3_pick.png" width="170" alt="Station picker"></td>
-    <td><img src="AppStore/screenshots/framed/store_1_trip.png" width="170" alt="Active trip"></td>
-    <td><img src="AppStore/screenshots/framed/store_2_island.png" width="170" alt="Dynamic Island"></td>
-    <td><img src="AppStore/screenshots/framed/store_4_transfer.png" width="170" alt="Transfer"></td>
-    <td><img src="AppStore/screenshots/framed/store_5_offline.png" width="170" alt="Works offline"></td>
+    <td><img src="AppStore/site/img/s3.png" width="170" alt="Station picker"></td>
+    <td><img src="AppStore/site/img/s1.png" width="170" alt="Active trip"></td>
+    <td><img src="AppStore/site/img/s2.png" width="170" alt="Dynamic Island"></td>
+    <td><img src="AppStore/site/img/s4.png" width="170" alt="Transfer"></td>
+    <td><img src="AppStore/site/img/s5.png" width="170" alt="Works offline"></td>
   </tr>
 </table>
 
@@ -140,7 +140,7 @@ There is no `.strings` file to fall out of sync, because there is no key to forg
 
 ## Testing
 
-28 tests over the core, run inside the app process so they read the real bundled data
+57 tests over the core, run inside the app process so they read the real bundled data
 rather than a fixture:
 
 - **`PlannerTests`** — route composition, monotonic times, dwell placement, transfers,
@@ -152,6 +152,10 @@ rather than a fixture:
   surface stations far enough apart for a 400 m GPS snap to be unambiguous
 - **`LocalizationTests`** — every sampled string actually changes with the language, and
   no Cyrillic survives into the English build
+- **`RouteTests`** — pinned routes and recents (dedupe, caps, migration from older
+  saves), schedule reminders surviving a round trip, Ukrainian plural forms, station search
+- **`MapLayoutTests`** — every station placed on the schematic map, minimum spacing,
+  everything inside the canvas, 45°/90° angles, transfer pairs drawn close together
 
 ## Privacy
 
@@ -167,12 +171,12 @@ Both targets ship a `PrivacyInfo.xcprivacy`.
 
 ## Status
 
-**Pre-release.** Not on the App Store yet.
+**[On the App Store](https://apps.apple.com/ua/app/id6804173309)** since 27 August 2026.
 
-*Done:* feature-complete v1.0 — routing with transfers, service hours, Live Activity with
-interactive corrections, calibration, trip journal, Ukrainian and English throughout,
-VoiceOver labels, Reduce Motion, App Store listing metadata, privacy policy and support
-page.
+*Done:* routing with transfers, service hours, Live Activity with interactive
+corrections, calibration, trip journal, an interactive metro map and schedule reminders
+(1.1), station exits with directions for all 52 stations (1.2), Ukrainian and English
+throughout, VoiceOver labels, Reduce Motion, privacy policy and support page.
 
 *Remaining:* field validation. The trip journal records the plan against the outcome and
 counts every correction precisely so accuracy can be measured rather than asserted — and
@@ -202,7 +206,7 @@ App Store Connect. On Windows the code, the Python data scripts and the site can
 edited, but building and running the iOS app requires macOS with Xcode. Generators,
 data derivation, debug hooks and repository layout are in **[docs/BUILD.md](docs/BUILD.md)**.
 The GPS correction design is in [docs/GPS.md](docs/GPS.md).
-What is left before the App Store, and why, is in [docs/READINESS.md](docs/READINESS.md).
+Release history, App Review lessons and open items are in [docs/READINESS.md](docs/READINESS.md).
 
 ## Data and credits
 

@@ -35,15 +35,20 @@ of the script: add or remove a source file there, then re-run. Note that
 `kyiv_metro.json`, because `MetroRepository.init` calls `fatalError` when the
 file is missing from its bundle.
 
+The build number is kept from the existing `project.pbxproj`, so regenerating
+never changes it. Raise it explicitly before every App Store Connect upload —
+each build number can be uploaded only once:
+
 ```bash
-MT_PAID_TEAM=1 python3 Scripts/gen_pbxproj.py
+MT_BUILD=8 python3 Scripts/gen_pbxproj.py
 ```
 
-Same, but wires `App/MetroTimer.entitlements` into the app target. A free
+`App/MetroTimer.entitlements` is wired into the app target by default. A free
 Personal Team cannot sign the Time Sensitive Notifications entitlement, and
 without it iOS silently downgrades `.timeSensitive` notifications — so the
 "next stop is yours" alert stops breaking through Focus modes, which is the
-one scenario the app exists for. Use this on a paid account and verify with:
+one scenario the app exists for. On a free team, generate with
+`MT_NO_ENTITLEMENTS=1`. On the paid account, verify the signed bundle with:
 
 ```bash
 codesign -d --entitlements - build/Build/Products/Release-iphoneos/MetroTimer.app
@@ -86,12 +91,13 @@ curl -A "Mozilla/5.0" "$BASE/14/query?where=1%3D1&outFields=*&f=json" -o interva
 
 ## Store assets
 
-```bash
-python3 Scripts/make_store_frames.py
-```
+The five App Store slides (1320×2868) are assembled in Figma and exported to
+`AppStore/screenshots/figma/`; the site uses smaller copies in `AppStore/site/img/`.
+The earlier script-built frames were retired in `d4cc148`; the script is still in
+history: `git show d4cc148^:Scripts/make_store_frames.py`.
 
-Builds the framed showcase slides in `AppStore/screenshots/framed/` from raw
-simulator captures.
+Before every re-shoot, read each slide, small print included, for price references
+(«безкоштовно», "free", discounts): App Review rejects them under Guideline 2.3.7.
 
 ## Merging calibration from several devices
 
@@ -134,7 +140,7 @@ notification permission prompt.
 | `App/` | SwiftUI screens and app-only services |
 | `Shared/` | Compiled into both app and widget: models, planner, trip engine, strings |
 | `Widget/` | Live Activity UI — Dynamic Island and Lock Screen |
-| `Tests/` | 28 tests over the core |
-| `Scripts/` | Data and project generators, store slides |
+| `Tests/` | Unit tests over the core, hosted in the app process |
+| `Scripts/` | Data and project generators |
 | `AppStore/` | Listing metadata, privacy policy, screenshots, support page source |
 | `docs/` | This file, plus `GPS.md` and `READINESS.md` (both in Russian) |

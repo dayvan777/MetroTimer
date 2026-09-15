@@ -5,6 +5,7 @@
 и перезапусти. XcodeGen и Homebrew не нужны.
 """
 import os
+import re
 
 # Корень проекта — родитель папки Scripts: генератор переживает переезд.
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -12,16 +13,28 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Команда подписи. При переходе с бесплатного Personal Team на платный аккаунт
 # Team ID меняется, и сборка падает с сообщением про профиль, из которого это
 # никак не следует. Подставить новый:
-#   MT_TEAM_ID=XXXXXXXXXX MT_PAID_TEAM=1 python3 Scripts/gen_pbxproj.py
+#   MT_TEAM_ID=XXXXXXXXXX python3 Scripts/gen_pbxproj.py
 # Посмотреть свой: Xcode → Settings → Accounts → команда → колонка Team ID.
 TEAM_ID = os.environ.get("MT_TEAM_ID", "JC2G64UQ8N")
 
-# Номер сборки. App Store Connect отказывается принимать вторую загрузку
-# с тем же номером — а во время беты их будет несколько:
-#   MT_BUILD=2 MT_PAID_TEAM=1 python3 Scripts/gen_pbxproj.py
-# Версию для витрины (1.0) меняем руками здесь же, когда пойдёт 1.1.
+# Номер сборки. App Store Connect не принимает вторую загрузку с тем же
+# номером, поэтому перед каждой загрузкой его поднимают явно:
+#   MT_BUILD=8 python3 Scripts/gen_pbxproj.py
+# Без MT_BUILD номер остаётся тем, что уже записан в project.pbxproj:
+# перегенерация ради нового файла не должна молча откатывать сборку к 1 —
+# такую загрузку App Store Connect отклонит.
+# Версию для витрины меняем руками здесь же.
 MARKETING_VERSION = "1.2"
-BUILD_NUMBER = os.environ.get("MT_BUILD", "1")
+
+def current_build_number():
+    path = os.path.join(ROOT, "MetroTimer.xcodeproj", "project.pbxproj")
+    if not os.path.exists(path):
+        return "1"
+    with open(path, encoding="utf-8") as f:
+        m = re.search(r"CURRENT_PROJECT_VERSION = ([0-9.]+);", f.read())
+    return m.group(1) if m else "1"
+
+BUILD_NUMBER = os.environ.get("MT_BUILD") or current_build_number()
 
 SHARED = [
     "Shared/MetroActivityAttributes.swift",
