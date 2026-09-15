@@ -6,6 +6,22 @@ import XCTest
 final class ScheduleTests: XCTestCase {
     private let repo = MetroRepository.shared
 
+    // Предупреждения о режиме работы называют станцию через displayName, а он
+    // ветвится по глобальному appLanguage. Без фиксации прогон на симуляторе
+    // с английским языком получал бы «Zoloti Vorota» вместо «Золоті ворота».
+    private var savedLanguage: Language = .uk
+
+    override func setUp() {
+        super.setUp()
+        savedLanguage = appLanguage
+        appLanguage = .uk
+    }
+
+    override func tearDown() {
+        appLanguage = savedLanguage
+        super.tearDown()
+    }
+
     // Понедельник 17.08.2026 — рабочий день; воскресенье 16.08.2026 — выходной.
     private func kyiv(_ day: Int, _ hour: Int, _ minute: Int = 0) -> Date {
         var components = DateComponents()

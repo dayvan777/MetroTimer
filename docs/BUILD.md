@@ -14,10 +14,11 @@ Everything a contributor needs that does not belong in the README.
 
 ```bash
 xcodebuild -project MetroTimer.xcodeproj -scheme MetroTimer \
-  -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max' test
+  -destination 'platform=iOS Simulator,name=iPhone 18 Pro Max' test
 ```
 
-The test bundle is hosted inside the app process (`TEST_HOST`), so
+Simulator names change with Xcode releases; `xcrun simctl list devices available`
+lists the installed ones. The test bundle is hosted inside the app process (`TEST_HOST`), so
 `MetroRepository` reads the real bundled `kyiv_metro.json` rather than a fixture.
 
 ## Generators

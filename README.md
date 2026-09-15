@@ -192,7 +192,7 @@ transfer-wait estimate.
 
 ```bash
 xcodebuild -project MetroTimer.xcodeproj -scheme MetroTimer \
-  -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max' test
+  -destination 'platform=iOS Simulator,name=iPhone 18 Pro Max' test
 ```
 
 The Xcode project is committed and has no dependencies — clone and open.

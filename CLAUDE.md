@@ -20,10 +20,13 @@ id6804173309, bundle `ua.vlad.MetroTimer`, команда `JC2G64UQ8N`. SwiftUI,
 
 ```bash
 xcodebuild -project MetroTimer.xcodeproj -scheme MetroTimer \
-  -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max' test
+  -destination 'platform=iOS Simulator,name=iPhone 18 Pro Max' test
 ```
 
 Тесты работают в процессе приложения и читают настоящий `kyiv_metro.json`.
+Имена симуляторов меняются с версиями Xcode: `xcrun simctl list devices available`.
+Тесты, сверяющие тексты, фиксируют `appLanguage = .uk` в `setUp` — новый симулятор
+по умолчанию английский.
 
 ## Правила
 
