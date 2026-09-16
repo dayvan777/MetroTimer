@@ -684,3 +684,13 @@ max ≥ +25). 35 станцій із підказкою, 17 — лише вул�
   `ContentState.updatedAt` исключён из `==`, чтобы не плодить пуши.
   Настоящее решение — виджет экрана блокировки с таймлайном по станциям
   (WidgetKit, без фона и серверов) — кандидат в 1.4.
+
+**16.09.2026, архив и экспорт 1.3 (8) на новом Mac.** `xcodebuild archive
+… -allowProvisioningUpdates` сам выпустил Apple Development и профили, экспорт
+по `AppStore/ExportOptions.plist` подписал бандл **Apple Distribution: Vladyslav
+Domotskyi (JC2G64UQ8N)** через облачную подпись Xcode — `.p12` со старого Mac
+не понадобился. В `.ipa` проверено то же, что для 1.0: `get-task-allow = false`,
+`time-sensitive = true`, `beta-reports-active = true`, виджет подписан отдельно,
+1.3 (8), iOS 16.1, `uk` + `en`, 2,1 МБ. Ключа `.p8` на этом Mac нет — загрузка
+через Organizer (архив скопирован в `~/Library/Developer/Xcode/Archives/`) или
+новый ключ в App Store Connect → `~/.appstoreconnect/private_keys/`.
