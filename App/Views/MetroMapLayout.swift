@@ -85,6 +85,16 @@ enum MetroMapLayout {
         "chervonyi-khutir":         Spot(x: 912, y: 984, label: .right),
     ]
 
+    // Зсув холста після масштабування у `factor` разів навколо центру екрана:
+    // точка холста, що була під центром, лишається під центром. Одна формула
+    // і для кадрів під час щипка, і для стану після нього — саме розбіжність
+    // двох формул давала «стрибок» схеми при відпусканні (відгук 06.09.2026).
+    static func zoomedOffset(base: CGSize, factor: CGFloat, viewSize: CGSize) -> CGSize {
+        let center = CGPoint(x: viewSize.width / 2, y: viewSize.height / 2)
+        return CGSize(width: center.x - (center.x - base.width) * factor,
+                      height: center.y - (center.y - base.height) * factor)
+    }
+
     static func point(_ id: String) -> CGPoint? {
         spots[id].map { CGPoint(x: $0.x, y: $0.y) }
     }

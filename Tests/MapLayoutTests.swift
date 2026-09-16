@@ -7,6 +7,33 @@ import XCTest
 final class MapLayoutTests: XCTestCase {
     let repo = MetroRepository.shared
 
+    // Щипок: точка холста під центром екрана не рухається, а послідовність
+    // «кадр під час жесту → стан після» дає той самий зсув, що один крок.
+    // Саме дві різні формули для цих двох моментів давали «стрибок» схеми.
+    func testZoomKeepsCanvasPointUnderScreenCenter() {
+        let view = CGSize(width: 430, height: 820)
+        let center = CGPoint(x: 215, y: 410)
+        for (scale, offset, factor) in [(0.35, CGSize(width: 12, height: 60), 2.1),
+                                        (1.0, CGSize(width: -300, height: -420), 0.5),
+                                        (2.4, CGSize(width: -900, height: -1500), 1.25)] as [(CGFloat, CGSize, CGFloat)] {
+            // Яка точка холста зараз під центром екрана.
+            let canvasBefore = CGPoint(x: (center.x - offset.width) / scale,
+                                       y: (center.y - offset.height) / scale)
+            let zoomed = MetroMapLayout.zoomedOffset(base: offset, factor: factor, viewSize: view)
+            let newScale = scale * factor
+            let canvasAfter = CGPoint(x: (center.x - zoomed.width) / newScale,
+                                      y: (center.y - zoomed.height) / newScale)
+            XCTAssertEqual(canvasBefore.x, canvasAfter.x, accuracy: 0.001)
+            XCTAssertEqual(canvasBefore.y, canvasAfter.y, accuracy: 0.001)
+
+            // Два кроки (1.5 і потім factor/1.5) = один крок factor: без стрибка між кадрами.
+            let half = MetroMapLayout.zoomedOffset(base: offset, factor: 1.5, viewSize: view)
+            let rest = MetroMapLayout.zoomedOffset(base: half, factor: factor / 1.5, viewSize: view)
+            XCTAssertEqual(rest.width, zoomed.width, accuracy: 0.001)
+            XCTAssertEqual(rest.height, zoomed.height, accuracy: 0.001)
+        }
+    }
+
     func testEveryStationHasASpot() {
         for line in repo.lines {
             for id in line.stationIds {

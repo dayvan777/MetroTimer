@@ -344,10 +344,8 @@ struct MetroMapView: View {
         let base = CGSize(width: offset.width + gestureOffset.width,
                           height: offset.height + gestureOffset.height)
         guard scale > 0 else { return base }
-        let factor = currentScale / scale
-        let center = CGPoint(x: viewSize.width / 2, y: viewSize.height / 2)
-        return CGSize(width: center.x - (center.x - base.width) * factor,
-                      height: center.y - (center.y - base.height) * factor)
+        return MetroMapLayout.zoomedOffset(base: base, factor: currentScale / scale,
+                                           viewSize: viewSize)
     }
 
     private func fitIfNeeded(in viewSize: CGSize) {
@@ -380,10 +378,8 @@ struct MetroMapView: View {
                 // Та сама формула, що й у currentOffset під час жесту, — тому
                 // кадр після відпускання збігається з останнім кадром жесту.
                 let target = Self.clamp(scale * value)
-                let center = CGPoint(x: viewSize.width / 2, y: viewSize.height / 2)
-                let factor = target / scale
-                offset.width = center.x - (center.x - offset.width) * factor
-                offset.height = center.y - (center.y - offset.height) * factor
+                offset = MetroMapLayout.zoomedOffset(base: offset, factor: target / scale,
+                                                     viewSize: viewSize)
                 scale = target
                 gestureScale = 1
                 clampOffset(viewSize: viewSize)
