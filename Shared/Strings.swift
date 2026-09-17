@@ -307,6 +307,17 @@ enum L10n {
         tr("Пересадка: перейдіть на «\(station)».", "Change here: walk to \(station).")
     }
 
+    // Обидві станції — один пересадковий вузол: поїзда між ними нема.
+    static func walkOnlyPair(minutes: Int) -> String {
+        tr("Це один пересадковий вузол: між станціями пішки, ~\(minutes) хв",
+           "Same transfer hub: it's a ~\(minutes) min walk between these stations")
+    }
+
+    // Призначення — на іншій лінії того самого вузла: з поїзда виходять раніше.
+    static func walkOnTo(_ station: String) -> String {
+        tr("далі пішки: перехід на «\(station)»", "then walk to \(station)")
+    }
+
     static func transferRow(_ station: String, minutes: Int) -> String {
         tr("Пересадка на «\(station)» · ~\(minutes) хв",
            "Change to \(station) · ~\(minutes) min")

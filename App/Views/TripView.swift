@@ -302,6 +302,15 @@ struct TripView: View {
                 .lineLimit(2)
                 .minimumScaleFactor(0.7)
                 .multilineTextAlignment(.center)
+            // Обрали «Золоті ворота», а в заголовку «Театральна»: відлік іде до дверей
+            // поїзда, і це треба сказати словами, інакше виглядає як помилка.
+            if trip.toId != trip.events.last?.stationId,
+               let chosen = MetroRepository.shared.station(id: trip.toId) {
+                Text(L10n.walkOnTo(chosen.localizedName))
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
+            }
             if now < trip.arrivalDate {
                 Text(timerInterval: min(trip.startDate, trip.arrivalDate)...trip.arrivalDate,
                      pauseTime: nil, countsDown: true)

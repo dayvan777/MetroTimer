@@ -363,9 +363,11 @@ struct SelectionView: View {
     }
 
     private var bottomPanel: some View {
-        let canStart = fromId != nil && toId != nil
+        let picked = fromId != nil && toId != nil
+        let canStart = picked && walkOnlyMinutes == nil
         return VStack(spacing: 10) {
-            if canStart {
+            // Сводка нужна и когда ехать нельзя: в ней объяснение, почему кнопка погасла.
+            if picked {
                 routeSummary
                     .transition(.opacity)
             } else if !engine.favorites.isEmpty || !engine.recents.isEmpty {
@@ -406,6 +408,14 @@ struct SelectionView: View {
         .animation(.easeInOut(duration: 0.25), value: fromId)
     }
 
+    // Театральна ↔ Золоті ворота і подібні пари: це перехід, а не поїздка.
+    private var walkOnlyMinutes: Int? {
+        guard let from = fromId, let to = toId else { return nil }
+        return repo.transfers
+            .first { ($0.fromId == from && $0.toId == to) || ($0.fromId == to && $0.toId == from) }
+            .map { max(1, Int((Double($0.walkSeconds) / 60).rounded())) }
+    }
+
     // Резюме маршрута: что именно построится и сколько ехать — до нажатия.
     private var routeSummary: some View {
         let plan = plannedPreview()
@@ -416,6 +426,12 @@ struct SelectionView: View {
                     .font(.subheadline.weight(.semibold))
                     .lineLimit(2)
                     .minimumScaleFactor(0.8)
+                if let walkOnlyMinutes {
+                    Label(L10n.walkOnlyPair(minutes: walkOnlyMinutes), systemImage: "figure.walk")
+                        .font(.caption2)
+                        .foregroundColor(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
                 if plan == nil, isRouteSuspended {
                     Label(L10n.routeSuspended, systemImage: "exclamationmark.octagon")
                         .font(.caption2)

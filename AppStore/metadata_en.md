@@ -58,6 +58,19 @@ metro,kyiv,kiev,subway,timer,station,stop,commute,offline,underground,alarm,tran
 ## Age rating
 4+
 
+## What’s new (version 1.3.1)
+
+A reliability update: we fixed everything that could make the warning come too late.
+
+• Central transfer stations. If your stop is on the other line of the same transfer hub (say, riding the red line to Zoloti Vorota or Maidan Nezalezhnosti), "Yours is next" used to arrive when the doors were already open. Now it comes one stop before you leave the train, and the counter counts train stops only.
+• Routes that start at such a station: the countdown begins where your train actually departs and no longer lags by the walking time.
+• "+1 stop" right after a transfer no longer adds extra minutes.
+• Clock-change days: first and last trains are shown at the correct time.
+• Surface sections: a train held during an air-raid alert no longer teaches the app to count slower.
+• Pinned routes and the trip journal are no longer lost if you tap a button on the locked screen.
+
+Thank you for riding with us and for telling us where the count is off.
+
 ## What’s new (version 1.3)
 
 The metro runs an hour longer — so does the app.
