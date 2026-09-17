@@ -140,14 +140,15 @@ There is no `.strings` file to fall out of sync, because there is no key to forg
 
 ## Testing
 
-60 tests over the core, run inside the app process so they read the real bundled data
+62 tests over the core, run inside the app process so they read the real bundled data
 rather than a fixture:
 
 - **`PlannerTests`** — route composition, monotonic times, dwell placement, transfers,
   ±1 corrections at both boundaries, notification payloads, Live Activity state stability
   (the state must *not* change mid-segment, or the island would push needlessly)
 - **`ScheduleTests`** — headway interpolation inside the hour, weekday vs weekend,
-  behaviour outside service hours, first/last train warnings
+  behaviour outside service hours, first/last train warnings, the post-midnight
+  service day and clock-change days
 - **`DataTests`** — bundled data consistency, coordinates inside a Kyiv bounding box,
   surface stations far enough apart for a 400 m GPS snap to be unambiguous
 - **`LocalizationTests`** — every sampled string actually changes with the language, and

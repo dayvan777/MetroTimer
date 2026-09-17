@@ -174,9 +174,10 @@ final class MetroRepository {
     func headwaySeconds(lineId: String, forward: Bool, at date: Date) -> Int? {
         guard let hours = headwayHourRange(lineId: lineId) else { return nil }
         let calendar = Self.kyivCalendar
-        let parts = calendar.dateComponents([.hour, .minute, .weekday], from: date)
-        guard let hour = parts.hour, let minute = parts.minute,
-              let weekday = parts.weekday else { return nil }
+        let parts = calendar.dateComponents([.hour, .minute], from: date)
+        guard let hour = parts.hour, let minute = parts.minute else { return nil }
+        // Тип дня — за службовою добою (з 03:00): о 00:05 суботи ще їде п'ятничний розклад.
+        let weekday = calendar.component(.weekday, from: date.addingTimeInterval(-3 * 3600))
         let isHoliday = weekday == 1 || weekday == 7      // неділя / субота
         // Після опівночі поїзди ще їдуть (останні прибувають близько 00:13), і це
         // хвіст попереднього дня, а не ранок: 0-та година — це «24-та».
@@ -240,8 +241,15 @@ final class MetroRepository {
         return (firstDate, lastDate)
     }
 
+    // Настінний час, а не «північ + секунди»: у добу переведення годинників
+    // (25 або 23 години) додавання секунд зсувало весь розклад на годину.
+    // Година 24+ (останні поїзди після опівночі) календар сам переносить на завтра.
     private static func kyivTime(secondsFromMidnight seconds: Int, on date: Date) -> Date? {
         let serviceDay = kyivCalendar.startOfDay(for: date.addingTimeInterval(-3 * 3600))
-        return serviceDay.addingTimeInterval(TimeInterval(seconds))
+        var parts = kyivCalendar.dateComponents([.year, .month, .day], from: serviceDay)
+        parts.hour = seconds / 3600
+        parts.minute = seconds % 3600 / 60
+        parts.second = seconds % 60
+        return kyivCalendar.date(from: parts)
     }
 }

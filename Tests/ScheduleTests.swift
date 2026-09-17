@@ -246,6 +246,40 @@ final class ScheduleTests: XCTestCase {
         XCTAssertEqual(morning.first, kyiv(18, 6, 20).addingTimeInterval(15))
     }
 
+    // Після опівночі їде хвіст учорашнього розкладу, тож і тип дня — вчорашній:
+    // о 00:05 суботи інтервал п'ятничний (будній), о 00:05 понеділка — недільний.
+    func testHeadwayAfterMidnightUsesServiceDayType() throws {
+        let fridayTail = try XCTUnwrap(repo.headwaySeconds(lineId: "m1", forward: true, at: kyiv(22, 0, 5)))
+        let sundayTail = try XCTUnwrap(repo.headwaySeconds(lineId: "m1", forward: true, at: kyiv(24, 0, 5)))
+        XCTAssertEqual(fridayTail, 540, "кінець 23-ї години буднього дня")
+        XCTAssertEqual(sundayTail, 600, "кінець 23-ї години вихідного")
+    }
+
+    // У добу переведення годинників (25 жовтня — 25 годин, 28 березня — 23) розклад
+    // живе за настінним часом. «Північ + секунди» зсувала його на годину: восени
+    // «останній поїзд» лякав би на годину раніше, навесні — обіцяв би поїзд, якого нема.
+    func testServiceWindowFollowsWallClockOnClockChangeDays() throws {
+        let calendar = MetroRepository.kyivCalendar
+        func wallClock(year: Int, month: Int, day: Int, from: String, toward: String) throws -> [Int] {
+            var noon = DateComponents()
+            noon.year = year; noon.month = month; noon.day = day; noon.hour = 12
+            let window = try XCTUnwrap(repo.serviceWindow(fromId: from, towardId: toward,
+                                                          on: try XCTUnwrap(calendar.date(from: noon))))
+            return [window.first, window.last].flatMap { date -> [Int] in
+                let parts = calendar.dateComponents([.hour, .minute, .second], from: date)
+                return [parts.hour ?? -1, parts.minute ?? -1, parts.second ?? -1]
+            }
+        }
+        // Два маршрути: звичайний вечірній і той, де останній поїзд уже після опівночі.
+        for (from, toward) in [("akademmistechko", "lisova"), ("boryspilska", "chervonyi-khutir")] {
+            let usual = try wallClock(year: 2026, month: 9, day: 17, from: from, toward: toward)
+            XCTAssertEqual(try wallClock(year: 2026, month: 10, day: 25, from: from, toward: toward),
+                           usual, "\(from): осіннє переведення")
+            XCTAssertEqual(try wallClock(year: 2027, month: 3, day: 28, from: from, toward: toward),
+                           usual, "\(from): весняне переведення")
+        }
+    }
+
     func testServiceIssueDetectsClosedAndLastTrain() throws {
         func issue(at date: Date) -> ServiceIssue? {
             guard let trip = TripPlanner.plan(fromId: "akademmistechko", toId: "khreshchatyk",
