@@ -140,7 +140,7 @@ There is no `.strings` file to fall out of sync, because there is no key to forg
 
 ## Testing
 
-62 tests over the core, run inside the app process so they read the real bundled data
+70 tests over the core, run inside the app process so they read the real bundled data
 rather than a fixture:
 
 - **`PlannerTests`** — route composition, monotonic times, dwell placement, transfers,
