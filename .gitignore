@@ -5,6 +5,11 @@
 !/.gitignore
 !/README.md
 !/CLAUDE.md
+# Скиллы проекта для Claude Code (релиз, данные города, пост). Остальное в
+# .claude/ — локальные настройки машины, в гит не идут.
+!/.claude/
+/.claude/*
+!/.claude/skills/
 # Витрина на GitHub Pages: отдаётся из main / root, поэтому оба файла
 # обязаны лежать в корне. .nojekyll выключает обработку Jekyll.
 !/index.html

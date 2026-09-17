@@ -18,6 +18,30 @@ id6804173309, bundle `ua.vlad.MetroTimer`, команда `JC2G64UQ8N`. SwiftUI,
 - `docs/FEEDBACK.md` — разбор комментариев Threads и отзывов App Store с приоритетами (рус.).
   Threads автора — @realvladd, посты о приложении по-украински, строчными буквами.
 
+## Скиллы
+
+Свои, лежат в репозитории (`.claude/skills/`) и переезжают вместе с ним:
+
+- `release` — выпуск версии от номера сборки до журнала READINESS
+- `city-data` — сверка и обновление графика метро и правил тревог; запускать перед
+  релизом и после любого перерыва дольше недели
+- `threads-post` — пост в голосе автора, лимит 500 знаков
+
+Сторонние, стоят в `~/.claude/skills/` (при переезде на другой Mac поставить заново; в
+каждом лежит `.source` с репозиторием и коммитом): `swiftui-pro` (twostraws/SwiftUI-Agent-Skill),
+`widgets` и `app-intents` (n0an), `ios-accessibility` (dadederk), `karpathy-guidelines`
+(forrestchang/andrej-karpathy-skills).
+
+**Проект главнее скилла.** Сторонние скиллы считают целью iOS 26 и Swift 6.2. Здесь —
+iOS 16.1 и Swift 5: всё новее (`@Observable`, `onChange` с двумя параметрами, `ControlWidget`,
+`supplementalActivityFamilies`, `isDynamicIslandLimitedInWidth`) — только под `#available`,
+а замену «устаревшего» API проверять на доступность в 16.1. Раздел «Что не ломать» тоже
+сильнее любого совета из скилла.
+
+MCP Xcode (`.mcp.json`, локальный файл): `xcrun mcpbridge` — поиск по документации Apple,
+диагностика, рендер SwiftUI-превью. Работает при открытом Xcode и включённой настройке
+Xcode → Settings → Intelligence → «Allow external agents to use Xcode tools».
+
 ## Сборка и тесты
 
 ```bash
