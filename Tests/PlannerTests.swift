@@ -201,6 +201,24 @@ final class PlannerTests: XCTestCase {
         XCTAssertLessThanOrEqual(planned.count, 64, "лимит iOS на pending-уведомления")
     }
 
+    // «+1» одразу після пересадки: між станцією посадки і наступною зупинок нема, тож
+    // «я на одну раніше» означає «поїзд ще не рушив». Раніше якір ставав на станцію
+    // ВИХОДУ, і план заново додавав стоянку, перехід і очікування — відлік відставав на хвилини.
+    func testPlusOneRightAfterTransferMeansTrainHasNotLeft() throws {
+        let trip = try XCTUnwrap(plan("akademmistechko", "pozniaky"))
+        let index = try XCTUnwrap(trip.transferIndex)
+        let onNewLine = trip.events[index].departure.addingTimeInterval(20)
+        XCTAssertEqual(trip.nextEventIndex(at: onNewLine), index + 1)
+
+        let plusOne = try XCTUnwrap(TripPlanner.replan(trip: trip, nextStopShift: 1,
+                                                       now: onNewLine, repo: repo))
+        let boardedNow = try XCTUnwrap(TripPlanner.replan(trip: trip, anchoredAt: index,
+                                                          now: onNewLine, repo: repo))
+        XCTAssertEqual(plusOne.arrivalDate, boardedNow.arrivalDate)
+        XCTAssertLessThan(plusOne.arrivalDate.timeIntervalSince(trip.arrivalDate), 120,
+                          "поправка на один перегін, а не на перехід з очікуванням")
+    }
+
     // Призначення — станція того самого вузла на іншій лінії (Вокзальна → Золоті ворота):
     // з поїзда виходять на Театральній, далі пішки. Раніше «Наступна — ваша» приходила,
     // коли двері на Театральній уже відчинені, а лічильник показував зайву зупинку.

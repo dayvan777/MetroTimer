@@ -210,6 +210,18 @@ final class DataTests: XCTestCase {
     }
 
     // 9б. Правила тривог КМДА з 10.09.2026 живуть у перегонах, а не в станціях.
+    // Пасивне навчання по GPS: поїзд, що простояв на Лівобережній під час тривоги,
+    // не має права стати «звичайним часом перегону» — відлік потім відставав би на хвилини.
+    func testPassiveLearningRejectsHeldTrains() {
+        let seed = TimeInterval(MetroRepository.shared.seedTiming(from: "livoberezhna", to: "darnytsia").travel)
+        XCTAssertTrue(LocationCorrector.isLearnable(travel: seed, seed: seed))
+        XCTAssertTrue(LocationCorrector.isLearnable(travel: seed * 1.2, seed: seed))
+        XCTAssertTrue(LocationCorrector.isLearnable(travel: seed * 0.7, seed: seed))
+        XCTAssertFalse(LocationCorrector.isLearnable(travel: seed + 600, seed: seed), "10 хвилин стоянки")
+        XCTAssertFalse(LocationCorrector.isLearnable(travel: seed * 1.5, seed: seed))
+        XCTAssertFalse(LocationCorrector.isLearnable(travel: 30, seed: seed), "стрибок GPS")
+    }
+
     func testAlertRulesFollowKmdaFromSeptember2026() throws {
         // Видубичі — під землею (8 м): тег «наземна» був помилкою даних, яку
         // помітили пасажири (Threads, 07.09.2026). Наземний — міст ЗА станцією.

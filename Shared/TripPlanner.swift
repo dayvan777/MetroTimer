@@ -155,6 +155,12 @@ enum TripPlanner {
         guard correctedNext >= 1 else {
             return correctedNext == 0 ? replan(trip: trip, anchoredAt: 0, now: now, repo: repo) : nil
         }
+        // «+1» сразу после пересадки: между станцией посадки и следующей остановок нет,
+        // значит «я на одну раньше» = «поезд ещё не тронулся». Якорь — сама посадка, как у
+        // «Поїзд рушив»; якорь на станции выхода заново добавил бы переход и ожидание.
+        if delta > 0, trip.events[correctedNext].isTransfer {
+            return replan(trip: trip, anchoredAt: correctedNext, now: now, repo: repo)
+        }
         return replan(trip: trip, anchoredAt: correctedNext - 1, now: now, repo: repo)
     }
 

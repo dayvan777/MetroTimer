@@ -151,11 +151,20 @@ final class LocationCorrector: NSObject, CLLocationManagerDelegate {
         let dwell = TimeInterval(engine.repo.timing(from: prevOfFrom.stationId,
                                                     to: from.stationId).dwell)
         let travel = now.timeIntervalSince(last.at) - dwell
-        // Границы правдоподобия — общие с ручной калибровкой (CalibrationStore):
-        // мусор одинаково опасен, откуда бы он ни пришёл, а хранилище отсеет
-        // его само и скажет об этом.
-        guard CalibrationStore.shared.recordTravel(from: from.stationId, to: to.stationId,
+        let seed = TimeInterval(engine.repo.seedTiming(from: from.stationId, to: to.stationId).travel)
+        guard Self.isLearnable(travel: travel, seed: seed),
+              CalibrationStore.shared.recordTravel(from: from.stationId, to: to.stationId,
                                                    seconds: travel) else { return }
         CalibrationStore.shared.save()
+    }
+
+    // Пассивный замер никто не подтверждает, поэтому верим ему только рядом с официальным
+    // временем перегона. Поезд, простоявший на наземной станции (тревога, задержка), или
+    // приложение, вернувшееся из фона, дают «ход» в несколько минут; общие границы
+    // 30…900 с его пропускали, а скользящее среднее такой замер не забывает. Верхняя
+    // граница уже нижней намеренно: завышенный ход отодвигает отсчёт за нужную станцию,
+    // заниженный — всего лишь будит раньше.
+    nonisolated static func isLearnable(travel: TimeInterval, seed: TimeInterval) -> Bool {
+        (seed * 0.6...seed * 1.25).contains(travel)
     }
 }

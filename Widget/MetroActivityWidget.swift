@@ -287,6 +287,9 @@ private struct LockScreenView: View {
             }
         }
         .padding(14)
+        // Фон карточки тёмный всегда, а экран блокировки следует теме системы: в светлой
+        // .primary стал бы чёрным по чёрному. Тёмная схема приложения до виджета не доходит.
+        .environment(\.colorScheme, .dark)
         .activityBackgroundTint(Color.black.opacity(0.75))
         .activitySystemActionForegroundColor(.white)
     }
