@@ -82,11 +82,17 @@ struct TripView: View {
     // саме цієї поїздки.
     @ViewBuilder
     private func exitsCard(trip: ActiveTrip, accent: Color) -> some View {
-        let destId = trip.events.last?.stationId ?? ""
+        // Призначення на іншій лінії вузла (Вокзальна → Золоті ворота): з поїзда виходять
+        // на Театральній, а на вулицю — вже із Золотих воріт. Виходи показуємо обраної
+        // станції, але без «у який вагон сідати»: ті підказки про її власну платформу.
+        let trainExitId = trip.events.last?.stationId ?? ""
+        let walked = trip.toId != trainExitId ? MetroRepository.shared.station(id: trip.toId) : nil
+        let destId = walked?.id ?? trainExitId
+        let destName = walked?.localizedName ?? trip.destinationName
         let exits = ExitStore.shared.exits(for: destId)
         if !exits.isEmpty {
             let forward = arrivalIsForward(trip: trip)
-            let hintsOK = ExitStore.shared.directionalHintsAllowed(for: destId)
+            let hintsOK = walked == nil && ExitStore.shared.directionalHintsAllowed(for: destId)
             let rows = ExitRow.build(from: exits, hintsAllowed: hintsOK,
                                      travellingForward: forward)
             let shown = Array(rows.prefix(6))
@@ -111,7 +117,7 @@ struct TripView: View {
                     Image(systemName: "figure.walk")
                         .font(.caption2.weight(.bold))
                         .foregroundColor(.secondary)
-                    Text(L10n.exitsOn(trip.destinationName))
+                    Text(L10n.exitsOn(destName))
                         .font(.footnote.weight(.semibold))
                         .foregroundColor(.secondary)
                 }

@@ -82,10 +82,8 @@ final class PlannerTests: XCTestCase {
         // ForEach в UI ключуется по stationId — дубликаты сломали бы список.
         XCTAssertEqual(Set(trip.events.map(\.stationId)).count, trip.events.count)
 
-        // Пересадка как последний шаг: станция назначения = станция пересадки.
-        let short = try XCTUnwrap(plan("teatralna", "zoloti-vorota"))
-        XCTAssertEqual(short.events.count, 2)
-        XCTAssertTrue(try XCTUnwrap(short.events.last).isStop, "конечная всегда остановка")
+        // Назначение или отправление в самом узле — отдельные тесты ниже
+        // (testDestinationAcrossTransferNode…, testOriginAcrossTransferNode…).
     }
 
     // 4. Ручная коррекция ±1, включая обе границы.
@@ -158,7 +156,7 @@ final class PlannerTests: XCTestCase {
         XCTAssertEqual(trip.alertDate, trip.events[trip.events.count - 2].arrival)
 
         // С пересадкой в конце alert берётся от перехода, а не от станции выхода.
-        let transferTrip = try XCTUnwrap(plan("teatralna", "lukianivska"))
+        let transferTrip = try XCTUnwrap(plan("universytet", "lukianivska"))
         let transferEvent = try XCTUnwrap(transferTrip.events.first(where: \.isTransfer))
         XCTAssertGreaterThanOrEqual(transferTrip.alertDate, transferEvent.arrival)
     }
@@ -191,19 +189,55 @@ final class PlannerTests: XCTestCase {
             for: boarded, now: withTransfer.events[exitIndex].arrival)
         XCTAssertTrue(afterBoarding.allSatisfy { !$0.id.hasPrefix("trip.transfer.") })
 
-        // Едем с самой пересадочной станции: сказать надо сразу, но ровно один раз.
+        // Едем с самой пересадочной станции: «Поїхали» жмут, когда поезд тронулся, —
+        // а он трогается уже с соседней станции узла. Перехода в плане нет, напоминать не о чем.
         let fromNode = try XCTUnwrap(plan("khreshchatyk", "poshtova-ploshcha"))
         let atStart = NotificationScheduler.plan(for: fromNode, now: start)
-        XCTAssertEqual(atStart.filter { $0.id.hasPrefix("trip.transfer.") }.count, 1)
-        let index = try XCTUnwrap(fromNode.transferIndex)
-        let afterWalk = NotificationScheduler.plan(for: fromNode,
-                                                   now: fromNode.events[index].arrival)
-        XCTAssertTrue(afterWalk.allSatisfy { !$0.id.hasPrefix("trip.transfer.") })
+        XCTAssertTrue(atStart.allSatisfy { !$0.id.hasPrefix("trip.transfer.") })
 
         // После прибытия «наступна — ваша» уже не нужна: остаётся только «Виходьте».
         let late = NotificationScheduler.plan(for: trip, now: trip.arrivalDate)
         XCTAssertEqual(late.map(\.id), ["trip.arrival"])
         XCTAssertLessThanOrEqual(planned.count, 64, "лимит iOS на pending-уведомления")
+    }
+
+    // Призначення — станція того самого вузла на іншій лінії (Вокзальна → Золоті ворота):
+    // з поїзда виходять на Театральній, далі пішки. Раніше «Наступна — ваша» приходила,
+    // коли двері на Театральній уже відчинені, а лічильник показував зайву зупинку.
+    func testDestinationAcrossTransferNodeIsTheTrainExit() throws {
+        let trip = try XCTUnwrap(plan("vokzalna", "zoloti-vorota"))
+        XCTAssertEqual(trip.events.map(\.stationId), ["vokzalna", "universytet", "teatralna"])
+        XCTAssertEqual(trip.toId, "zoloti-vorota", "обране призначення лишається для журналу й виходів")
+        XCTAssertEqual(trip.alertDate, trip.events[1].arrival, "попередити треба на Університеті")
+        XCTAssertEqual(trip.stopsRemaining(at: start), 2)
+        XCTAssertNil(trip.transferIndex, "другого поїзда нема — кнопка «Поїзд рушив» не потрібна")
+        XCTAssertEqual(trip.arrivalDate, try XCTUnwrap(plan("vokzalna", "teatralna")).arrivalDate)
+
+        for (from, to, exit) in [("arsenalna", "maidan-nezalezhnosti", "khreshchatyk"),
+                                 ("klovska", "ploshcha-ukrainskykh-heroiv", "palats-sportu"),
+                                 ("olimpiiska", "palats-sportu", "ploshcha-ukrainskykh-heroiv")] {
+            let walked = try XCTUnwrap(plan(from, to), "\(from) → \(to)")
+            XCTAssertEqual(walked.events.last?.stationId, exit)
+            XCTAssertTrue(walked.events.allSatisfy { !$0.isTransfer })
+        }
+    }
+
+    // Відправлення — станція вузла, а їхати іншою лінією (Золоті ворота → Вокзальна):
+    // «Поїхали» тиснуть, коли поїзд рушив, тобто вже на Театральній. План із пішим
+    // переходом попереду відставав би на перехід і очікування — попередження після станції.
+    func testOriginAcrossTransferNodeStartsWhereTheTrainDeparts() throws {
+        let trip = try XCTUnwrap(plan("zoloti-vorota", "vokzalna"))
+        XCTAssertEqual(trip.events.map(\.stationId), ["teatralna", "universytet", "vokzalna"])
+        XCTAssertEqual(trip.fromId, "zoloti-vorota")
+        XCTAssertEqual(trip.lineId, "m1", "колір і акцент — лінії, якою їдемо")
+        XCTAssertEqual(trip.arrivalDate, try XCTUnwrap(plan("teatralna", "vokzalna")).arrivalDate)
+        XCTAssertNil(trip.transferIndex)
+    }
+
+    // Обидві станції — один вузол: поїзда в такій «поїздці» немає.
+    func testWalkOnlyPairHasNoTrip() {
+        XCTAssertNil(plan("teatralna", "zoloti-vorota"))
+        XCTAssertNil(plan("maidan-nezalezhnosti", "khreshchatyk"))
     }
 
     // 8. Состояние Live Activity: не дёргается внутри перегона, меняется на остановке.

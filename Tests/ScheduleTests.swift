@@ -109,13 +109,15 @@ final class ScheduleTests: XCTestCase {
         XCTAssertGreaterThan(peakWalk, 150)
     }
 
-    func testTransferWithoutBoardingHasNoWait() throws {
-        // Пересадочный узел и есть пункт назначения: садиться в поезд не нужно.
-        let trip = try XCTUnwrap(TripPlanner.plan(fromId: "akademmistechko", toId: "zoloti-vorota",
-                                                  start: kyiv(17, 22), repo: repo))
-        let index = try XCTUnwrap(trip.transferIndex)
-        let walk = trip.events[index].arrival.timeIntervalSince(trip.events[index - 1].departure)
-        XCTAssertEqual(walk, 150, accuracy: 1, "только пеший переход, без ожидания поезда")
+    func testDestinationInTransferNodeHasNoWaitOrWalk() throws {
+        // Пересадочный узел и есть пункт назначения: второго поезда нет, а отсчёт
+        // идёт до дверей — до Театральної, вечером так же, как днём.
+        let toNode = try XCTUnwrap(TripPlanner.plan(fromId: "akademmistechko", toId: "zoloti-vorota",
+                                                    start: kyiv(17, 22), repo: repo))
+        let toExit = try XCTUnwrap(TripPlanner.plan(fromId: "akademmistechko", toId: "teatralna",
+                                                    start: kyiv(17, 22), repo: repo))
+        XCTAssertNil(toNode.transferIndex)
+        XCTAssertEqual(toNode.arrivalDate, toExit.arrivalDate)
     }
 
     // «Поїзд рушив» после пересадки: неопределённое ожидание заменяется фактом.

@@ -57,26 +57,35 @@ enum TripPlanner {
         } else {
             guard let node = repo.transfer(from: fromLine.id, to: toLine.id),
                   let boardStation = repo.station(id: node.boardAt) else { return nil }
-            // Этап 1 до станции выхода (может состоять из одной станции,
-            // если отправление — сам пересадочный узел).
-            guard let leg1 = legEvents(line: fromLine, from: fromId, to: node.exitAt,
-                                       placeholder: start, repo: repo) else { return nil }
-            events = leg1
-            // Пеший переход; если он же и есть пункт назначения — это остановка.
-            let walkIsDestination = node.boardAt == toId
-            events.append(StopEvent(stationId: boardStation.id, nameUk: boardStation.nameUk,
-                                    nameEn: boardStation.nameEn, lineId: toLine.id,
-                                    arrival: start, departure: start,
-                                    isStop: walkIsDestination, isTransfer: true))
-            if !walkIsDestination {
-                guard let leg2 = legEvents(line: toLine, from: node.boardAt, to: toId,
+            // Продукт — про двери поезда: «Поїхали» жмут, когда поезд тронулся, а
+            // «наступна — ваша» нужна перед станцией, где из него выходят. Поэтому
+            // пеший переход в начале или в конце маршрута в план не входит:
+            // иначе отсчёт отстаёт на переход и ожидание (отправление из узла) или
+            // предупреждение приходит при уже открытых дверях (назначение в узле).
+            if node.exitAt == fromId {
+                guard node.boardAt != toId,
+                      let leg = legEvents(line: toLine, from: node.boardAt, to: toId,
+                                          placeholder: start, repo: repo) else { return nil }
+                events = leg
+            } else {
+                guard let leg1 = legEvents(line: fromLine, from: fromId, to: node.exitAt,
                                            placeholder: start, repo: repo) else { return nil }
-                events.append(contentsOf: leg2.dropFirst())   // узел уже добавлен как переход
+                events = leg1
+                if node.boardAt != toId {
+                    events.append(StopEvent(stationId: boardStation.id, nameUk: boardStation.nameUk,
+                                            nameEn: boardStation.nameEn, lineId: toLine.id,
+                                            arrival: start, departure: start,
+                                            isStop: false, isTransfer: true))
+                    guard let leg2 = legEvents(line: toLine, from: node.boardAt, to: toId,
+                                               placeholder: start, repo: repo) else { return nil }
+                    events.append(contentsOf: leg2.dropFirst())   // узел уже добавлен как переход
+                }
             }
         }
 
         fill(events: &events, from: 1, cursor: start, repo: repo)
-        return ActiveTrip(lineId: fromLine.id, fromId: fromId, toId: toId,
+        // Линия поездки — та, по которой реально едем с первой станции плана.
+        return ActiveTrip(lineId: events.first?.lineId ?? fromLine.id, fromId: fromId, toId: toId,
                           startDate: start, initialArrival: events.last?.arrival ?? start,
                           manualCorrections: 0, lateCorrections: 0,
                           gpsCorrections: 0, events: events)
