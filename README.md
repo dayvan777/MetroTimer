@@ -175,7 +175,8 @@ Both targets ship a `PrivacyInfo.xcprivacy`.
 
 *Done:* routing with transfers, service hours, Live Activity with interactive
 corrections, calibration, trip journal, an interactive metro map and schedule reminders
-(1.1), station exits with directions for all 52 stations (1.2), Ukrainian and English
+(1.1), station exits with directions for all 52 stations (1.2), the extended timetable and
+alert-level rules of September 2026 (1.3), Ukrainian and English
 throughout, VoiceOver labels, Reduce Motion, privacy policy and support page.
 
 *Remaining:* field validation. The trip journal records the plan against the outcome and
