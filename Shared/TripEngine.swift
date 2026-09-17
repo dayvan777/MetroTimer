@@ -201,6 +201,12 @@ final class TripEngine: ObservableObject {
 
     // Вызывается при выходе в foreground.
     func refresh() {
+        // Процесс могла поднять кнопка Live Activity с заблокированного экрана, когда
+        // файлы были закрыты защитой. Теперь телефон разблокирован — дочитываем.
+        RouteStore.shared.reloadIfLocked()
+        CalibrationStore.shared.reloadIfLocked()
+        TripLogStore.shared.reloadIfLocked()
+        refreshRoutes()
         guard let trip else {
             // Без поездки не должно оставаться живых активностей (страховка).
             ActivityController.shared.endAllImmediately()

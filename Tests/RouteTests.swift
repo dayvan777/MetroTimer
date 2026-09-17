@@ -12,6 +12,86 @@ final class RouteTests: XCTestCase {
     private let gym  = RecentTrip(lineId: "m3", fromId: "syrets", toId: "osokorky")
     private let dacha = RecentTrip(lineId: "m1", fromId: "arsenalna", toId: "lisova")
 
+    // MARK: - Закритий файл — не порожній файл
+
+    // Процес може підняти кнопка Live Activity із заблокованого екрана: файли під
+    // completeUnlessOpen у цю мить не читаються. Раніше сховища сприймали це як
+    // «файла нема», стартували порожніми і першим же збереженням стирали закріплені
+    // маршрути, журнал і калібрування. Замок імітуємо правами 000: атомарний запис
+    // його обходить (перейменування в теці) — рівно як у житті.
+    private func lockedFile(_ body: (URL) throws -> Void) throws {
+        let url = FileManager.default.temporaryDirectory
+            .appendingPathComponent("locktest-\(UUID().uuidString).json")
+        defer {
+            try? FileManager.default.setAttributes([.posixPermissions: 0o644], ofItemAtPath: url.path)
+            try? FileManager.default.removeItem(at: url)
+        }
+        try body(url)
+    }
+
+    private func setLocked(_ locked: Bool, _ url: URL) throws {
+        try FileManager.default.setAttributes([.posixPermissions: locked ? 0o000 : 0o644],
+                                              ofItemAtPath: url.path)
+    }
+
+    func testLockedRouteBookIsNotOverwritten() throws {
+        try lockedFile { url in
+            RouteStore(fileURL: url).rememberRecent(home)
+            let onDisk = try Data(contentsOf: url)
+
+            try setLocked(true, url)
+            let blind = RouteStore(fileURL: url)
+            XCTAssertTrue(blind.isLocked)
+            XCTAssertTrue(blind.book.recents.isEmpty, "прочитати не вдалося — у пам'яті порожньо")
+            blind.rememberRecent(work)
+
+            try setLocked(false, url)
+            XCTAssertEqual(try Data(contentsOf: url), onDisk, "файл на диску не зачеплено")
+            blind.reloadIfLocked()
+            XCTAssertFalse(blind.isLocked)
+            XCTAssertEqual(blind.book.recents, [home])
+            blind.rememberRecent(work)
+            XCTAssertEqual(RouteStore(fileURL: url).book.recents, [work, home], "після розблокування пишемо як завжди")
+        }
+    }
+
+    func testLockedJournalKeepsOldEntriesAndTheBlindOne() throws {
+        let start = Date(timeIntervalSince1970: 1_760_000_000)
+        let first = try XCTUnwrap(TripPlanner.plan(fromId: "vokzalna", toId: "khreshchatyk", start: start, repo: repo))
+        let second = try XCTUnwrap(TripPlanner.plan(fromId: "syrets", toId: "osokorky", start: start, repo: repo))
+        try lockedFile { url in
+            TripLogStore(fileURL: url).append(trip: first, outcome: .arrived, at: start)
+
+            try setLocked(true, url)
+            let blind = TripLogStore(fileURL: url)
+            XCTAssertTrue(blind.isLocked)
+            blind.append(trip: second, outcome: .expired, at: start.addingTimeInterval(3600))
+
+            try setLocked(false, url)
+            blind.reloadIfLocked()
+            XCTAssertEqual(blind.entries.map(\.outcome), [.expired, .arrived], "сліпий запис зверху, старий на місці")
+            XCTAssertEqual(TripLogStore(fileURL: url).entries.map(\.outcome), [.expired, .arrived], "і на диску теж")
+        }
+    }
+
+    func testLockedCalibrationIsNotOverwritten() throws {
+        try lockedFile { url in
+            let store = CalibrationStore(fileURL: url)
+            XCTAssertTrue(store.recordTravel(from: "vokzalna", to: "universytet", seconds: 100))
+            store.save()
+
+            try setLocked(true, url)
+            let blind = CalibrationStore(fileURL: url)
+            XCTAssertTrue(blind.isLocked)
+            XCTAssertNil(blind.record(from: "vokzalna", to: "universytet"))
+            blind.save()
+
+            try setLocked(false, url)
+            blind.reloadIfLocked()
+            XCTAssertEqual(blind.record(from: "vokzalna", to: "universytet")?.travelSeconds, 100)
+        }
+    }
+
     // 1. Останні: повтор піднімається нагору без дубля, хвіст обрізається.
     func testRecentsDedupeAndCap() {
         var book = RouteBook()

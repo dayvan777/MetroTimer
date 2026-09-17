@@ -86,8 +86,29 @@ final class RouteStore {
 
     private static let legacyRecentsKey = "recentTrips"
 
-    private init() {
-        if let data = try? Data(contentsOf: Self.fileURL),
+    private let fileURL: URL
+    // Файл закрыт защитой (телефон заблокирован, процесс поднят кнопкой с экрана
+    // блокировки): книжка в памяти пустая, и на диск её писать нельзя.
+    private(set) var isLocked = false
+
+    init(fileURL: URL = RouteStore.fileURL) {
+        self.fileURL = fileURL
+        book = RouteBook(migratingLegacy: [])
+        let read = FileManager.default.readProtected(fileURL)
+        if case .locked = read { isLocked = true } else { load(read) }
+    }
+
+    // Телефон разблокирован — забираем с диска то, что не смогли прочитать на старте.
+    func reloadIfLocked() {
+        guard isLocked else { return }
+        let read = FileManager.default.readProtected(fileURL)
+        if case .locked = read { return }
+        isLocked = false
+        load(read)
+    }
+
+    private func load(_ read: ProtectedRead) {
+        if case .data(let data) = read,
            let decoded = try? JSONDecoder().decode(RouteBook.self, from: data) {
             book = decoded
         } else {
@@ -115,11 +136,12 @@ final class RouteStore {
     }
 
     private func save() {
+        guard !isLocked else { return }
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
         if let data = try? encoder.encode(book) {
-            try? data.write(to: Self.fileURL, options: .atomic)
-            FileManager.default.protectAsLocalOnly(Self.fileURL)
+            try? data.write(to: fileURL, options: .atomic)
+            FileManager.default.protectAsLocalOnly(fileURL)
         }
     }
 }

@@ -20,6 +20,22 @@ extension FileManager {
         values.isExcludedFromBackup = true
         try? url.setResourceValues(values)
     }
+
+    // «Файла нет» и «файл есть, но закрыт» — разные ответы. completeUnlessOpen не даёт
+    // открыть файл на заблокированном телефоне, а процесс в этот момент может поднять
+    // кнопка Live Activity с экрана блокировки. Принять «закрыт» за «нет» — значит начать
+    // с пустого состояния и первым же save() стереть избранное, журнал и калибровку.
+    func readProtected(_ url: URL) -> ProtectedRead {
+        guard fileExists(atPath: url.path) else { return .missing }
+        guard let data = try? Data(contentsOf: url) else { return .locked }
+        return .data(data)
+    }
+}
+
+enum ProtectedRead {
+    case missing
+    case locked
+    case data(Data)
 }
 
 // Усреднённые замеры по направленному перегону, ключ Segment.key.
@@ -64,10 +80,31 @@ final class CalibrationStore {
     static let plausibleTravel: ClosedRange<TimeInterval> = 30...900
     static let plausibleDwell: ClosedRange<TimeInterval> = 3...600
 
-    private init() {
-        let decoded = (try? Data(contentsOf: Self.fileURL)).flatMap {
-            try? JSONDecoder().decode([String: CalibrationRecord].self, from: $0)
-        } ?? [:]
+    private let fileURL: URL
+    // Файл закрыт защитой (телефон заблокирован): в памяти пусто, на диск не пишем.
+    private(set) var isLocked = false
+
+    init(fileURL: URL = CalibrationStore.fileURL) {
+        self.fileURL = fileURL
+        records = [:]
+        let read = FileManager.default.readProtected(fileURL)
+        if case .locked = read { isLocked = true } else { load(read) }
+    }
+
+    // Телефон разблокирован — забираем с диска то, что не смогли прочитать на старте.
+    func reloadIfLocked() {
+        guard isLocked else { return }
+        let read = FileManager.default.readProtected(fileURL)
+        if case .locked = read { return }
+        isLocked = false
+        load(read)
+    }
+
+    private func load(_ read: ProtectedRead) {
+        var decoded: [String: CalibrationRecord] = [:]
+        if case .data(let data) = read {
+            decoded = (try? JSONDecoder().decode([String: CalibrationRecord].self, from: data)) ?? [:]
+        }
         // Файл писала в том числе предыдущая версия приложения, у которой этих
         // проверок не было. Доверять ему нельзя: перегон с ходом 0.2 с
         // (реальная находка в отладочном контейнере) навсегда съедает станцию
@@ -122,16 +159,17 @@ final class CalibrationStore {
     // Удаление по требованию пользователя: и усреднённые замеры, и сырые сессии.
     func clearAll() {
         records = [:]
-        try? FileManager.default.removeItem(at: Self.fileURL)
+        try? FileManager.default.removeItem(at: fileURL)
         try? FileManager.default.removeItem(at: Self.sessionsDir)
     }
 
     func save() {
+        guard !isLocked else { return }
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
         if let data = try? encoder.encode(records) {
-            try? data.write(to: Self.fileURL, options: .atomic)
-            FileManager.default.protectAsLocalOnly(Self.fileURL)
+            try? data.write(to: fileURL, options: .atomic)
+            FileManager.default.protectAsLocalOnly(fileURL)
         }
     }
 }

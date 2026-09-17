@@ -80,15 +80,35 @@ final class TripLogStore {
             .appendingPathComponent("trip_log.json")
     }
 
-    private init() {
+    private let fileURL: URL
+    // Файл закрыт защитой (телефон заблокирован): журнал в памяти пустой, на диск не
+    // пишем. Записи, добавленные в это время, дождутся разблокировки в `entries`.
+    private(set) var isLocked = false
+
+    init(fileURL: URL = TripLogStore.fileURL) {
+        self.fileURL = fileURL
+        entries = []
+        let read = FileManager.default.readProtected(fileURL)
+        if case .locked = read { isLocked = true } else { entries = Self.decode(read) }
+    }
+
+    // Телефон разблокирован: к тому, что лежит на диске, добавляем записанное вслепую.
+    func reloadIfLocked() {
+        guard isLocked else { return }
+        let read = FileManager.default.readProtected(fileURL)
+        if case .locked = read { return }
+        isLocked = false
+        let pending = entries
+        entries = Array((pending + Self.decode(read)).prefix(Self.maxEntries))
+        if !pending.isEmpty { save() }
+    }
+
+    private static func decode(_ read: ProtectedRead) -> [TripLogEntry] {
+        guard case .data(let data) = read else { return [] }
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
-        if let data = try? Data(contentsOf: Self.fileURL),
-           let decoded = try? decoder.decode([TripLogEntry].self, from: data) {
-            entries = Array(decoded.prefix(Self.maxEntries))
-        } else {
-            entries = []
-        }
+        let decoded = (try? decoder.decode([TripLogEntry].self, from: data)) ?? []
+        return Array(decoded.prefix(maxEntries))
     }
 
     func append(trip: ActiveTrip, outcome: TripOutcome, at endedAt: Date = Date()) {
@@ -125,16 +145,17 @@ final class TripLogStore {
     // Удаление по требованию пользователя (экран «Про застосунок»).
     func clear() {
         entries = []
-        try? FileManager.default.removeItem(at: Self.fileURL)
+        try? FileManager.default.removeItem(at: fileURL)
     }
 
     private func save() {
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
         encoder.dateEncodingStrategy = .iso8601
+        guard !isLocked else { return }
         if let data = try? encoder.encode(entries) {
-            try? data.write(to: Self.fileURL, options: .atomic)
-            FileManager.default.protectAsLocalOnly(Self.fileURL)
+            try? data.write(to: fileURL, options: .atomic)
+            FileManager.default.protectAsLocalOnly(fileURL)
         }
     }
 }
