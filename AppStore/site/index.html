@@ -613,7 +613,9 @@ footer { color:var(--faint); font-size:14px; text-align:center; margin:14px auto
     }
 
     var rTop = route.getBoundingClientRect().top + scrollY, rH = route.offsetHeight;
-    var t = Math.min(rH - 46, Math.max(30, mid - rTop));
+    // Поїзд зупиняється на кінцевій, а не їде до краю рейки: на телефоні секція
+    // «Ваша станція» висока, і вагончик утікав за неї ще на сотні пікселів.
+    var t = Math.min(rH - 46, termDot - rTop, Math.max(30, mid - rTop));
     train.style.top = t + 'px';
   }
   function onScroll() {
