@@ -58,6 +58,12 @@ metro,kyiv,kiev,subway,timer,station,stop,commute,offline,underground,alarm,tran
 ## Age rating
 4+
 
+## What’s new (version 1.3.2)
+
+A small but visible fix: on iOS 26 the system search field moved to the bottom of the screen and stuck to the “Go” button. Search is now a compact button: it opens with one tap and covers nothing.
+
+Thanks to the observant passengers for the screenshots!
+
 ## What’s new (version 1.3.1)
 
 A reliability update: we fixed everything that could make the warning come too late.

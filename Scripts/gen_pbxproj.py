@@ -24,7 +24,7 @@ TEAM_ID = os.environ.get("MT_TEAM_ID", "JC2G64UQ8N")
 # перегенерация ради нового файла не должна молча откатывать сборку к 1 —
 # такую загрузку App Store Connect отклонит.
 # Версию для витрины меняем руками здесь же.
-MARKETING_VERSION = "1.3.1"
+MARKETING_VERSION = "1.3.2"
 
 def current_build_number():
     path = os.path.join(ROOT, "MetroTimer.xcodeproj", "project.pbxproj")
