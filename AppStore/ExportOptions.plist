@@ -18,5 +18,10 @@
 	     проверить перед тем, как отправлять. -->
 	<key>destination</key>
 	<string>export</string>
+	<!-- Номером сборки управляет gen_pbxproj.py (MT_BUILD), а не Xcode:
+	     при true экспорт молча переписал бы номер (1.3.1: 10 → 11), и
+	     проверенный .ipa расходился бы и с архивом, и с журналом. -->
+	<key>manageAppVersionAndBuildNumber</key>
+	<false/>
 </dict>
 </plist>
