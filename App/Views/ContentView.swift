@@ -50,6 +50,10 @@ struct SelectionView: View {
             .navigationTitle(L10n.appTitle)
             .navigationBarTitleDisplayMode(.inline)
             .searchable(text: $searchText, prompt: Text(L10n.searchStations))
+            // iOS 26 переніс поле пошуку вниз екрана, і воно стає впритул до
+            // панелі «Поїхали» без жодного відступу. Згорнутий у кнопку пошук
+            // повертає панелі повітря, а пошук лишається за один тап.
+            .searchMinimizedOnNewOS()
             // Банер тривоги стоїть одразу під панеллю — фіксуємо її фон,
             // інакше панель фарбується червоним разом із банером.
             .toolbarBackground(Color(hex: "#101114"), for: .navigationBar)
@@ -657,6 +661,16 @@ struct SelectionView: View {
             if !started, engine.trip == nil {
                 showRouteError = true
             }
+        }
+    }
+}
+
+private extension View {
+    @ViewBuilder func searchMinimizedOnNewOS() -> some View {
+        if #available(iOS 26.0, *) {
+            searchToolbarBehavior(.minimize)
+        } else {
+            self
         }
     }
 }
