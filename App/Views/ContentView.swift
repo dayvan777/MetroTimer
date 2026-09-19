@@ -6,6 +6,7 @@ struct SelectionView: View {
     @EnvironmentObject private var engine: TripEngine
     @ObservedObject private var alertService = AlertService.shared
     @ObservedObject private var beacon = BeaconScheduler.shared
+    @ObservedObject private var locator = StationLocator.shared
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.requestReview) private var requestReview
     // Карточка «Як це працює» — один раз на установку: момент старта решает всё.
@@ -155,6 +156,8 @@ struct SelectionView: View {
                 // Дзвіночок не має брехати: після пострілу нагадування у фоні
                 // pending-запитів у системі вже немає.
                 beacon.refresh()
+                // Чип «ви біля станції»: один фікс, тільки якщо локацію вже дозволено.
+                locator.refresh()
                 // Запрос оценки — здесь, а не в момент нажатия «Я на місці»:
                 // Apple просит не привязывать его к тапу по кнопке, да и
                 // всплывать поверх анимации возврата было бы некрасиво.
@@ -393,7 +396,8 @@ struct SelectionView: View {
             if picked {
                 routeSummary
                     .transition(.opacity)
-            } else if !engine.favorites.isEmpty || !engine.recents.isEmpty {
+            } else if !engine.favorites.isEmpty || !engine.recents.isEmpty
+                        || (locator.nearbyStation != nil && fromId == nil) {
                 routesRow
                     .transition(.opacity)
             }
@@ -624,11 +628,14 @@ struct SelectionView: View {
 
     private var routesRow: some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text(engine.favorites.isEmpty ? L10n.recents : L10n.savedRoutes)
+            Text(engine.favorites.isEmpty && engine.recents.isEmpty
+                 ? L10n.nearbyTitle
+                 : (engine.favorites.isEmpty ? L10n.recents : L10n.savedRoutes))
                 .font(.caption)
                 .foregroundColor(.secondary)
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
+                    nearbyChip
                     ForEach(engine.favorites, id: \.self) { route in
                         routeChip(route, pinned: true)
                     }
@@ -639,6 +646,36 @@ struct SelectionView: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    // «Ви біля станції»: підставляє відправлення одним тапом. Показується,
+    // поки відправлення не вибрано — далі підказка вже не потрібна.
+    @ViewBuilder private var nearbyChip: some View {
+        if fromId == nil, let station = locator.nearbyStation {
+            Button {
+                animated {
+                    fromId = station.id
+                    if let line = repo.line(ofStation: station.id) {
+                        selectedLineId = line.id
+                    }
+                }
+            } label: {
+                HStack(spacing: 4) {
+                    Image(systemName: "location.fill")
+                        .font(.system(size: 9))
+                        .foregroundColor(.cyan)
+                        .accessibilityHidden(true)
+                    Text(station.localizedName)
+                        .font(.footnote)
+                        .lineLimit(1)
+                }
+                .padding(.horizontal, 12)
+                .frame(height: 44)
+                .background(Capsule().fill(Color.white.opacity(0.14)))
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(L10n.nearbyA11y(station.localizedName))
+        }
     }
 
     // Чип только подставляет станции: старт поездки — всегда осознанный тап «Поїхали».

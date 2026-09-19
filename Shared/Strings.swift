@@ -328,6 +328,13 @@ enum L10n {
         tr("Нагадати на станції, без відліку", "Remind at the station, no countdown")
     }
 
+    // Чип «ви біля станції» (StationLocator).
+    static var nearbyTitle: String { tr("Станція поруч", "Station nearby") }
+    static func nearbyA11y(_ station: String) -> String {
+        tr("Ви біля станції «\(station)» — зробити її відправленням",
+           "You are near \(station) — set it as departure")
+    }
+
     // Обидві станції — один пересадковий вузол: поїзда між ними нема.
     static func walkOnlyPair(minutes: Int) -> String {
         tr("Це один пересадковий вузол: між станціями пішки, ~\(minutes) хв",

@@ -68,6 +68,7 @@ APP_SRC = [
     "App/Services/CalibrationViewModel.swift",
     "App/Services/LocationCorrector.swift",
     "App/Services/BeaconScheduler.swift",
+    "App/Services/StationLocator.swift",
     "App/Services/NotificationPresenter.swift",
     "App/Services/AlertService.swift",
     "App/Services/ReminderService.swift",
@@ -82,7 +83,7 @@ APP_RES = ["App/Resources/kyiv_metro.json", "App/Resources/kyiv_exits.json", "Ap
 WIDGET_RES = ["Widget/PrivacyInfo.xcprivacy", "App/Resources/kyiv_metro.json"]
 TEST_SRC = ["Tests/PlannerTests.swift", "Tests/DataTests.swift", "Tests/ScheduleTests.swift",
             "Tests/LocalizationTests.swift", "Tests/RouteTests.swift", "Tests/MapLayoutTests.swift",
-            "Tests/BeaconTests.swift",
+            "Tests/BeaconTests.swift", "Tests/LocatorTests.swift",
 ]
 OTHER = ["App/Info.plist", "App/MetroTimer.entitlements", "Widget/Info.plist"]
 
