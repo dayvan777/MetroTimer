@@ -307,6 +307,27 @@ enum L10n {
         tr("Пересадка: перейдіть на «\(station)».", "Change here: walk to \(station).")
     }
 
+    // «Нагадування на станції»: сповіщення за геозоною, без відліку (BeaconScheduler).
+    static var beaconExplainTitle: String {
+        tr("Нагадати на станції?", "Remind you at your station?")
+    }
+    static var beaconExplainBody: String {
+        tr("Без відліку: iOS сама надішле сповіщення, коли ви опинитеся біля станції виходу. Місце визначається за мережею, тож у тунелях це експеримент — перевірте на своєму маршруті. Застосунок вашої локації не бачить і не зберігає.",
+           "No countdown: iOS itself will notify you when you are near your exit station. Position comes from the network, so underground this is an experiment — try it on your route. The app never sees or stores your location.")
+    }
+    static var beaconArm: String { tr("Нагадати", "Remind me") }
+    static var beaconDeniedTitle: String { tr("Немає доступу до геопозиції", "No location access") }
+    static var beaconDeniedBody: String {
+        tr("Дозвольте локацію «Під час використання» в Налаштуваннях — інакше сповіщення біля станції не спрацює.",
+           "Allow “While Using the App” location access in Settings, otherwise the reminder can’t fire near the station.")
+    }
+    static var beaconOn: String {
+        tr("Нагадування на станції ввімкнено", "Station reminder is on")
+    }
+    static var beaconOff: String {
+        tr("Нагадати на станції, без відліку", "Remind at the station, no countdown")
+    }
+
     // Обидві станції — один пересадковий вузол: поїзда між ними нема.
     static func walkOnlyPair(minutes: Int) -> String {
         tr("Це один пересадковий вузол: між станціями пішки, ~\(minutes) хв",

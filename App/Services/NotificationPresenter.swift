@@ -13,6 +13,10 @@ final class NotificationPresenter: NSObject, UNUserNotificationCenterDelegate {
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler:
                                     @escaping (UNNotificationPresentationOptions) -> Void) {
+        // Нагадування «на станції» показано — воно одноразове, дзвіночок гасне.
+        if notification.request.identifier == BeaconScheduler.arrivalId {
+            Task { @MainActor in BeaconScheduler.shared.noteArrivalFired() }
+        }
         completionHandler([.banner, .sound, .list])
     }
 
@@ -24,6 +28,9 @@ final class NotificationPresenter: NSObject, UNUserNotificationCenterDelegate {
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
         let info = response.notification.request.content.userInfo
+        if response.notification.request.identifier == BeaconScheduler.arrivalId {
+            Task { @MainActor in BeaconScheduler.shared.noteArrivalFired() }
+        }
         guard response.notification.request.content.categoryIdentifier == ReminderService.categoryId,
               let from = info["from"] as? String,
               let to = info["to"] as? String else {

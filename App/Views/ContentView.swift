@@ -5,6 +5,7 @@ import StoreKit
 struct SelectionView: View {
     @EnvironmentObject private var engine: TripEngine
     @ObservedObject private var alertService = AlertService.shared
+    @ObservedObject private var beacon = BeaconScheduler.shared
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.requestReview) private var requestReview
     // Карточка «Як це працює» — один раз на установку: момент старта решает всё.
@@ -15,6 +16,8 @@ struct SelectionView: View {
     @State private var toId: String?
     @State private var showRouteError = false
     @State private var showNotifExplain = false
+    @State private var showBeaconExplain = false
+    @State private var showBeaconDenied = false
     @State private var reminderRoute: RecentTrip?
     @State private var showMap = false
     @State private var showCalibration = false
@@ -50,6 +53,10 @@ struct SelectionView: View {
             .navigationTitle(L10n.appTitle)
             .navigationBarTitleDisplayMode(.inline)
             .searchable(text: $searchText, prompt: Text(L10n.searchStations))
+            // iOS 26 переніс поле пошуку вниз екрана, і воно стає впритул до
+            // панелі «Поїхали» без жодного відступу. Згорнутий у кнопку пошук
+            // повертає панелі повітря, а пошук лишається за один тап.
+            .searchMinimizedOnNewOS()
             // Банер тривоги стоїть одразу під панеллю — фіксуємо її фон,
             // інакше панель фарбується червоним разом із банером.
             .toolbarBackground(Color(hex: "#101114"), for: .navigationBar)
@@ -122,6 +129,19 @@ struct SelectionView: View {
             } message: {
                 Text(L10n.notifExplainBody)
             }
+            // «Нагадати на станції» — без відліку: перед взведенням пояснюємо,
+            // як воно працює і що локацію застосунок не бачить.
+            .alert(L10n.beaconExplainTitle, isPresented: $showBeaconExplain) {
+                Button(L10n.beaconArm) { armBeacon() }
+                Button(L10n.cancel, role: .cancel) {}
+            } message: {
+                Text(L10n.beaconExplainBody)
+            }
+            .alert(L10n.beaconDeniedTitle, isPresented: $showBeaconDenied) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text(L10n.beaconDeniedBody)
+            }
             .onReceive(engine.$pendingPrefill) { prefill in
                 guard let prefill else { return }
                 engine.pendingPrefill = nil
@@ -132,6 +152,9 @@ struct SelectionView: View {
                 }
             }
             .onAppear {
+                // Дзвіночок не має брехати: після пострілу нагадування у фоні
+                // pending-запитів у системі вже немає.
+                beacon.refresh()
                 // Запрос оценки — здесь, а не в момент нажатия «Я на місці»:
                 // Apple просит не привязывать его к тапу по кнопке, да и
                 // всплывать поверх анимации возврата было бы некрасиво.
@@ -461,6 +484,21 @@ struct SelectionView: View {
                 }
             }
             Spacer()
+            // «Нагадати на станції» без відліку: iOS покаже сповіщення біля
+            // станції виходу за геозоною (див. BeaconScheduler). Для пари
+            // одного вузла нема чого взводити — там пішки.
+            if walkOnlyMinutes == nil {
+                Button {
+                    toggleBeacon()
+                } label: {
+                    Image(systemName: isBeaconArmed ? "bell.badge.fill" : "bell.badge")
+                        .font(.body.weight(.semibold))
+                        .foregroundColor(isBeaconArmed ? .orange : .primary)
+                        .frame(width: 44, height: 44)
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(isBeaconArmed ? L10n.beaconOn : L10n.beaconOff)
+            }
             // Закрепить маршрут — чтобы «додому» жило в чипах постоянно,
             // а не вытеснялось тремя случайными поездками.
             Button {
@@ -491,6 +529,28 @@ struct SelectionView: View {
     private var isCurrentFavorite: Bool {
         guard let from = fromId, let to = toId else { return false }
         return engine.isFavorite(fromId: from, toId: to)
+    }
+
+    private var isBeaconArmed: Bool {
+        guard let from = fromId, let to = toId else { return false }
+        return beacon.armedPair == BeaconScheduler.RoutePair(fromId: from, toId: to)
+    }
+
+    private func toggleBeacon() {
+        if isBeaconArmed {
+            beacon.disarm()
+        } else {
+            showBeaconExplain = true
+        }
+    }
+
+    private func armBeacon() {
+        guard let from = fromId, let to = toId else { return }
+        Task {
+            if await beacon.arm(fromId: from, toId: to, repo: repo) == .locationDenied {
+                showBeaconDenied = true
+            }
+        }
     }
 
     private var isRouteSuspended: Bool {
@@ -648,6 +708,9 @@ struct SelectionView: View {
     private func startTrip(askForNotifications: Bool = true) {
         guard let from = fromId, let to = toId else { return }
         let start = boardedAt
+        // Відлік має власні сповіщення — паралельне нагадування за геозоною
+        // продублювало б їх у ту саму хвилину.
+        beacon.disarm()
         Task {
             let started = await engine.start(fromId: from, toId: to,
                                              askForNotifications: askForNotifications,
@@ -657,6 +720,16 @@ struct SelectionView: View {
             if !started, engine.trip == nil {
                 showRouteError = true
             }
+        }
+    }
+}
+
+private extension View {
+    @ViewBuilder func searchMinimizedOnNewOS() -> some View {
+        if #available(iOS 26.0, *) {
+            searchToolbarBehavior(.minimize)
+        } else {
+            self
         }
     }
 }
