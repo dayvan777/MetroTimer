@@ -194,6 +194,27 @@ main { position:relative; max-width:1320px; padding:40px var(--pad) 20px; }
 .shots { display:flex; gap:16px; overflow-x:auto; padding:6px 2px 20px; -webkit-overflow-scrolling:touch; scroll-snap-type:x mandatory; }
 .shots img { height:520px; width:auto; border-radius:18px; border:1px solid var(--line); scroll-snap-align:start; flex:0 0 auto; transition:transform .3s; }
 .shots img:hover { transform:translateY(-6px); }
+/* замість системного скролбара — перегін М1→М2: станції-крапки і вагончик,
+   що їде за прокруткою. Клас вішає скрипт: без JS лишається рідний скролбар. */
+.shots.no-bar { scrollbar-width:none; }
+.shots.no-bar::-webkit-scrollbar { display:none; }
+/* На широкому вікні снап шкодить: влазить 4 картки з 5, запас прокрутки менший
+   за крок снапу, і будь-яка проміжна позиція відстрибує назад. */
+@media (min-width:761px) { .shots { scroll-snap-type:none; } }
+.shots-line { position:relative; height:34px; }
+.shots-track { position:absolute; left:13px; right:13px; top:50%; height:4px; transform:translateY(-50%);
+  border-radius:2px; background:linear-gradient(90deg, var(--m1), var(--m2)); }
+.shots-stop { position:absolute; top:50%; width:12px; height:12px; transform:translate(-50%,-50%);
+  border-radius:50%; background:var(--bg); border:3px solid #6d6d6d; padding:0; cursor:pointer;
+  transition:border-color .25s, box-shadow .25s; }
+.shots-stop.on { border-color:#fff; box-shadow:0 0 8px #fff6; }
+.shots-car { position:absolute; top:50%; width:26px; height:14px; margin-top:-7px; transform:translateX(-50%);
+  border-radius:5px; background:#e9e8e2; box-shadow:0 0 0 3px var(--bg), 0 0 14px #fff4;
+  pointer-events:none; transition:left .12s linear; }
+.shots-car::before { content:''; position:absolute; top:3px; bottom:3px; left:4px; width:12px;
+  border-radius:2px; background:#0c0c0d; }
+.shots-car::after { content:''; position:absolute; right:3px; top:50%; width:4px; height:4px;
+  margin-top:-2px; border-radius:50%; background:var(--amber); box-shadow:0 0 8px var(--amber); }
 
 /* нулі */
 .tokens { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:2px; max-width:880px; margin:0 0 30px;
@@ -268,7 +289,7 @@ footer a { color:var(--dim); }
   .marquee div, .go .arr, .isl-time .col, .island[data-state="next"] .isl-dot { animation:none; }
   .marquee div { flex-wrap:wrap; white-space:normal; gap:.6em 2em; }
   .shake { animation:none; }
-  #train, .seg-row .s { transition:none; }
+  #train, .seg-row .s, .shots-car { transition:none; }
   .notif { transition:opacity .3s; opacity:0; transform:translate(-50%,0); }
   .notif.show { opacity:1; }
 }
@@ -709,6 +730,66 @@ footer a { color:var(--dim); }
     line(t === 0 ? HERE : t <= 35 ? NEXT : RIDE);
   }
   tick(); setInterval(tick, 1000);
+})();
+</script>
+<script>
+/* Екрани: перегін замість скролбара. Вагончик їде за прокруткою,
+   тап по станції везе до відповідного екрана. */
+(function () {
+  var scroller = document.querySelector('.shots');
+  if (!scroller || !scroller.scrollTo) return;
+  var imgs = Array.prototype.slice.call(scroller.querySelectorAll('img'));
+  if (imgs.length < 2) return;
+  var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  scroller.classList.add('no-bar');
+  var line = document.createElement('div');
+  line.className = 'shots-line';
+  var track = document.createElement('div');
+  track.className = 'shots-track';
+  line.appendChild(track);
+  /* Зупинки — рівні позиції перегону, а не конкретні екрани: на широкому
+     вікні влазить кілька карток одразу, і прив'язка «крапка = екран»
+     розвалюється (остання третина крапок вела б в одну й ту саму точку). */
+  var stops = imgs.map(function (img, i) {
+    var b = document.createElement('button');
+    b.className = 'shots-stop';
+    b.type = 'button';
+    b.setAttribute('aria-label', 'Прокрутити до позиції ' + (i + 1) + ' з ' + imgs.length);
+    b.addEventListener('click', function () {
+      var max = scroller.scrollWidth - scroller.clientWidth;
+      scroller.scrollTo({ left: max * i / (imgs.length - 1),
+                          behavior: reduced ? 'auto' : 'smooth' });
+    });
+    line.appendChild(b);
+    return b;
+  });
+  var car = document.createElement('div');
+  car.className = 'shots-car';
+  line.appendChild(car);
+  scroller.after(line);
+
+  var pad = 13; /* центр першої та останньої станції — як відступ у .shots-track */
+  function update() {
+    var max = scroller.scrollWidth - scroller.clientWidth;
+    line.style.display = max > 4 ? '' : 'none';
+    if (max <= 4) return;
+    var w = line.clientWidth - pad * 2;
+    var p = Math.min(1, Math.max(0, scroller.scrollLeft / max));
+    var cur = Math.round(p * (stops.length - 1));
+    for (var j = 0; j < stops.length; j++) {
+      stops[j].style.left = (pad + w * j / (stops.length - 1)) + 'px';
+      stops[j].classList.toggle('on', j === cur);
+    }
+    car.style.left = (pad + w * p) + 'px';
+  }
+  scroller.addEventListener('scroll', update, { passive: true });
+  addEventListener('resize', update);
+  addEventListener('load', update);
+  /* Картинки ліниві: на момент ініціалізації ширини ще немає, і без цього
+     лінія лишалася б схованою до першого resize. */
+  imgs.forEach(function (img) { img.addEventListener('load', update); });
+  update();
 })();
 </script>
 </body>
