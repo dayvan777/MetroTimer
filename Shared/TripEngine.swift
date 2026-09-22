@@ -131,25 +131,29 @@ final class TripEngine: ObservableObject {
         trip = planned
         persistTrip()
         rememberRecent(fromId: fromId, toId: toId, lineId: planned.lineId)
-        scheduleAlerts(for: planned)
+        // Спершу звичайні сповіщення — синхронно, щоб вони стояли за будь-якого
+        // результату будильника; повтори додасть scheduleAlerts, якщо треба.
+        NotificationScheduler.shared.schedule(for: planned)
         liveActivityUnavailable = !ActivityController.shared.start(trip: planned, line: line)
         startTicker()
-        await WakeAlarm.shared.schedule(for: planned)
+        await scheduleAlerts(for: planned)
         return true
     }
 
-    // Сповіщення і (якщо ввімкнено, але AlarmKit недоступний) їхні повтори.
-    private func scheduleAlerts(for trip: ActiveTrip) {
+    // Будильник і сповіщення одним кроком. Будильник увімкнено, а справжнього
+    // немає (iOS до 26, заборонено, система відмовила) — будять повтори
+    // сповіщень, а не тиша.
+    private func scheduleAlerts(for trip: ActiveTrip) async {
+        let alarmSet = await WakeAlarm.shared.schedule(for: trip)
         NotificationScheduler.shared.schedule(
-            for: trip, repeatNudges: WakeAlarm.shared.wantsRepeatedNotifications)
+            for: trip, repeatNudges: WakeAlarm.shared.isEnabled && !alarmSet)
     }
 
     // Перемикач будильника посеред поїздки: переплановуємо те, що вже стоїть.
     func setWakeAlarm(_ enabled: Bool) async {
         await WakeAlarm.shared.setEnabled(enabled)
         guard let trip else { return }
-        scheduleAlerts(for: trip)
-        await WakeAlarm.shared.schedule(for: trip)
+        await scheduleAlerts(for: trip)
     }
 
     // outcome решает, что попадёт в журнал. Разница не косметическая:
@@ -242,9 +246,9 @@ final class TripEngine: ObservableObject {
     private func apply(_ replanned: ActiveTrip) async {
         trip = replanned
         persistTrip()
-        scheduleAlerts(for: replanned)
+        NotificationScheduler.shared.schedule(for: replanned)
         await ActivityController.shared.update(trip: replanned)
-        await WakeAlarm.shared.schedule(for: replanned)
+        await scheduleAlerts(for: replanned)
     }
 
     // Вызывается при выходе в foreground.

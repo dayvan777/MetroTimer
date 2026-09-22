@@ -57,9 +57,6 @@ final class WakeAlarm: ObservableObject {
         return false
     }
 
-    // Будильник увімкнено, а справжнього немає: будять повторні сповіщення.
-    var wantsRepeatedNotifications: Bool { isEnabled && !usesAlarmKit }
-
     func setEnabled(_ enabled: Bool) async {
         isEnabled = enabled
         defaults.set(enabled, forKey: Self.enabledKey)
@@ -84,9 +81,12 @@ final class WakeAlarm: ObservableObject {
 
     // Будильник завжди один: попередній знімаємо, новий ставимо за поточним
     // планом. Кличеться на старті і після кожної поправки (±1, тап по станції, GPS).
-    func schedule(for trip: ActiveTrip, now: Date = Date()) async {
+    // true — справжній будильник стоїть; false — ні (вимкнено, немає AlarmKit,
+    // немає дозволу або система відмовила), і тоді будити мають повтори сповіщень.
+    @discardableResult
+    func schedule(for trip: ActiveTrip, now: Date = Date()) async -> Bool {
         cancel()
-        guard isEnabled, let date = Self.fireDate(for: trip, now: now) else { return }
+        guard isEnabled, let date = Self.fireDate(for: trip, now: now) else { return false }
         #if canImport(AlarmKit)
         if #available(iOS 26.0, *), AlarmManager.shared.authorizationState == .authorized {
             let title = date == trip.alertDate
@@ -112,11 +112,13 @@ final class WakeAlarm: ObservableObject {
                     configuration: AlarmManager.AlarmConfiguration<WakeAlarmMetadata>(
                         schedule: .fixed(date), attributes: attributes))
                 defaults.set(id.uuidString, forKey: Self.alarmIdKey)
+                return true
             } catch {
-                // Не вдалося — лишаються звичайні сповіщення; поїздка не ламається.
+                return false
             }
         }
         #endif
+        return false
     }
 
     func cancel() {
@@ -124,6 +126,8 @@ final class WakeAlarm: ObservableObject {
         defaults.removeObject(forKey: Self.alarmIdKey)
         #if canImport(AlarmKit)
         if #available(iOS 26.0, *), let id = UUID(uuidString: raw) {
+            // Уже дзвонить («Я вийшов» посеред дзвінка) — спершу зупинити, потім зняти.
+            try? AlarmManager.shared.stop(id: id)
             try? AlarmManager.shared.cancel(id: id)
         }
         #endif
