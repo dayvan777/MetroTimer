@@ -1,6 +1,6 @@
 # Політика конфіденційності — «Метро-таймер: Київ»
 
-*Оновлено: серпень 2026. Розробник: Владислав Домоцький, vladdomotsky@gmail.com.*
+*Оновлено: вересень 2026. Розробник: Владислав Домоцький, vladdomotsky@gmail.com.*
 
 ## Коротко
 
@@ -30,11 +30,16 @@
 
 **Геолокація.** Використовується лише коли застосунок відкритий (дозвіл
 «Під час використання»):
+- на головному екрані — один раз, коли він відкривається, щоб підказати найближчу
+  станцію («Станція поруч»); координати обробляються на пристрої і не зберігаються;
 - під час поїздки — тільки на наземних ділянках метро, щоб уточнити розрахункове
   положення поїзда; координати обробляються на пристрої і не зберігаються;
 - у режимі калібрування, який ви вмикаєте вручну, усі отримані координати
   (у тому числі приблизні, під землею) записуються у файл на пристрої разом із
   часом — це трек вашої поїздки.
+
+Нагадування «на станції», якщо ви його ввімкнете: зону станції відстежує сама iOS
+і показує сповіщення, коли ви поруч. Застосунок вашого місця при цьому не бачить.
 
 У фоні геолокація не використовується. Без дозволу на геолокацію застосунок
 повністю функціональний.
@@ -42,7 +47,8 @@
 **Дані руху (акселерометр).** Записуються лише в режимі калібрування. Записи
 зберігаються у файлах застосунку на пристрої.
 
-**Сповіщення.** Плануються локально на пристрої для попередження про вихід.
+**Сповіщення і будильник.** Плануються локально на пристрої для попередження про
+вихід. Будильник (iOS 26 і новіші) вмикаєте ви самі на екрані поїздки.
 
 **Журнал поїздок і калібрування.** Зберігаються локально у сховищі застосунку
 з файловим шифруванням і **навмисно виключені з резервних копій iCloud та
@@ -52,6 +58,9 @@ iTunes** — вони живуть тільки на цьому пристрої
 і розмір кожної (файл калібрування містить трек поїздки з часом). Видалити дані
 можна кнопками на екрані «Про застосунок» або видаливши застосунок; відкликати
 доступ до геолокації — у Параметрах iOS.
+
+«Мій рік у метро» рахується з цього журналу на пристрої. Картинку з підсумком
+ви надсилаєте самі, якщо захочете; сам застосунок нікуди її не відправляє.
 
 **Діти.** Застосунок не збирає даних ні від кого, включно з дітьми.
 
@@ -67,7 +76,7 @@ iTunes** — вони живуть тільки на цьому пристрої
 
 # Privacy Policy — “Metro Timer: Kyiv” (English)
 
-*Updated: August 2026. Developer: Vladyslav Domotskyi, vladdomotsky@gmail.com.*
+*Updated: September 2026. Developer: Vladyslav Domotskyi, vladdomotsky@gmail.com.*
 
 Metro Timer does not collect or transmit any of your data. Everything the app
 stores stays on your device.
@@ -83,23 +92,30 @@ stores stays on your device.
   wrong, or be unavailable. When a check fails the app says “could not check”
   outright rather than staying silent. Do not rely on this app for safety
   decisions. No ads, analytics, trackers or third-party SDKs.
-- **Location.** Used only while the app is open (“While Using”). During a trip —
+- **Location.** Used only while the app is open (“While Using”). On the main
+  screen — once, when it opens, to suggest the nearest station (“Station
+  nearby”); coordinates are processed on device and not stored. During a trip —
   only on above-ground metro sections, to refine the train’s estimated position;
   coordinates are processed on device and not stored. In the manually enabled
   Calibration mode, all received coordinates (including approximate ones
   underground) are written to a file on the device together with timestamps —
-  a track of your ride. Location is never used in the background. The app is
-  fully functional without location permission.
+  a track of your ride. For the station reminder, if you turn it on, iOS itself
+  watches the station area and shows the notification when you are near; the
+  app never sees your location. Location is never used in the background. The
+  app is fully functional without location permission.
 - **Motion data.** The accelerometer is recorded only in Calibration mode; the
   files stay on the device.
-- **Notifications.** Scheduled locally on the device to warn you before your stop.
+- **Notifications and alarm.** Scheduled locally on the device to warn you
+  before your stop. The alarm (iOS 26 and later) is on only if you turn it on.
 - **Trip journal and calibration.** Stored locally with file encryption and
   **deliberately excluded from iCloud and iTunes backups** — they live on this
   device only (so they do not carry over to a new phone). Files leave the device
   only if you export them yourself with the “Export” button; before exporting you
   see the list of sessions and the size of each (a calibration file contains a
   timestamped ride track). You can delete the data from the “About” screen or by
-  deleting the app; location access can be revoked in iOS Settings.
+  deleting the app; location access can be revoked in iOS Settings. “My year on
+  the metro” is calculated from this journal on the device; the summary image is
+  sent only if you share it yourself.
 - **Children.** The app collects no data from anyone, including children.
 
 Contact: vladdomotsky@gmail.com
