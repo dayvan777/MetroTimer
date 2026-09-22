@@ -232,17 +232,27 @@ enum L10n {
         tr("Оберіть станцію відправлення і станцію призначення.",
            "Choose your departure station and your destination.")
     }
+    // Раніше тут стояло «не раніше», і воно вчило помилятися саме в небезпечний
+    // бік: пізній тап означає пізнє попередження. Тепер кажемо, як виправити.
     static var onboardingStep2: String {
-        tr("Натисніть «Поїхали» в момент, коли поїзд рушить зі станції — не раніше.",
-           "Tap “Start” the moment the train pulls out of the station — not before.")
+        tr("Натисніть «Поїхали», коли поїзд рушить. Не встигли? Торкніться станції, де стоїть поїзд, і відлік підлаштується.",
+           "Tap “Start” when the train pulls out. Missed the moment? Tap the station where the train is and the countdown catches up.")
     }
     static var onboardingStep3: String {
-        tr("За одну зупинку до виходу телефон завібрує. Розрахунок орієнтовний: якщо поїзд затримався — натисніть «+1 зупинка».",
-           "One stop before yours the phone will vibrate. The estimate is approximate: if the train is running late, tap “+1 stop”.")
+        tr("За зупинку до виходу прийде сповіщення. Розрахунок орієнтовний, тож звіряйтеся з табличками на станціях.",
+           "One stop before yours you get a notification. The estimate is approximate, so check the station signs.")
     }
     static var onboardingGotIt: String { tr("Зрозуміло", "Got it") }
+    // Дозвіл просимо тут, у спокійну хвилину, а не на пероні після «Поїхали».
+    static var onboardingAllow: String { tr("Дозволити сповіщення", "Allow notifications") }
+    static var onboardingLater: String { tr("Пізніше", "Later") }
 
-    static var correctionTitle: String { tr("Порахувалось невірно?", "Count looks wrong?") }
+    // Головна поправка — тап по станції в списку: її видно у вікні вагона.
+    // ±1 лишається поруч для тих, хто вже звик.
+    static var correctionTitle: String {
+        tr("Не збігається? Торкніться станції, де зараз поїзд",
+           "Out of sync? Tap the station where the train is now")
+    }
     static var stopConfirmTitle: String { tr("Зупинити поїздку?", "Stop the trip?") }
     static var stopConfirmBody: String {
         tr("Відлік і сповіщення про вихід буде скасовано.",
@@ -299,7 +309,14 @@ enum L10n {
     }
 
     static var notifNextBody: String { tr("Готуйтеся до виходу.", "Get ready to exit.") }
-    static var notifArrivalBody: String { tr("Виходьте.", "This is your stop.") }
+    // «Виходьте» читалося як наказ, а це лише розрахунок: поїзд міг простояти в
+    // тунелі. Тому заголовок називає, що МАЄ бути за вікном, а текст просить звірити.
+    static func notifArrivalTitle(_ station: String) -> String {
+        tr("Має бути «\(station)»", "This should be \(station)")
+    }
+    static var notifArrivalBody: String {
+        tr("Звірте з табличкою на станції і виходьте.", "Check the station sign, then get off.")
+    }
     static func notifNextTitle(_ station: String) -> String {
         tr("Наступна — \(station).", "Next stop: \(station).")
     }
@@ -346,9 +363,15 @@ enum L10n {
         tr("далі пішки: перехід на «\(station)»", "then walk to \(station)")
     }
 
-    static func transferRow(_ station: String, minutes: Int) -> String {
-        tr("Пересадка на «\(station)» · ~\(minutes) хв",
-           "Change to \(station) · ~\(minutes) min")
+    // Напрямок нової лінії — як на табличці над платформою: без нього на
+    // пересадці доводиться шукати схему, поки поїзд у потрібний бік іде.
+    static func transferRow(_ station: String, minutes: Int, toward: String? = nil) -> String {
+        guard let toward else {
+            return tr("Пересадка на «\(station)» · ~\(minutes) хв",
+                      "Change to \(station) · ~\(minutes) min")
+        }
+        return tr("Пересадка на «\(station)», напрямок «\(toward)» · ~\(minutes) хв",
+                  "Change to \(station), towards \(toward) · ~\(minutes) min")
     }
     static var about: String { tr("Про застосунок", "About") }
     static var aboutMenu: String { tr("Ще", "More") }
@@ -358,8 +381,8 @@ enum L10n {
     }
     static var aboutHowTitle: String { tr("Як це працює", "How it works") }
     static var aboutHowBody: String {
-        tr("Оберіть станції та натисніть «Поїхали» в момент, коли поїзд рушить зі станції — не раніше. Застосунок розраховує час до кожної зупинки за офіційним графіком метрополітену і за одну зупинку до виходу надішле сповіщення з вібрацією. Розрахунок орієнтовний (±1 хв): якщо поїзд затримався — натисніть «+1 зупинка».",
-           "Choose your stations and tap “Start” the moment the train pulls out — not before. The app works out the time to every stop from the metro’s official timetable and sends a notification with vibration one stop before yours. The estimate is approximate (±1 min): if the train is running late, tap “+1 stop”.")
+        tr("Оберіть станції та натисніть «Поїхали», коли поїзд рушить. Застосунок рахує час до кожної зупинки за офіційним графіком метрополітену і за одну зупинку до виходу надсилає сповіщення. Розрахунок орієнтовний (±1 хв): якщо відлік розійшовся з поїздом, торкніться станції, де зараз поїзд. Щоб будило навіть у беззвучному режимі, увімкніть будильник на екрані поїздки (iOS 26 і новіші).",
+           "Choose your stations and tap “Start” when the train pulls out. The app works out the time to every stop from the metro’s official timetable and notifies you one stop before yours. The estimate is approximate (±1 min): if the countdown drifts from the train, tap the station where the train is now. To be woken even in silent mode, turn on the alarm on the trip screen (iOS 26 and later).")
     }
     static var aboutDataTitle: String { tr("Джерела даних", "Data sources") }
     static var aboutDataBody: String {
@@ -535,4 +558,124 @@ enum L10n {
         default: return "зупинок"
         }
     }
+    // MARK: - Версія 1.4
+
+    // «Ми тут»: тап по станції в списку поїздки. Людина бачить назву у вікні
+    // вагона — це точніше за будь-який розрахунок і за ±1 без назви.
+    static func positionAtTitle(_ station: String) -> String {
+        tr("Поїзд зараз на станції «\(station)»?", "Is the train at \(station) now?")
+    }
+    static func positionDepartedTitle(_ station: String) -> String {
+        tr("Поїзд щойно рушив зі станції «\(station)»?", "Did the train just leave \(station)?")
+    }
+    static func positionDestinationTitle(_ station: String) -> String {
+        tr("Ви вже на станції «\(station)»?", "Are you at \(station) already?")
+    }
+    static var positionBody: String {
+        tr("Відлік і сповіщення перерахуються від цієї станції.",
+           "The countdown and alerts will be recalculated from this station.")
+    }
+    static var positionYes: String { tr("Так, поїзд тут", "Yes, it’s here") }
+    static var positionYesDeparted: String { tr("Так, щойно рушив", "Yes, it just left") }
+    static var a11yRowHint: String {
+        tr("Торкніться, якщо поїзд зараз на цій станції",
+           "Tap if the train is at this station now")
+    }
+
+    // Будильник за зупинку до виходу (WakeAlarm). На iOS 26+ це AlarmKit:
+    // дзвонить крізь беззвучний режим, доки не вимкнеш. На старіших — повтор.
+    static var wakeOff: String { tr("Будильник", "Alarm") }
+    static var wakeOn: String { tr("Будильник увімкнено", "Alarm on") }
+    static var wakeOffOldOS: String { tr("Повторити сповіщення", "Repeat the alert") }
+    static var wakeOnOldOS: String { tr("Повторю тричі", "Will repeat 3 times") }
+    static var wakeHint: String {
+        tr("Розбудить за зупинку до виходу, навіть у беззвучному режимі",
+           "Wakes you one stop early, even in silent mode")
+    }
+    static var wakeHintOldOS: String {
+        tr("Сповіщення за зупинку до виходу прийде тричі поспіль",
+           "The one-stop-early alert will come three times in a row")
+    }
+    static var wakeDenied: String {
+        tr("Будильники для застосунку вимкнені в Параметрах: замість дзвінка сповіщення прийде тричі.",
+           "Alarms are off for this app in Settings: instead of ringing, the alert will come three times.")
+    }
+    static func wakeAlarmTitle(_ station: String) -> String {
+        tr("Наступна — \(station)", "Next stop: \(station)")
+    }
+    static var wakeStop: String { tr("Не сплю", "I’m awake") }
+
+    // «Надіслати час прибуття» — людина й так пише «буду о 8:31» тому, хто
+    // зустрічає. Посилання в кінці — єдина реклама, яку ми собі дозволяємо.
+    static var shareArrival: String { tr("Надіслати час прибуття", "Share arrival time") }
+    static func shareArrivalText(_ station: String, time: String) -> String {
+        tr("Буду на станції «\(station)» близько \(time). Рахує Метро-таймер: metrotimer.app",
+           "I’ll be at \(station) around \(time). Counted by Metro Timer: metrotimer.app")
+    }
+
+    // Картка на екрані блокування.
+    static var activityGotOff: String { tr("Я вийшов", "I got off") }
+    // Станція перед виходом — факт із розкладу, який не старіє, поки
+    // застосунок спить. «Наступна: X» старіла і показувала минуле.
+    static func activityBeforeYours(_ station: String) -> String {
+        tr("Перед вашою: \(station)", "Before yours: \(station)")
+    }
+
+    // Геолокацію просимо після першої поїздки, а не у вагоні.
+    static var locationOfferTitle: String { tr("Підказувати станцію поруч?", "Suggest the station you’re at?") }
+    static var locationOfferBody: String {
+        tr("З геолокацією застосунок сам запропонує станцію, біля якої ви стоїте, а на наземних ділянках уточнить відлік. Місце не зберігається і нікуди не передається.",
+           "With location the app suggests the station you’re standing at and refines the countdown above ground. Your location is not stored or sent anywhere.")
+    }
+    static var locationOfferAllow: String { tr("Дозволити", "Allow") }
+    static var locationOfferSkip: String { tr("Не треба", "No thanks") }
+
+    // Напрямок і вагон — ще до посадки, поки людина на пероні.
+    static func routeDirection(_ terminus: String) -> String {
+        tr("напрямок «\(terminus)»", "towards \(terminus)")
+    }
+    // «Попереду поїзда: вулиця Хрещатик · У хвості: Інститутська» — щоб
+    // обрати кінець поїзда до посадки під потрібний вихід.
+    static func boardingSides(_ sides: [(cars: CarPosition, label: String)]) -> String {
+        sides.map { side in
+            switch side.cars {
+            case .first: return tr("Попереду поїзда: \(side.label)", "Front of the train: \(side.label)")
+            case .middle: return tr("Посередині: \(side.label)", "Middle: \(side.label)")
+            case .last: return tr("У хвості: \(side.label)", "Rear: \(side.label)")
+            }
+        }.joined(separator: " · ")
+    }
+
+    // «Мій рік у метро»: рахується лише на телефоні, з журналу поїздок.
+    static var yearMenu: String { tr("Мій рік у метро", "My year on the metro") }
+    static func yearTitle(_ year: Int) -> String {
+        tr("Мій \(year) у метро", "My \(year) on the metro")
+    }
+    static func yearTrips(_ n: Int) -> String {
+        guard appLanguage == .uk else { return n == 1 ? "trip" : "trips" }
+        let mod100 = n % 100
+        if (11...14).contains(mod100) { return "поїздок" }
+        switch n % 10 {
+        case 1: return "поїздка"
+        case 2...4: return "поїздки"
+        default: return "поїздок"
+        }
+    }
+    static var yearHoursUnit: String { tr("год під землею", "h underground") }
+    static var yearMinutesUnit: String { tr("хв під землею", "min underground") }
+    // Підпис стоїть перед числом, як на табло, тож від числа не залежить.
+    static var yearStationsPassed: String { tr("Станцій позаду", "Stations passed") }
+    static var yearFavorite: String { tr("Улюблена станція", "Favourite station") }
+    static var yearLongest: String { tr("Найдовша поїздка", "Longest trip") }
+    static var yearLines: String { tr("Лінії", "Lines") }
+    static var yearShare: String { tr("Поділитися", "Share") }
+    static var yearEmpty: String {
+        tr("Поки замало поїздок. Проїдьте кілька разів із відліком, і тут з'явиться ваш рік у метро.",
+           "Not enough trips yet. Ride a few times with the countdown and your year will appear here.")
+    }
+    static var yearFooter: String {
+        tr("Рахується лише на вашому телефоні з журналу поїздок. Нікуди не надсилається, доки ви самі не поділитеся.",
+           "Calculated only on your phone from the trip journal. Nothing is sent anywhere unless you share it.")
+    }
+    static func yearSince(_ date: String) -> String { tr("з \(date)", "since \(date)") }
 }

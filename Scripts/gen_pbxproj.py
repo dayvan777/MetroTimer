@@ -24,7 +24,7 @@ TEAM_ID = os.environ.get("MT_TEAM_ID", "JC2G64UQ8N")
 # перегенерация ради нового файла не должна молча откатывать сборку к 1 —
 # такую загрузку App Store Connect отклонит.
 # Версию для витрины меняем руками здесь же.
-MARKETING_VERSION = "1.3.2"
+MARKETING_VERSION = "1.4"
 
 def current_build_number():
     path = os.path.join(ROOT, "MetroTimer.xcodeproj", "project.pbxproj")
@@ -52,6 +52,7 @@ SHARED = [
     "Shared/RouteStore.swift",
     "Shared/ExitStore.swift",
     "Shared/ColorHex.swift",
+    "Shared/WakeAlarm.swift",
 ]
 APP_SRC = [
     "App/MetroTimerApp.swift",
@@ -73,6 +74,8 @@ APP_SRC = [
     "App/Services/AlertService.swift",
     "App/Services/ReminderService.swift",
     "App/Services/Shortcuts.swift",
+    "App/Services/YearStats.swift",
+    "App/Views/YearView.swift",
 ]
 WIDGET_SRC = ["Widget/MetroActivityWidget.swift"]
 APP_RES = ["App/Resources/kyiv_metro.json", "App/Resources/kyiv_exits.json", "App/Resources/uk.lproj",
@@ -84,6 +87,7 @@ WIDGET_RES = ["Widget/PrivacyInfo.xcprivacy", "App/Resources/kyiv_metro.json"]
 TEST_SRC = ["Tests/PlannerTests.swift", "Tests/DataTests.swift", "Tests/ScheduleTests.swift",
             "Tests/LocalizationTests.swift", "Tests/RouteTests.swift", "Tests/MapLayoutTests.swift",
             "Tests/BeaconTests.swift", "Tests/LocatorTests.swift",
+            "Tests/TripScreenTests.swift", "Tests/RouteHintsTests.swift", "Tests/YearStatsTests.swift",
 ]
 OTHER = ["App/Info.plist", "App/MetroTimer.entitlements", "Widget/Info.plist"]
 
@@ -462,6 +466,9 @@ APP = {
     "INFOPLIST_KEY_CFBundleDisplayName": '"Метро-таймер"',
     "LD_RUNPATH_SEARCH_PATHS": '"$(inherited) @executable_path/Frameworks"',
     "PRODUCT_BUNDLE_IDENTIFIER": "ua.vlad.MetroTimer",
+    # AlarmKit є лише з iOS 26, а застосунок підтримує 16.1: слабке зв'язування,
+    # інакше на старших iOS застосунок падав би ще до першого кадру.
+    "OTHER_LDFLAGS": '"$(inherited) -weak_framework AlarmKit"',
 }
 if PAID_TEAM:
     APP["CODE_SIGN_ENTITLEMENTS"] = "App/MetroTimer.entitlements"
@@ -480,6 +487,8 @@ WIDGET = {
     "LD_RUNPATH_SEARCH_PATHS": '"$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks"',
     "PRODUCT_BUNDLE_IDENTIFIER": "ua.vlad.MetroTimer.MetroTimerWidget",
     "SKIP_INSTALL": "YES",
+    # WakeAlarm (Shared) компілюється і сюди — те саме слабке зв'язування.
+    "OTHER_LDFLAGS": '"$(inherited) -weak_framework AlarmKit"',
 }
 
 def config(cid, name, *dicts):

@@ -17,6 +17,14 @@ final class MetroRepository {
         return calendar
     }()
 
+    // «08:31» у київському часі — для текстів, що виходять за межі екрана.
+    static let kyivClock: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        formatter.timeZone = kyivCalendar.timeZone
+        return formatter
+    }()
+
     private init() {
         guard let url = Bundle.main.url(forResource: "kyiv_metro", withExtension: "json") else {
             fatalError("kyiv_metro.json відсутній у бандлі")
@@ -137,21 +145,59 @@ final class MetroRepository {
             .replacingOccurrences(of: "'", with: "")
     }
 
-    // Станції, назва яких (українська чи англійська) містить запит.
+    // Старі й розмовні назви: кияни досі кажуть «Петрівка» і «Льва Толстого»,
+    // а пошук їх не знаходив (ревю 22.09.2026). Лише для пошуку — на екрані
+    // завжди чинна назва. Англійські — для туристів, що шукають за змістом.
+    static let searchAliases: [String: [String]] = [
+        "pochaina": ["Петрівка", "Petrivka"],
+        "ploshcha-ukrainskykh-heroiv": ["Площа Льва Толстого", "Льва Толстого",
+                                        "Lva Tolstoho", "Tolstoho"],
+        "zvirynetska": ["Дружби народів", "Druzhby Narodiv"],
+        "olimpiiska": ["Республіканський стадіон", "Respublikanskyi Stadion"],
+        "beresteiska": ["Проспект Перемоги", "Prospekt Peremohy"],
+        "vystavkovyi-tsentr": ["ВДНГ", "ВДНХ", "Експоцентр", "VDNH", "Expocenter"],
+        "politekhnichnyi-instytut": ["КПІ", "Політех", "KPI"],
+        "vokzalna": ["Railway Station"],
+        "livoberezhna": ["Лівобережка"],
+        "maidan-nezalezhnosti": ["Independence Square"],
+        "zoloti-vorota": ["Golden Gate"],
+        "kontraktova-ploshcha": ["Контрактка", "Contract Square"],
+        "poshtova-ploshcha": ["Postal Square"],
+        "universytet": ["University"],
+        "teatralna": ["Theatre"],
+        "palats-sportu": ["Sports Palace"],
+        "ipodrom": ["Hippodrome"],
+    ]
+
+    // Станції, назва яких (українська, англійська чи стара) містить запит.
     // Закриті не повертаємо: їх не можна обрати, тож і знаходити нема чого.
     func stations(matching query: String) -> [(line: Line, station: Station)] {
         let key = Self.searchKey(query.trimmingCharacters(in: .whitespaces))
         guard !key.isEmpty else { return [] }
         var results: [(line: Line, station: Station)] = []
         for line in lines {
-            for station in stations(of: line)
-            where !station.isClosed
-                && (Self.searchKey(station.nameUk).contains(key)
-                    || Self.searchKey(station.nameEn).contains(key)) {
-                results.append((line, station))
+            for station in stations(of: line) where !station.isClosed {
+                let names = [station.nameUk, station.nameEn] + (Self.searchAliases[station.id] ?? [])
+                if names.contains(where: { Self.searchKey($0).contains(key) }) {
+                    results.append((line, station))
+                }
             }
         }
         return results
+    }
+
+    // Кінцева в напрямку руху: так написано на табличках над платформою.
+    func terminus(lineId: String, forward: Bool) -> Station? {
+        guard let line = line(id: lineId),
+              let id = forward ? line.stationIds.last : line.stationIds.first else { return nil }
+        return station(id: id)
+    }
+
+    // Напрямок поїзда, на який сідають на станції from, щоб їхати до to.
+    func terminus(boardingAt from: String, toward to: String) -> Station? {
+        guard let lineId = line(ofStation: from)?.id,
+              let forward = isForward(lineId: lineId, from: from, to: to) else { return nil }
+        return terminus(lineId: lineId, forward: forward)
     }
 
     // MARK: - Режим работы (официальное расписание)

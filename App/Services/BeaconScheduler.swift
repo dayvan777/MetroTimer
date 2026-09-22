@@ -18,8 +18,8 @@ import UserNotifications
 final class BeaconScheduler: NSObject, ObservableObject, CLLocationManagerDelegate {
     static let shared = BeaconScheduler()
 
-    static let nextId = "beacon.next"
-    static let arrivalId = "beacon.arrival"
+    nonisolated static let nextId = "beacon.next"
+    nonisolated static let arrivalId = "beacon.arrival"
 
     struct RoutePair: Equatable {
         let fromId: String

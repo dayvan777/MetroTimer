@@ -42,3 +42,20 @@ struct BoardedTransferIntent: LiveActivityIntent {
         return .result()
     }
 }
+
+// «Я вийшов» прямо з картки. Без неї «Прибули» висіло в острові годинами:
+// «Я на місці» було лише всередині застосунку, а телефон уже в кишені.
+// Прибуття рахується, похибка розрахунку з такого тапу — ні (TripLogEntry).
+@available(iOS 17.0, *)
+struct ArrivedIntent: LiveActivityIntent {
+    static var title: LocalizedStringResource { "Я вийшов" }
+    static var isDiscoverable: Bool { false }
+
+    init() {}
+
+    @MainActor
+    func perform() async throws -> some IntentResult {
+        TripEngine.shared.stopByUser(outcome: .arrived, confirmedOnCard: true)
+        return .result()
+    }
+}

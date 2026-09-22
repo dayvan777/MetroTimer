@@ -5,9 +5,9 @@ import CoreLocation
 // тапом. Прибирає перший крок сценарію: людина на підході до метро відкриває
 // застосунок, а станція вже вгадана.
 //
-// Межі свідомо вузькі: жодного фону, жодних промптів заради підказки (працює
-// лише коли дозвіл на локацію ВЖЕ дано — його просять поїздка по наземних
-// ділянках або нагадування на станції), фікс не зберігається і нікуди не йде.
+// Межі свідомо вузькі: жодного фону; дозвіл просить картка після першої
+// поїздки або нагадування на станції (поїздка сама більше не питає, 1.4);
+// фікс не зберігається і нікуди не йде.
 // Автостарту поїздки тут немає і не буде: вхід у метро ≠ намір їхати (GPS.md).
 @MainActor
 final class StationLocator: NSObject, ObservableObject, CLLocationManagerDelegate {
@@ -31,6 +31,14 @@ final class StationLocator: NSObject, ObservableObject, CLLocationManagerDelegat
         super.init()
         manager.delegate = self
         manager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+    }
+
+    // Дозволу ще не питали — можна запропонувати (після першої поїздки, 1.4).
+    var canAskPermission: Bool { manager.authorizationStatus == .notDetermined }
+
+    // Людина сама натиснула «Дозволити» в картці на головному екрані.
+    func requestPermission() {
+        manager.requestWhenInUseAuthorization()
     }
 
     // Викликати з появою головного екрана. Без дозволу — мовчить.
@@ -68,6 +76,12 @@ final class StationLocator: NSObject, ObservableObject, CLLocationManagerDelegat
         Task { @MainActor in
             nearbyStation = Self.snap(lat: lat, lon: lon, repo: MetroRepository.shared)
         }
+    }
+
+    // Відповідь на запит із картки: одразу шукаємо станцію, щоб людина
+    // побачила, навіщо дала дозвіл.
+    nonisolated func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        Task { @MainActor in refresh() }
     }
 
     nonisolated func locationManager(_ manager: CLLocationManager,

@@ -32,19 +32,28 @@ struct TripLogEntry: Codable, Identifiable {
     // Главная метрика полевого теста: всё остальное — план против плана,
     // и если пассажир ничего не нажимал, оно не говорит вообще ничего.
     let confirmedSeconds: Int?
+    // Прибытие подтверждено кнопкой «Я вийшов» на карточке экрана блокировки.
+    // Её жмут уже на эскалаторе, так что момент нажатия — не момент прибытия:
+    // сам факт «доехал» засчитываем, а ошибку расчёта по такой поездке — нет.
+    let confirmedOnCard: Bool?
+    // Станции идентификаторами, а не только именами: имена зависят от языка,
+    // а «Мій рік у метро» считает любимую станцию и пройденные линии.
+    let fromId: String?
+    let toId: String?
 
     // Насколько модель разошлась с реальностью, секунды.
     // Плюс — пассажир доехал позже расчёта (отсчёт спешил).
     // Минус — раньше (отсчёт отставал; это опасная сторона: предупреждение
     // приходит после нужной станции).
     var errorSeconds: Int? {
-        guard outcome == .arrived, let confirmedSeconds else { return nil }
+        guard outcome == .arrived, confirmedOnCard != true, let confirmedSeconds else { return nil }
         return confirmedSeconds - finalSeconds
     }
 
     // Вся логика записи — здесь, отдельно от файла на диске: проверить её
     // тестом можно, не трогая журнал устройства.
-    init(trip: ActiveTrip, outcome: TripOutcome, endedAt: Date, id: UUID = UUID()) {
+    init(trip: ActiveTrip, outcome: TripOutcome, endedAt: Date, id: UUID = UUID(),
+         confirmedOnCard: Bool = false) {
         self.id = id
         self.date = trip.startDate
         self.fromName = trip.events.first?.displayName ?? trip.fromId
@@ -62,6 +71,9 @@ struct TripLogEntry: Codable, Identifiable {
         // Реальное время прибытия известно только когда пассажир его подтвердил.
         self.confirmedSeconds = outcome == .arrived
             ? Int(endedAt.timeIntervalSince(trip.startDate)) : nil
+        self.confirmedOnCard = outcome == .arrived && confirmedOnCard ? true : nil
+        self.fromId = trip.fromId
+        self.toId = trip.toId
     }
 }
 
@@ -70,10 +82,10 @@ final class TripLogStore {
 
     private(set) var entries: [TripLogEntry]
 
-    // Журнал ведётся ради метрик точности: хвост старше пары сотен поездок
-    // никому не нужен, а файл рос бы вечно. Обрезаем и при чтении — файл
-    // мог распухнуть в предыдущей версии.
-    static let maxEntries = 200
+    // Журнал кормит метрики точности и «Мій рік у метро»: у ежедневного
+    // пассажира за год набегает 500–700 поездок, 2000 — с запасом (~1 МБ).
+    // Совсем без предела файл рос бы вечно. Обрезаем и при чтении.
+    static let maxEntries = 2000
 
     static var fileURL: URL {
         FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
@@ -111,8 +123,10 @@ final class TripLogStore {
         return Array(decoded.prefix(maxEntries))
     }
 
-    func append(trip: ActiveTrip, outcome: TripOutcome, at endedAt: Date = Date()) {
-        let entry = TripLogEntry(trip: trip, outcome: outcome, endedAt: endedAt)
+    func append(trip: ActiveTrip, outcome: TripOutcome, at endedAt: Date = Date(),
+                confirmedOnCard: Bool = false) {
+        let entry = TripLogEntry(trip: trip, outcome: outcome, endedAt: endedAt,
+                                 confirmedOnCard: confirmedOnCard)
         entries.insert(entry, at: 0)
         if entries.count > Self.maxEntries {
             entries.removeLast(entries.count - Self.maxEntries)
@@ -130,8 +144,16 @@ final class TripLogStore {
     // що працює — кілька підтверджених прибуттів і медіана в межах порога.
     // Просити в усіх підряд — швидкий спосіб зібрати одну зірку від тих,
     // у кого відлік розійшовся.
-    var deservesReviewPrompt: Bool {
-        measuredTripCount >= 3 && (medianErrorSeconds.map { abs($0) <= 30 } ?? false)
+    //
+    // С 1.4 прибытие подтверждают и с карточки экрана блокировки — там ошибка не
+    // измеряется (см. confirmedOnCard). Поэтому условие — три подтверждённых
+    // прибытия, а медиана, если она есть, должна быть в пределах порога.
+    var deservesReviewPrompt: Bool { Self.deservesReviewPrompt(entries) }
+
+    static func deservesReviewPrompt(_ entries: [TripLogEntry]) -> Bool {
+        guard entries.filter({ $0.outcome == .arrived }).count >= 3 else { return false }
+        guard let median = medianError(of: entries) else { return true }
+        return abs(median) <= 30
     }
 
     // Статикой, а не только свойством: так медиану проверяют тесты, не трогая

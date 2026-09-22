@@ -7,100 +7,107 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AA0000000000000000000039 /* MetroTimerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000010 /* MetroTimerApp.swift */; };
-		AA0000000000000000000049 /* AlertService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000020 /* AlertService.swift */; };
-		AA0000000000000000000046 /* BeaconScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000001D /* BeaconScheduler.swift */; };
-		AA0000000000000000000044 /* CalibrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000001B /* CalibrationViewModel.swift */; };
-		AA0000000000000000000045 /* LocationCorrector.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000001C /* LocationCorrector.swift */; };
-		AA0000000000000000000043 /* LocationRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000001A /* LocationRecorder.swift */; };
-		AA0000000000000000000042 /* MotionRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000019 /* MotionRecorder.swift */; };
-		AA0000000000000000000048 /* NotificationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000001F /* NotificationPresenter.swift */; };
-		AA000000000000000000004A /* ReminderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000021 /* ReminderService.swift */; };
-		AA000000000000000000004B /* Shortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000022 /* Shortcuts.swift */; };
-		AA0000000000000000000047 /* StationLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000001E /* StationLocator.swift */; };
-		AA000000000000000000003E /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000015 /* AboutView.swift */; };
-		AA000000000000000000003C /* CalibrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000013 /* CalibrationView.swift */; };
-		AA000000000000000000003A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000011 /* ContentView.swift */; };
-		AA0000000000000000000041 /* MetroMapLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000018 /* MetroMapLayout.swift */; };
-		AA0000000000000000000040 /* MetroMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000017 /* MetroMapView.swift */; };
-		AA000000000000000000003F /* ReminderSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000016 /* ReminderSheet.swift */; };
-		AA000000000000000000003D /* TripLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000014 /* TripLogView.swift */; };
-		AA000000000000000000003B /* TripView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000012 /* TripView.swift */; };
-		AA0000000000000000000052 /* ActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000007 /* ActivityController.swift */; };
-		AA0000000000000000000054 /* AdjustTripIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000009 /* AdjustTripIntent.swift */; };
-		AA0000000000000000000050 /* CalibrationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000005 /* CalibrationStore.swift */; };
-		AA000000000000000000005A /* ColorHex.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000000F /* ColorHex.swift */; };
-		AA0000000000000000000059 /* ExitStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000000E /* ExitStore.swift */; };
-		AA0000000000000000000056 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000000B /* Localization.swift */; };
-		AA000000000000000000004C /* MetroActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000001 /* MetroActivityAttributes.swift */; };
-		AA000000000000000000004E /* MetroRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000003 /* MetroRepository.swift */; };
-		AA000000000000000000004D /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000002 /* Models.swift */; };
-		AA0000000000000000000051 /* NotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000006 /* NotificationScheduler.swift */; };
-		AA0000000000000000000058 /* RouteStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000000D /* RouteStore.swift */; };
-		AA0000000000000000000055 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000000A /* Strings.swift */; };
-		AA0000000000000000000053 /* TripEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000008 /* TripEngine.swift */; };
-		AA0000000000000000000057 /* TripLogStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000000C /* TripLogStore.swift */; };
-		AA000000000000000000004F /* TripPlanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000004 /* TripPlanner.swift */; };
-		AA000000000000000000005F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000030 /* Assets.xcassets */; };
-		AA0000000000000000000060 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000031 /* PrivacyInfo.xcprivacy */; };
-		AA000000000000000000005E /* en.lproj in Resources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000002F /* en.lproj */; };
-		AA000000000000000000005C /* kyiv_exits.json in Resources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000002D /* kyiv_exits.json */; };
-		AA000000000000000000005B /* kyiv_metro.json in Resources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000002C /* kyiv_metro.json */; };
-		AA000000000000000000005D /* uk.lproj in Resources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000002E /* uk.lproj */; };
-		AA0000000000000000000068 /* ActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000007 /* ActivityController.swift */; };
-		AA000000000000000000006A /* AdjustTripIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000009 /* AdjustTripIntent.swift */; };
-		AA0000000000000000000066 /* CalibrationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000005 /* CalibrationStore.swift */; };
-		AA0000000000000000000070 /* ColorHex.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000000F /* ColorHex.swift */; };
-		AA000000000000000000006F /* ExitStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000000E /* ExitStore.swift */; };
-		AA000000000000000000006C /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000000B /* Localization.swift */; };
-		AA0000000000000000000062 /* MetroActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000001 /* MetroActivityAttributes.swift */; };
-		AA0000000000000000000064 /* MetroRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000003 /* MetroRepository.swift */; };
-		AA0000000000000000000063 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000002 /* Models.swift */; };
-		AA0000000000000000000067 /* NotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000006 /* NotificationScheduler.swift */; };
-		AA000000000000000000006E /* RouteStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000000D /* RouteStore.swift */; };
-		AA000000000000000000006B /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000000A /* Strings.swift */; };
-		AA0000000000000000000069 /* TripEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000008 /* TripEngine.swift */; };
-		AA000000000000000000006D /* TripLogStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000000C /* TripLogStore.swift */; };
-		AA0000000000000000000065 /* TripPlanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000004 /* TripPlanner.swift */; };
-		AA0000000000000000000061 /* MetroActivityWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000023 /* MetroActivityWidget.swift */; };
-		AA0000000000000000000072 /* kyiv_metro.json in Resources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000002C /* kyiv_metro.json */; };
-		AA0000000000000000000071 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000032 /* PrivacyInfo.xcprivacy */; };
-		AA0000000000000000000079 /* BeaconTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000002A /* BeaconTests.swift */; };
-		AA0000000000000000000074 /* DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000025 /* DataTests.swift */; };
-		AA0000000000000000000076 /* LocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000027 /* LocalizationTests.swift */; };
-		AA000000000000000000007A /* LocatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000002B /* LocatorTests.swift */; };
-		AA0000000000000000000078 /* MapLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000029 /* MapLayoutTests.swift */; };
-		AA0000000000000000000073 /* PlannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000024 /* PlannerTests.swift */; };
-		AA0000000000000000000077 /* RouteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000028 /* RouteTests.swift */; };
-		AA0000000000000000000075 /* ScheduleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000026 /* ScheduleTests.swift */; };
-		AA000000000000000000007B /* MetroTimerWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000037 /* MetroTimerWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		AA000000000000000000003F /* MetroTimerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000011 /* MetroTimerApp.swift */; };
+		AA000000000000000000004F /* AlertService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000021 /* AlertService.swift */; };
+		AA000000000000000000004C /* BeaconScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000001E /* BeaconScheduler.swift */; };
+		AA000000000000000000004A /* CalibrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000001C /* CalibrationViewModel.swift */; };
+		AA000000000000000000004B /* LocationCorrector.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000001D /* LocationCorrector.swift */; };
+		AA0000000000000000000049 /* LocationRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000001B /* LocationRecorder.swift */; };
+		AA0000000000000000000048 /* MotionRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000001A /* MotionRecorder.swift */; };
+		AA000000000000000000004E /* NotificationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000020 /* NotificationPresenter.swift */; };
+		AA0000000000000000000050 /* ReminderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000022 /* ReminderService.swift */; };
+		AA0000000000000000000051 /* Shortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000023 /* Shortcuts.swift */; };
+		AA000000000000000000004D /* StationLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000001F /* StationLocator.swift */; };
+		AA0000000000000000000052 /* YearStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000024 /* YearStats.swift */; };
+		AA0000000000000000000044 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000016 /* AboutView.swift */; };
+		AA0000000000000000000042 /* CalibrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000014 /* CalibrationView.swift */; };
+		AA0000000000000000000040 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000012 /* ContentView.swift */; };
+		AA0000000000000000000047 /* MetroMapLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000019 /* MetroMapLayout.swift */; };
+		AA0000000000000000000046 /* MetroMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000018 /* MetroMapView.swift */; };
+		AA0000000000000000000045 /* ReminderSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000017 /* ReminderSheet.swift */; };
+		AA0000000000000000000043 /* TripLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000015 /* TripLogView.swift */; };
+		AA0000000000000000000041 /* TripView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000013 /* TripView.swift */; };
+		AA0000000000000000000053 /* YearView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000025 /* YearView.swift */; };
+		AA000000000000000000005A /* ActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000007 /* ActivityController.swift */; };
+		AA000000000000000000005C /* AdjustTripIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000009 /* AdjustTripIntent.swift */; };
+		AA0000000000000000000058 /* CalibrationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000005 /* CalibrationStore.swift */; };
+		AA0000000000000000000062 /* ColorHex.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000000F /* ColorHex.swift */; };
+		AA0000000000000000000061 /* ExitStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000000E /* ExitStore.swift */; };
+		AA000000000000000000005E /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000000B /* Localization.swift */; };
+		AA0000000000000000000054 /* MetroActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000001 /* MetroActivityAttributes.swift */; };
+		AA0000000000000000000056 /* MetroRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000003 /* MetroRepository.swift */; };
+		AA0000000000000000000055 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000002 /* Models.swift */; };
+		AA0000000000000000000059 /* NotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000006 /* NotificationScheduler.swift */; };
+		AA0000000000000000000060 /* RouteStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000000D /* RouteStore.swift */; };
+		AA000000000000000000005D /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000000A /* Strings.swift */; };
+		AA000000000000000000005B /* TripEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000008 /* TripEngine.swift */; };
+		AA000000000000000000005F /* TripLogStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000000C /* TripLogStore.swift */; };
+		AA0000000000000000000057 /* TripPlanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000004 /* TripPlanner.swift */; };
+		AA0000000000000000000063 /* WakeAlarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000010 /* WakeAlarm.swift */; };
+		AA0000000000000000000068 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000036 /* Assets.xcassets */; };
+		AA0000000000000000000069 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000037 /* PrivacyInfo.xcprivacy */; };
+		AA0000000000000000000067 /* en.lproj in Resources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000035 /* en.lproj */; };
+		AA0000000000000000000065 /* kyiv_exits.json in Resources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000033 /* kyiv_exits.json */; };
+		AA0000000000000000000064 /* kyiv_metro.json in Resources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000032 /* kyiv_metro.json */; };
+		AA0000000000000000000066 /* uk.lproj in Resources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000034 /* uk.lproj */; };
+		AA0000000000000000000071 /* ActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000007 /* ActivityController.swift */; };
+		AA0000000000000000000073 /* AdjustTripIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000009 /* AdjustTripIntent.swift */; };
+		AA000000000000000000006F /* CalibrationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000005 /* CalibrationStore.swift */; };
+		AA0000000000000000000079 /* ColorHex.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000000F /* ColorHex.swift */; };
+		AA0000000000000000000078 /* ExitStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000000E /* ExitStore.swift */; };
+		AA0000000000000000000075 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000000B /* Localization.swift */; };
+		AA000000000000000000006B /* MetroActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000001 /* MetroActivityAttributes.swift */; };
+		AA000000000000000000006D /* MetroRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000003 /* MetroRepository.swift */; };
+		AA000000000000000000006C /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000002 /* Models.swift */; };
+		AA0000000000000000000070 /* NotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000006 /* NotificationScheduler.swift */; };
+		AA0000000000000000000077 /* RouteStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000000D /* RouteStore.swift */; };
+		AA0000000000000000000074 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000000A /* Strings.swift */; };
+		AA0000000000000000000072 /* TripEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000008 /* TripEngine.swift */; };
+		AA0000000000000000000076 /* TripLogStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000000C /* TripLogStore.swift */; };
+		AA000000000000000000006E /* TripPlanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000004 /* TripPlanner.swift */; };
+		AA000000000000000000007A /* WakeAlarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000010 /* WakeAlarm.swift */; };
+		AA000000000000000000006A /* MetroActivityWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000026 /* MetroActivityWidget.swift */; };
+		AA000000000000000000007C /* kyiv_metro.json in Resources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000032 /* kyiv_metro.json */; };
+		AA000000000000000000007B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000038 /* PrivacyInfo.xcprivacy */; };
+		AA0000000000000000000083 /* BeaconTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000002D /* BeaconTests.swift */; };
+		AA000000000000000000007E /* DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000028 /* DataTests.swift */; };
+		AA0000000000000000000080 /* LocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000002A /* LocalizationTests.swift */; };
+		AA0000000000000000000084 /* LocatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000002E /* LocatorTests.swift */; };
+		AA0000000000000000000082 /* MapLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000002C /* MapLayoutTests.swift */; };
+		AA000000000000000000007D /* PlannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000027 /* PlannerTests.swift */; };
+		AA0000000000000000000086 /* RouteHintsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000030 /* RouteHintsTests.swift */; };
+		AA0000000000000000000081 /* RouteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000002B /* RouteTests.swift */; };
+		AA000000000000000000007F /* ScheduleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000029 /* ScheduleTests.swift */; };
+		AA0000000000000000000085 /* TripScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000002F /* TripScreenTests.swift */; };
+		AA0000000000000000000087 /* YearStatsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000031 /* YearStatsTests.swift */; };
+		AA0000000000000000000088 /* MetroTimerWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = AA000000000000000000003D /* MetroTimerWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		AA0000000000000000000092 /* PBXContainerItemProxy */ = {
+		AA000000000000000000009F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = AA0000000000000000000091 /* Project object */;
+			containerPortal = AA000000000000000000009E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = AA000000000000000000008F;
+			remoteGlobalIDString = AA000000000000000000009C;
 			remoteInfo = MetroTimerWidget;
 		};
-		AA0000000000000000000094 /* PBXContainerItemProxy */ = {
+		AA00000000000000000000A1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = AA0000000000000000000091 /* Project object */;
+			containerPortal = AA000000000000000000009E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = AA000000000000000000008E;
+			remoteGlobalIDString = AA000000000000000000009B;
 			remoteInfo = MetroTimer;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		AA0000000000000000000088 /* Embed Foundation Extensions */ = {
+		AA0000000000000000000095 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				AA000000000000000000007B /* MetroTimerWidget.appex in Embed Foundation Extensions */,
+				AA0000000000000000000088 /* MetroTimerWidget.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -123,65 +130,71 @@
 		AA000000000000000000000D /* RouteStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteStore.swift; sourceTree = "<group>"; };
 		AA000000000000000000000E /* ExitStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitStore.swift; sourceTree = "<group>"; };
 		AA000000000000000000000F /* ColorHex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorHex.swift; sourceTree = "<group>"; };
-		AA0000000000000000000010 /* MetroTimerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetroTimerApp.swift; sourceTree = "<group>"; };
-		AA0000000000000000000011 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		AA0000000000000000000012 /* TripView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripView.swift; sourceTree = "<group>"; };
-		AA0000000000000000000013 /* CalibrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibrationView.swift; sourceTree = "<group>"; };
-		AA0000000000000000000014 /* TripLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripLogView.swift; sourceTree = "<group>"; };
-		AA0000000000000000000015 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
-		AA0000000000000000000016 /* ReminderSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderSheet.swift; sourceTree = "<group>"; };
-		AA0000000000000000000017 /* MetroMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetroMapView.swift; sourceTree = "<group>"; };
-		AA0000000000000000000018 /* MetroMapLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetroMapLayout.swift; sourceTree = "<group>"; };
-		AA0000000000000000000019 /* MotionRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionRecorder.swift; sourceTree = "<group>"; };
-		AA000000000000000000001A /* LocationRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationRecorder.swift; sourceTree = "<group>"; };
-		AA000000000000000000001B /* CalibrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibrationViewModel.swift; sourceTree = "<group>"; };
-		AA000000000000000000001C /* LocationCorrector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationCorrector.swift; sourceTree = "<group>"; };
-		AA000000000000000000001D /* BeaconScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeaconScheduler.swift; sourceTree = "<group>"; };
-		AA000000000000000000001E /* StationLocator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationLocator.swift; sourceTree = "<group>"; };
-		AA000000000000000000001F /* NotificationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPresenter.swift; sourceTree = "<group>"; };
-		AA0000000000000000000020 /* AlertService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertService.swift; sourceTree = "<group>"; };
-		AA0000000000000000000021 /* ReminderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderService.swift; sourceTree = "<group>"; };
-		AA0000000000000000000022 /* Shortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shortcuts.swift; sourceTree = "<group>"; };
-		AA0000000000000000000023 /* MetroActivityWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetroActivityWidget.swift; sourceTree = "<group>"; };
-		AA0000000000000000000024 /* PlannerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlannerTests.swift; sourceTree = "<group>"; };
-		AA0000000000000000000025 /* DataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTests.swift; sourceTree = "<group>"; };
-		AA0000000000000000000026 /* ScheduleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTests.swift; sourceTree = "<group>"; };
-		AA0000000000000000000027 /* LocalizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationTests.swift; sourceTree = "<group>"; };
-		AA0000000000000000000028 /* RouteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteTests.swift; sourceTree = "<group>"; };
-		AA0000000000000000000029 /* MapLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapLayoutTests.swift; sourceTree = "<group>"; };
-		AA000000000000000000002A /* BeaconTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeaconTests.swift; sourceTree = "<group>"; };
-		AA000000000000000000002B /* LocatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocatorTests.swift; sourceTree = "<group>"; };
-		AA000000000000000000002C /* kyiv_metro.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = kyiv_metro.json; sourceTree = "<group>"; };
-		AA000000000000000000002D /* kyiv_exits.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = kyiv_exits.json; sourceTree = "<group>"; };
-		AA000000000000000000002E /* uk.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = uk.lproj; sourceTree = "<group>"; };
-		AA000000000000000000002F /* en.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = en.lproj; sourceTree = "<group>"; };
-		AA0000000000000000000030 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		AA0000000000000000000031 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		AA0000000000000000000032 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		AA0000000000000000000033 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AA0000000000000000000034 /* MetroTimer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MetroTimer.entitlements; sourceTree = "<group>"; };
-		AA0000000000000000000035 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AA0000000000000000000036 /* MetroTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MetroTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		AA0000000000000000000037 /* MetroTimerWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MetroTimerWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		AA0000000000000000000038 /* MetroTimerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MetroTimerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA0000000000000000000010 /* WakeAlarm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WakeAlarm.swift; sourceTree = "<group>"; };
+		AA0000000000000000000011 /* MetroTimerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetroTimerApp.swift; sourceTree = "<group>"; };
+		AA0000000000000000000012 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		AA0000000000000000000013 /* TripView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripView.swift; sourceTree = "<group>"; };
+		AA0000000000000000000014 /* CalibrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibrationView.swift; sourceTree = "<group>"; };
+		AA0000000000000000000015 /* TripLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripLogView.swift; sourceTree = "<group>"; };
+		AA0000000000000000000016 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		AA0000000000000000000017 /* ReminderSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderSheet.swift; sourceTree = "<group>"; };
+		AA0000000000000000000018 /* MetroMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetroMapView.swift; sourceTree = "<group>"; };
+		AA0000000000000000000019 /* MetroMapLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetroMapLayout.swift; sourceTree = "<group>"; };
+		AA000000000000000000001A /* MotionRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionRecorder.swift; sourceTree = "<group>"; };
+		AA000000000000000000001B /* LocationRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationRecorder.swift; sourceTree = "<group>"; };
+		AA000000000000000000001C /* CalibrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibrationViewModel.swift; sourceTree = "<group>"; };
+		AA000000000000000000001D /* LocationCorrector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationCorrector.swift; sourceTree = "<group>"; };
+		AA000000000000000000001E /* BeaconScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeaconScheduler.swift; sourceTree = "<group>"; };
+		AA000000000000000000001F /* StationLocator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationLocator.swift; sourceTree = "<group>"; };
+		AA0000000000000000000020 /* NotificationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPresenter.swift; sourceTree = "<group>"; };
+		AA0000000000000000000021 /* AlertService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertService.swift; sourceTree = "<group>"; };
+		AA0000000000000000000022 /* ReminderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderService.swift; sourceTree = "<group>"; };
+		AA0000000000000000000023 /* Shortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shortcuts.swift; sourceTree = "<group>"; };
+		AA0000000000000000000024 /* YearStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YearStats.swift; sourceTree = "<group>"; };
+		AA0000000000000000000025 /* YearView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YearView.swift; sourceTree = "<group>"; };
+		AA0000000000000000000026 /* MetroActivityWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetroActivityWidget.swift; sourceTree = "<group>"; };
+		AA0000000000000000000027 /* PlannerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlannerTests.swift; sourceTree = "<group>"; };
+		AA0000000000000000000028 /* DataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTests.swift; sourceTree = "<group>"; };
+		AA0000000000000000000029 /* ScheduleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTests.swift; sourceTree = "<group>"; };
+		AA000000000000000000002A /* LocalizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationTests.swift; sourceTree = "<group>"; };
+		AA000000000000000000002B /* RouteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteTests.swift; sourceTree = "<group>"; };
+		AA000000000000000000002C /* MapLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapLayoutTests.swift; sourceTree = "<group>"; };
+		AA000000000000000000002D /* BeaconTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeaconTests.swift; sourceTree = "<group>"; };
+		AA000000000000000000002E /* LocatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocatorTests.swift; sourceTree = "<group>"; };
+		AA000000000000000000002F /* TripScreenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripScreenTests.swift; sourceTree = "<group>"; };
+		AA0000000000000000000030 /* RouteHintsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteHintsTests.swift; sourceTree = "<group>"; };
+		AA0000000000000000000031 /* YearStatsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YearStatsTests.swift; sourceTree = "<group>"; };
+		AA0000000000000000000032 /* kyiv_metro.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = kyiv_metro.json; sourceTree = "<group>"; };
+		AA0000000000000000000033 /* kyiv_exits.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = kyiv_exits.json; sourceTree = "<group>"; };
+		AA0000000000000000000034 /* uk.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = uk.lproj; sourceTree = "<group>"; };
+		AA0000000000000000000035 /* en.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = en.lproj; sourceTree = "<group>"; };
+		AA0000000000000000000036 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		AA0000000000000000000037 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		AA0000000000000000000038 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		AA0000000000000000000039 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AA000000000000000000003A /* MetroTimer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MetroTimer.entitlements; sourceTree = "<group>"; };
+		AA000000000000000000003B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AA000000000000000000003C /* MetroTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MetroTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA000000000000000000003D /* MetroTimerWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MetroTimerWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA000000000000000000003E /* MetroTimerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MetroTimerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		AA0000000000000000000087 /* Frameworks */ = {
+		AA0000000000000000000094 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		AA000000000000000000008B /* Frameworks */ = {
+		AA0000000000000000000098 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		AA000000000000000000008D /* Frameworks */ = {
+		AA000000000000000000009A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -191,76 +204,78 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		AA000000000000000000007C /* MainGroup */ = {
+		AA0000000000000000000089 /* MainGroup */ = {
 			isa = PBXGroup;
 			children = (
-				AA000000000000000000007D /* App */,
-				AA0000000000000000000081 /* Shared */,
-				AA0000000000000000000082 /* Widget */,
-				AA0000000000000000000083 /* Tests */,
-				AA0000000000000000000084 /* Products */,
+				AA000000000000000000008A /* App */,
+				AA000000000000000000008E /* Shared */,
+				AA000000000000000000008F /* Widget */,
+				AA0000000000000000000090 /* Tests */,
+				AA0000000000000000000091 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		AA000000000000000000007D /* App */ = {
+		AA000000000000000000008A /* App */ = {
 			isa = PBXGroup;
 			children = (
-				AA0000000000000000000010 /* MetroTimerApp.swift */,
-				AA0000000000000000000033 /* Info.plist */,
-				AA0000000000000000000034 /* MetroTimer.entitlements */,
-				AA0000000000000000000030 /* Assets.xcassets */,
-				AA0000000000000000000031 /* PrivacyInfo.xcprivacy */,
-				AA000000000000000000007E /* Views */,
-				AA000000000000000000007F /* Services */,
-				AA0000000000000000000080 /* Resources */,
+				AA0000000000000000000011 /* MetroTimerApp.swift */,
+				AA0000000000000000000039 /* Info.plist */,
+				AA000000000000000000003A /* MetroTimer.entitlements */,
+				AA0000000000000000000036 /* Assets.xcassets */,
+				AA0000000000000000000037 /* PrivacyInfo.xcprivacy */,
+				AA000000000000000000008B /* Views */,
+				AA000000000000000000008C /* Services */,
+				AA000000000000000000008D /* Resources */,
 			);
 			path = App;
 			sourceTree = "<group>";
 		};
-		AA000000000000000000007E /* Views */ = {
+		AA000000000000000000008B /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				AA0000000000000000000011 /* ContentView.swift */,
-				AA0000000000000000000012 /* TripView.swift */,
-				AA0000000000000000000013 /* CalibrationView.swift */,
-				AA0000000000000000000014 /* TripLogView.swift */,
-				AA0000000000000000000015 /* AboutView.swift */,
-				AA0000000000000000000016 /* ReminderSheet.swift */,
-				AA0000000000000000000017 /* MetroMapView.swift */,
-				AA0000000000000000000018 /* MetroMapLayout.swift */,
+				AA0000000000000000000012 /* ContentView.swift */,
+				AA0000000000000000000013 /* TripView.swift */,
+				AA0000000000000000000014 /* CalibrationView.swift */,
+				AA0000000000000000000015 /* TripLogView.swift */,
+				AA0000000000000000000016 /* AboutView.swift */,
+				AA0000000000000000000017 /* ReminderSheet.swift */,
+				AA0000000000000000000018 /* MetroMapView.swift */,
+				AA0000000000000000000019 /* MetroMapLayout.swift */,
+				AA0000000000000000000025 /* YearView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
 		};
-		AA000000000000000000007F /* Services */ = {
+		AA000000000000000000008C /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				AA0000000000000000000019 /* MotionRecorder.swift */,
-				AA000000000000000000001A /* LocationRecorder.swift */,
-				AA000000000000000000001B /* CalibrationViewModel.swift */,
-				AA000000000000000000001C /* LocationCorrector.swift */,
-				AA000000000000000000001D /* BeaconScheduler.swift */,
-				AA000000000000000000001E /* StationLocator.swift */,
-				AA000000000000000000001F /* NotificationPresenter.swift */,
-				AA0000000000000000000020 /* AlertService.swift */,
-				AA0000000000000000000021 /* ReminderService.swift */,
-				AA0000000000000000000022 /* Shortcuts.swift */,
+				AA000000000000000000001A /* MotionRecorder.swift */,
+				AA000000000000000000001B /* LocationRecorder.swift */,
+				AA000000000000000000001C /* CalibrationViewModel.swift */,
+				AA000000000000000000001D /* LocationCorrector.swift */,
+				AA000000000000000000001E /* BeaconScheduler.swift */,
+				AA000000000000000000001F /* StationLocator.swift */,
+				AA0000000000000000000020 /* NotificationPresenter.swift */,
+				AA0000000000000000000021 /* AlertService.swift */,
+				AA0000000000000000000022 /* ReminderService.swift */,
+				AA0000000000000000000023 /* Shortcuts.swift */,
+				AA0000000000000000000024 /* YearStats.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
 		};
-		AA0000000000000000000080 /* Resources */ = {
+		AA000000000000000000008D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				AA000000000000000000002C /* kyiv_metro.json */,
-				AA000000000000000000002D /* kyiv_exits.json */,
-				AA000000000000000000002E /* uk.lproj */,
-				AA000000000000000000002F /* en.lproj */,
+				AA0000000000000000000032 /* kyiv_metro.json */,
+				AA0000000000000000000033 /* kyiv_exits.json */,
+				AA0000000000000000000034 /* uk.lproj */,
+				AA0000000000000000000035 /* en.lproj */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		AA0000000000000000000081 /* Shared */ = {
+		AA000000000000000000008E /* Shared */ = {
 			isa = PBXGroup;
 			children = (
 				AA0000000000000000000001 /* MetroActivityAttributes.swift */,
@@ -278,41 +293,45 @@
 				AA000000000000000000000D /* RouteStore.swift */,
 				AA000000000000000000000E /* ExitStore.swift */,
 				AA000000000000000000000F /* ColorHex.swift */,
+				AA0000000000000000000010 /* WakeAlarm.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
 		};
-		AA0000000000000000000082 /* Widget */ = {
+		AA000000000000000000008F /* Widget */ = {
 			isa = PBXGroup;
 			children = (
-				AA0000000000000000000023 /* MetroActivityWidget.swift */,
-				AA0000000000000000000035 /* Info.plist */,
-				AA0000000000000000000032 /* PrivacyInfo.xcprivacy */,
+				AA0000000000000000000026 /* MetroActivityWidget.swift */,
+				AA000000000000000000003B /* Info.plist */,
+				AA0000000000000000000038 /* PrivacyInfo.xcprivacy */,
 			);
 			path = Widget;
 			sourceTree = "<group>";
 		};
-		AA0000000000000000000083 /* Tests */ = {
+		AA0000000000000000000090 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				AA0000000000000000000024 /* PlannerTests.swift */,
-				AA0000000000000000000025 /* DataTests.swift */,
-				AA0000000000000000000026 /* ScheduleTests.swift */,
-				AA0000000000000000000027 /* LocalizationTests.swift */,
-				AA0000000000000000000028 /* RouteTests.swift */,
-				AA0000000000000000000029 /* MapLayoutTests.swift */,
-				AA000000000000000000002A /* BeaconTests.swift */,
-				AA000000000000000000002B /* LocatorTests.swift */,
+				AA0000000000000000000027 /* PlannerTests.swift */,
+				AA0000000000000000000028 /* DataTests.swift */,
+				AA0000000000000000000029 /* ScheduleTests.swift */,
+				AA000000000000000000002A /* LocalizationTests.swift */,
+				AA000000000000000000002B /* RouteTests.swift */,
+				AA000000000000000000002C /* MapLayoutTests.swift */,
+				AA000000000000000000002D /* BeaconTests.swift */,
+				AA000000000000000000002E /* LocatorTests.swift */,
+				AA000000000000000000002F /* TripScreenTests.swift */,
+				AA0000000000000000000030 /* RouteHintsTests.swift */,
+				AA0000000000000000000031 /* YearStatsTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
 		};
-		AA0000000000000000000084 /* Products */ = {
+		AA0000000000000000000091 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AA0000000000000000000036 /* MetroTimer.app */,
-				AA0000000000000000000037 /* MetroTimerWidget.appex */,
-				AA0000000000000000000038 /* MetroTimerTests.xctest */,
+				AA000000000000000000003C /* MetroTimer.app */,
+				AA000000000000000000003D /* MetroTimerWidget.appex */,
+				AA000000000000000000003E /* MetroTimerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -320,32 +339,32 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		AA000000000000000000008E /* MetroTimer */ = {
+		AA000000000000000000009B /* MetroTimer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AA0000000000000000000097 /* Build configuration list for PBXNativeTarget "MetroTimer" */;
+			buildConfigurationList = AA00000000000000000000A4 /* Build configuration list for PBXNativeTarget "MetroTimer" */;
 			buildPhases = (
-				AA0000000000000000000085 /* Sources */,
-				AA0000000000000000000087 /* Frameworks */,
-				AA0000000000000000000086 /* Resources */,
-				AA0000000000000000000088 /* Embed Foundation Extensions */,
+				AA0000000000000000000092 /* Sources */,
+				AA0000000000000000000094 /* Frameworks */,
+				AA0000000000000000000093 /* Resources */,
+				AA0000000000000000000095 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				AA0000000000000000000093 /* PBXTargetDependency */,
+				AA00000000000000000000A0 /* PBXTargetDependency */,
 			);
 			name = MetroTimer;
 			productName = MetroTimer;
-			productReference = AA0000000000000000000036 /* MetroTimer.app */;
+			productReference = AA000000000000000000003C /* MetroTimer.app */;
 			productType = "com.apple.product-type.application";
 		};
-		AA000000000000000000008F /* MetroTimerWidget */ = {
+		AA000000000000000000009C /* MetroTimerWidget */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AA0000000000000000000098 /* Build configuration list for PBXNativeTarget "MetroTimerWidget" */;
+			buildConfigurationList = AA00000000000000000000A5 /* Build configuration list for PBXNativeTarget "MetroTimerWidget" */;
 			buildPhases = (
-				AA0000000000000000000089 /* Sources */,
-				AA000000000000000000008B /* Frameworks */,
-				AA000000000000000000008A /* Resources */,
+				AA0000000000000000000096 /* Sources */,
+				AA0000000000000000000098 /* Frameworks */,
+				AA0000000000000000000097 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -353,36 +372,36 @@
 			);
 			name = MetroTimerWidget;
 			productName = MetroTimerWidget;
-			productReference = AA0000000000000000000037 /* MetroTimerWidget.appex */;
+			productReference = AA000000000000000000003D /* MetroTimerWidget.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		AA0000000000000000000090 /* MetroTimerTests */ = {
+		AA000000000000000000009D /* MetroTimerTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AA0000000000000000000099 /* Build configuration list for PBXNativeTarget "MetroTimerTests" */;
+			buildConfigurationList = AA00000000000000000000A6 /* Build configuration list for PBXNativeTarget "MetroTimerTests" */;
 			buildPhases = (
-				AA000000000000000000008C /* Sources */,
-				AA000000000000000000008D /* Frameworks */,
+				AA0000000000000000000099 /* Sources */,
+				AA000000000000000000009A /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				AA0000000000000000000095 /* PBXTargetDependency */,
+				AA00000000000000000000A2 /* PBXTargetDependency */,
 			);
 			name = MetroTimerTests;
 			productName = MetroTimerTests;
-			productReference = AA0000000000000000000038 /* MetroTimerTests.xctest */;
+			productReference = AA000000000000000000003E /* MetroTimerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		AA0000000000000000000091 /* Project object */ = {
+		AA000000000000000000009E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastUpgradeCheck = 1500;
 			};
-			buildConfigurationList = AA0000000000000000000096 /* Build configuration list for PBXProject "MetroTimer" */;
+			buildConfigurationList = AA00000000000000000000A3 /* Build configuration list for PBXProject "MetroTimer" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = uk;
 			hasScannedForEncodings = 0;
@@ -390,140 +409,147 @@
 				uk,
 				Base,
 			);
-			mainGroup = AA000000000000000000007C;
-			productRefGroup = AA0000000000000000000084 /* Products */;
+			mainGroup = AA0000000000000000000089;
+			productRefGroup = AA0000000000000000000091 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				AA000000000000000000008E /* MetroTimer */,
-				AA000000000000000000008F /* MetroTimerWidget */,
-				AA0000000000000000000090 /* MetroTimerTests */,
+				AA000000000000000000009B /* MetroTimer */,
+				AA000000000000000000009C /* MetroTimerWidget */,
+				AA000000000000000000009D /* MetroTimerTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		AA0000000000000000000086 /* Resources */ = {
+		AA0000000000000000000093 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA000000000000000000005F /* Assets.xcassets in Resources */,
-				AA0000000000000000000060 /* PrivacyInfo.xcprivacy in Resources */,
-				AA000000000000000000005E /* en.lproj in Resources */,
-				AA000000000000000000005C /* kyiv_exits.json in Resources */,
-				AA000000000000000000005B /* kyiv_metro.json in Resources */,
-				AA000000000000000000005D /* uk.lproj in Resources */,
+				AA0000000000000000000068 /* Assets.xcassets in Resources */,
+				AA0000000000000000000069 /* PrivacyInfo.xcprivacy in Resources */,
+				AA0000000000000000000067 /* en.lproj in Resources */,
+				AA0000000000000000000065 /* kyiv_exits.json in Resources */,
+				AA0000000000000000000064 /* kyiv_metro.json in Resources */,
+				AA0000000000000000000066 /* uk.lproj in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		AA000000000000000000008A /* Resources */ = {
+		AA0000000000000000000097 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA0000000000000000000072 /* kyiv_metro.json in Resources */,
-				AA0000000000000000000071 /* PrivacyInfo.xcprivacy in Resources */,
+				AA000000000000000000007C /* kyiv_metro.json in Resources */,
+				AA000000000000000000007B /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		AA0000000000000000000085 /* Sources */ = {
+		AA0000000000000000000092 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA0000000000000000000039 /* MetroTimerApp.swift in Sources */,
-				AA0000000000000000000049 /* AlertService.swift in Sources */,
-				AA0000000000000000000046 /* BeaconScheduler.swift in Sources */,
-				AA0000000000000000000044 /* CalibrationViewModel.swift in Sources */,
-				AA0000000000000000000045 /* LocationCorrector.swift in Sources */,
-				AA0000000000000000000043 /* LocationRecorder.swift in Sources */,
-				AA0000000000000000000042 /* MotionRecorder.swift in Sources */,
-				AA0000000000000000000048 /* NotificationPresenter.swift in Sources */,
-				AA000000000000000000004A /* ReminderService.swift in Sources */,
-				AA000000000000000000004B /* Shortcuts.swift in Sources */,
-				AA0000000000000000000047 /* StationLocator.swift in Sources */,
-				AA000000000000000000003E /* AboutView.swift in Sources */,
-				AA000000000000000000003C /* CalibrationView.swift in Sources */,
-				AA000000000000000000003A /* ContentView.swift in Sources */,
-				AA0000000000000000000041 /* MetroMapLayout.swift in Sources */,
-				AA0000000000000000000040 /* MetroMapView.swift in Sources */,
-				AA000000000000000000003F /* ReminderSheet.swift in Sources */,
-				AA000000000000000000003D /* TripLogView.swift in Sources */,
-				AA000000000000000000003B /* TripView.swift in Sources */,
-				AA0000000000000000000052 /* ActivityController.swift in Sources */,
-				AA0000000000000000000054 /* AdjustTripIntent.swift in Sources */,
-				AA0000000000000000000050 /* CalibrationStore.swift in Sources */,
-				AA000000000000000000005A /* ColorHex.swift in Sources */,
-				AA0000000000000000000059 /* ExitStore.swift in Sources */,
-				AA0000000000000000000056 /* Localization.swift in Sources */,
-				AA000000000000000000004C /* MetroActivityAttributes.swift in Sources */,
-				AA000000000000000000004E /* MetroRepository.swift in Sources */,
-				AA000000000000000000004D /* Models.swift in Sources */,
-				AA0000000000000000000051 /* NotificationScheduler.swift in Sources */,
-				AA0000000000000000000058 /* RouteStore.swift in Sources */,
-				AA0000000000000000000055 /* Strings.swift in Sources */,
-				AA0000000000000000000053 /* TripEngine.swift in Sources */,
-				AA0000000000000000000057 /* TripLogStore.swift in Sources */,
-				AA000000000000000000004F /* TripPlanner.swift in Sources */,
+				AA000000000000000000003F /* MetroTimerApp.swift in Sources */,
+				AA000000000000000000004F /* AlertService.swift in Sources */,
+				AA000000000000000000004C /* BeaconScheduler.swift in Sources */,
+				AA000000000000000000004A /* CalibrationViewModel.swift in Sources */,
+				AA000000000000000000004B /* LocationCorrector.swift in Sources */,
+				AA0000000000000000000049 /* LocationRecorder.swift in Sources */,
+				AA0000000000000000000048 /* MotionRecorder.swift in Sources */,
+				AA000000000000000000004E /* NotificationPresenter.swift in Sources */,
+				AA0000000000000000000050 /* ReminderService.swift in Sources */,
+				AA0000000000000000000051 /* Shortcuts.swift in Sources */,
+				AA000000000000000000004D /* StationLocator.swift in Sources */,
+				AA0000000000000000000052 /* YearStats.swift in Sources */,
+				AA0000000000000000000044 /* AboutView.swift in Sources */,
+				AA0000000000000000000042 /* CalibrationView.swift in Sources */,
+				AA0000000000000000000040 /* ContentView.swift in Sources */,
+				AA0000000000000000000047 /* MetroMapLayout.swift in Sources */,
+				AA0000000000000000000046 /* MetroMapView.swift in Sources */,
+				AA0000000000000000000045 /* ReminderSheet.swift in Sources */,
+				AA0000000000000000000043 /* TripLogView.swift in Sources */,
+				AA0000000000000000000041 /* TripView.swift in Sources */,
+				AA0000000000000000000053 /* YearView.swift in Sources */,
+				AA000000000000000000005A /* ActivityController.swift in Sources */,
+				AA000000000000000000005C /* AdjustTripIntent.swift in Sources */,
+				AA0000000000000000000058 /* CalibrationStore.swift in Sources */,
+				AA0000000000000000000062 /* ColorHex.swift in Sources */,
+				AA0000000000000000000061 /* ExitStore.swift in Sources */,
+				AA000000000000000000005E /* Localization.swift in Sources */,
+				AA0000000000000000000054 /* MetroActivityAttributes.swift in Sources */,
+				AA0000000000000000000056 /* MetroRepository.swift in Sources */,
+				AA0000000000000000000055 /* Models.swift in Sources */,
+				AA0000000000000000000059 /* NotificationScheduler.swift in Sources */,
+				AA0000000000000000000060 /* RouteStore.swift in Sources */,
+				AA000000000000000000005D /* Strings.swift in Sources */,
+				AA000000000000000000005B /* TripEngine.swift in Sources */,
+				AA000000000000000000005F /* TripLogStore.swift in Sources */,
+				AA0000000000000000000057 /* TripPlanner.swift in Sources */,
+				AA0000000000000000000063 /* WakeAlarm.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		AA0000000000000000000089 /* Sources */ = {
+		AA0000000000000000000096 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA0000000000000000000068 /* ActivityController.swift in Sources */,
-				AA000000000000000000006A /* AdjustTripIntent.swift in Sources */,
-				AA0000000000000000000066 /* CalibrationStore.swift in Sources */,
-				AA0000000000000000000070 /* ColorHex.swift in Sources */,
-				AA000000000000000000006F /* ExitStore.swift in Sources */,
-				AA000000000000000000006C /* Localization.swift in Sources */,
-				AA0000000000000000000062 /* MetroActivityAttributes.swift in Sources */,
-				AA0000000000000000000064 /* MetroRepository.swift in Sources */,
-				AA0000000000000000000063 /* Models.swift in Sources */,
-				AA0000000000000000000067 /* NotificationScheduler.swift in Sources */,
-				AA000000000000000000006E /* RouteStore.swift in Sources */,
-				AA000000000000000000006B /* Strings.swift in Sources */,
-				AA0000000000000000000069 /* TripEngine.swift in Sources */,
-				AA000000000000000000006D /* TripLogStore.swift in Sources */,
-				AA0000000000000000000065 /* TripPlanner.swift in Sources */,
-				AA0000000000000000000061 /* MetroActivityWidget.swift in Sources */,
+				AA0000000000000000000071 /* ActivityController.swift in Sources */,
+				AA0000000000000000000073 /* AdjustTripIntent.swift in Sources */,
+				AA000000000000000000006F /* CalibrationStore.swift in Sources */,
+				AA0000000000000000000079 /* ColorHex.swift in Sources */,
+				AA0000000000000000000078 /* ExitStore.swift in Sources */,
+				AA0000000000000000000075 /* Localization.swift in Sources */,
+				AA000000000000000000006B /* MetroActivityAttributes.swift in Sources */,
+				AA000000000000000000006D /* MetroRepository.swift in Sources */,
+				AA000000000000000000006C /* Models.swift in Sources */,
+				AA0000000000000000000070 /* NotificationScheduler.swift in Sources */,
+				AA0000000000000000000077 /* RouteStore.swift in Sources */,
+				AA0000000000000000000074 /* Strings.swift in Sources */,
+				AA0000000000000000000072 /* TripEngine.swift in Sources */,
+				AA0000000000000000000076 /* TripLogStore.swift in Sources */,
+				AA000000000000000000006E /* TripPlanner.swift in Sources */,
+				AA000000000000000000007A /* WakeAlarm.swift in Sources */,
+				AA000000000000000000006A /* MetroActivityWidget.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		AA000000000000000000008C /* Sources */ = {
+		AA0000000000000000000099 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA0000000000000000000079 /* BeaconTests.swift in Sources */,
-				AA0000000000000000000074 /* DataTests.swift in Sources */,
-				AA0000000000000000000076 /* LocalizationTests.swift in Sources */,
-				AA000000000000000000007A /* LocatorTests.swift in Sources */,
-				AA0000000000000000000078 /* MapLayoutTests.swift in Sources */,
-				AA0000000000000000000073 /* PlannerTests.swift in Sources */,
-				AA0000000000000000000077 /* RouteTests.swift in Sources */,
-				AA0000000000000000000075 /* ScheduleTests.swift in Sources */,
+				AA0000000000000000000083 /* BeaconTests.swift in Sources */,
+				AA000000000000000000007E /* DataTests.swift in Sources */,
+				AA0000000000000000000080 /* LocalizationTests.swift in Sources */,
+				AA0000000000000000000084 /* LocatorTests.swift in Sources */,
+				AA0000000000000000000082 /* MapLayoutTests.swift in Sources */,
+				AA000000000000000000007D /* PlannerTests.swift in Sources */,
+				AA0000000000000000000086 /* RouteHintsTests.swift in Sources */,
+				AA0000000000000000000081 /* RouteTests.swift in Sources */,
+				AA000000000000000000007F /* ScheduleTests.swift in Sources */,
+				AA0000000000000000000085 /* TripScreenTests.swift in Sources */,
+				AA0000000000000000000087 /* YearStatsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		AA0000000000000000000093 /* PBXTargetDependency */ = {
+		AA00000000000000000000A0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = AA000000000000000000008F /* MetroTimerWidget */;
-			targetProxy = AA0000000000000000000092 /* PBXContainerItemProxy */;
+			target = AA000000000000000000009C /* MetroTimerWidget */;
+			targetProxy = AA000000000000000000009F /* PBXContainerItemProxy */;
 		};
-		AA0000000000000000000095 /* PBXTargetDependency */ = {
+		AA00000000000000000000A2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = AA000000000000000000008E /* MetroTimer */;
-			targetProxy = AA0000000000000000000094 /* PBXContainerItemProxy */;
+			target = AA000000000000000000009B /* MetroTimer */;
+			targetProxy = AA00000000000000000000A1 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		AA000000000000000000009A /* Debug */ = {
+		AA00000000000000000000A7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -539,7 +565,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.4;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -550,7 +576,7 @@
 			};
 			name = Debug;
 		};
-		AA000000000000000000009B /* Release */ = {
+		AA00000000000000000000A8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -564,7 +590,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.4;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -575,7 +601,7 @@
 			};
 			name = Release;
 		};
-		AA000000000000000000009C /* Debug */ = {
+		AA00000000000000000000A9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -584,11 +610,12 @@
 				INFOPLIST_FILE = App/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Метро-таймер";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "$(inherited) -weak_framework AlarmKit";
 				PRODUCT_BUNDLE_IDENTIFIER = ua.vlad.MetroTimer;
 			};
 			name = Debug;
 		};
-		AA000000000000000000009D /* Release */ = {
+		AA00000000000000000000AA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -597,33 +624,36 @@
 				INFOPLIST_FILE = App/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Метро-таймер";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "$(inherited) -weak_framework AlarmKit";
 				PRODUCT_BUNDLE_IDENTIFIER = ua.vlad.MetroTimer;
 			};
 			name = Release;
 		};
-		AA000000000000000000009E /* Debug */ = {
+		AA00000000000000000000AB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = Widget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = MetroTimerWidget;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				OTHER_LDFLAGS = "$(inherited) -weak_framework AlarmKit";
 				PRODUCT_BUNDLE_IDENTIFIER = ua.vlad.MetroTimer.MetroTimerWidget;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
-		AA000000000000000000009F /* Release */ = {
+		AA00000000000000000000AC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = Widget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = MetroTimerWidget;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				OTHER_LDFLAGS = "$(inherited) -weak_framework AlarmKit";
 				PRODUCT_BUNDLE_IDENTIFIER = ua.vlad.MetroTimer.MetroTimerWidget;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
-		AA00000000000000000000A0 /* Debug */ = {
+		AA00000000000000000000AD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -634,7 +664,7 @@
 			};
 			name = Debug;
 		};
-		AA00000000000000000000A1 /* Release */ = {
+		AA00000000000000000000AE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -648,43 +678,43 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		AA0000000000000000000096 /* Build configuration list for PBXProject "MetroTimer" */ = {
+		AA00000000000000000000A3 /* Build configuration list for PBXProject "MetroTimer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				AA000000000000000000009A /* Debug */,
-				AA000000000000000000009B /* Release */,
+				AA00000000000000000000A7 /* Debug */,
+				AA00000000000000000000A8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AA0000000000000000000097 /* Build configuration list for PBXNativeTarget "MetroTimer" */ = {
+		AA00000000000000000000A4 /* Build configuration list for PBXNativeTarget "MetroTimer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				AA000000000000000000009C /* Debug */,
-				AA000000000000000000009D /* Release */,
+				AA00000000000000000000A9 /* Debug */,
+				AA00000000000000000000AA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AA0000000000000000000098 /* Build configuration list for PBXNativeTarget "MetroTimerWidget" */ = {
+		AA00000000000000000000A5 /* Build configuration list for PBXNativeTarget "MetroTimerWidget" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				AA000000000000000000009E /* Debug */,
-				AA000000000000000000009F /* Release */,
+				AA00000000000000000000AB /* Debug */,
+				AA00000000000000000000AC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AA0000000000000000000099 /* Build configuration list for PBXNativeTarget "MetroTimerTests" */ = {
+		AA00000000000000000000A6 /* Build configuration list for PBXNativeTarget "MetroTimerTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				AA00000000000000000000A0 /* Debug */,
-				AA00000000000000000000A1 /* Release */,
+				AA00000000000000000000AD /* Debug */,
+				AA00000000000000000000AE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = AA0000000000000000000091 /* Project object */;
+	rootObject = AA000000000000000000009E /* Project object */;
 }

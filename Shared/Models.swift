@@ -169,6 +169,16 @@ struct ActiveTrip: Codable {
         (nextEventIndex(at: now) ?? events.count) - 1
     }
 
+    // Коли будити (будильник і повтори сповіщень — одне правило): у мить
+    // «наступна — ваша», коли до виходу ще перегін, щоб прокинутись і встати.
+    // Якщо цей момент позаду або збігається зі стартом (маршрут в одну
+    // зупинку), — на прибутті. Минуле не плануємо.
+    func wakeDate(now: Date) -> Date? {
+        if alertDate > now { return alertDate }
+        if arrivalDate > now { return arrivalDate }
+        return nil
+    }
+
     func stopsRemaining(at now: Date) -> Int {
         events.filter { $0.isStop && $0.arrival > now }.count
     }
@@ -182,4 +192,26 @@ struct RecentTrip: Codable, Hashable {
     let lineId: String
     let fromId: String
     let toId: String
+}
+
+extension ActiveTrip {
+    // Коли пасажир буде на ОБРАНІЙ станції. Зазвичай це прибуття поїзда, але
+    // обрана станція може бути сусідньою станцією вузла (Театральна → Золоті
+    // ворота): з поїзда виходять раніше і далі йдуть переходом.
+    func arrivalAtChosenStation(repo: MetroRepository) -> Date {
+        guard let exit = events.last?.stationId, exit != toId,
+              let walk = repo.transfers.first(where: {
+                  ($0.fromId == exit && $0.toId == toId) || ($0.fromId == toId && $0.toId == exit)
+              }) else { return arrivalDate }
+        return arrivalDate.addingTimeInterval(TimeInterval(walk.walkSeconds))
+    }
+
+    // Текст «Буду на … близько 8:31» — для того, хто зустрічає. Час округлено до
+    // хвилини і дано київським: розклад метро живе в ньому, де б не був телефон.
+    func shareArrivalText(repo: MetroRepository) -> String {
+        let station = repo.station(id: toId)?.localizedName ?? destinationName
+        let at = arrivalAtChosenStation(repo: repo).timeIntervalSince1970
+        let rounded = Date(timeIntervalSince1970: (at / 60).rounded() * 60)
+        return L10n.shareArrivalText(station, time: MetroRepository.kyivClock.string(from: rounded))
+    }
 }

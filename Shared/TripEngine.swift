@@ -48,6 +48,7 @@ final class TripEngine: ObservableObject {
             // Live Activity и записываем поездку в журнал как завершённую.
             defaults.removeObject(forKey: Self.tripKey)
             ActivityController.shared.endAllImmediately()
+            WakeAlarm.shared.cancel()
             TripLogStore.shared.append(trip: saved, outcome: .expired)
         } else {
             trip = saved
@@ -130,22 +131,39 @@ final class TripEngine: ObservableObject {
         trip = planned
         persistTrip()
         rememberRecent(fromId: fromId, toId: toId, lineId: planned.lineId)
-        NotificationScheduler.shared.schedule(for: planned)
+        scheduleAlerts(for: planned)
         liveActivityUnavailable = !ActivityController.shared.start(trip: planned, line: line)
         startTicker()
+        await WakeAlarm.shared.schedule(for: planned)
         return true
+    }
+
+    // Сповіщення і (якщо ввімкнено, але AlarmKit недоступний) їхні повтори.
+    private func scheduleAlerts(for trip: ActiveTrip) {
+        NotificationScheduler.shared.schedule(
+            for: trip, repeatNudges: WakeAlarm.shared.wantsRepeatedNotifications)
+    }
+
+    // Перемикач будильника посеред поїздки: переплановуємо те, що вже стоїть.
+    func setWakeAlarm(_ enabled: Bool) async {
+        await WakeAlarm.shared.setEnabled(enabled)
+        guard let trip else { return }
+        scheduleAlerts(for: trip)
+        await WakeAlarm.shared.schedule(for: trip)
     }
 
     // outcome решает, что попадёт в журнал. Разница не косметическая:
     // «Я на місці» — единственный момент, когда мы узнаём реальное время
     // прибытия и можем сравнить его с расчётом. «Зупинити» такого не даёт.
-    func stopByUser(outcome: TripOutcome = .stopped) {
+    // confirmedOnCard — «Я вийшов» на карточке экрана блокировки (см. TripLogEntry).
+    func stopByUser(outcome: TripOutcome = .stopped, confirmedOnCard: Bool = false) {
         guard let trip else { return }
         liveActivityUnavailable = false
         stopTicker()
         NotificationScheduler.shared.cancelAll()
+        WakeAlarm.shared.cancel()
         ActivityController.shared.endAllImmediately()
-        TripLogStore.shared.append(trip: trip, outcome: outcome)
+        TripLogStore.shared.append(trip: trip, outcome: outcome, confirmedOnCard: confirmedOnCard)
         // Спрашиваем оценку только там, где приложение себя оправдало:
         // человек подтвердил прибытие и расчёт по его поездкам сходится.
         if outcome == .arrived, TripLogStore.shared.deservesReviewPrompt {
@@ -192,11 +210,41 @@ final class TripEngine: ObservableObject {
         await apply(replanned)
     }
 
+    // «Ми тут»: пассажир сам показал в списке, у какой станции поезд. Та же
+    // якорная механика, что у GPS, но это ручная поправка — журнал должен
+    // различать «поправил человек» и «поправил спутник», а направление
+    // поправки — «поезд отстаёт» (тап позади модели) или «спешит».
+    // Станция выхода — не поправка, а прибытие: «Я на місці».
+    func confirmPosition(at index: Int) async {
+        guard let current = trip, current.events.indices.contains(index) else { return }
+        if index == current.events.count - 1 {
+            stopByUser(outcome: .arrived)
+            return
+        }
+        guard let replanned = Self.positionCorrection(of: current, at: index, now: Date(),
+                                                      repo: repo) else { return }
+        await apply(replanned)
+    }
+
+    // Чистая часть «ми тут» — её проверяют тесты: переплан и счётчики.
+    nonisolated static func positionCorrection(of trip: ActiveTrip, at index: Int, now: Date,
+                                               repo: MetroRepository) -> ActiveTrip? {
+        guard trip.events.indices.contains(index), index < trip.events.count - 1,
+              var replanned = TripPlanner.replan(trip: trip, anchoredAt: index,
+                                                 now: now, repo: repo) else { return nil }
+        replanned.manualCorrections += 1
+        if index < trip.currentAnchorIndex(at: now) {
+            replanned.lateCorrections = (replanned.lateCorrections ?? 0) + 1
+        }
+        return replanned
+    }
+
     private func apply(_ replanned: ActiveTrip) async {
         trip = replanned
         persistTrip()
-        NotificationScheduler.shared.schedule(for: replanned)
+        scheduleAlerts(for: replanned)
         await ActivityController.shared.update(trip: replanned)
+        await WakeAlarm.shared.schedule(for: replanned)
     }
 
     // Вызывается при выходе в foreground.
@@ -234,6 +282,7 @@ final class TripEngine: ObservableObject {
         // просроченный вызов при уже заменённом trip не должен её стирать.
         guard let trip, Date() >= trip.expiryDate else { return }
         stopTicker()
+        WakeAlarm.shared.cancel()
         Task { await ActivityController.shared.end(trip: trip) }
         TripLogStore.shared.append(trip: trip, outcome: .expired)
         self.trip = nil

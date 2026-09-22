@@ -30,7 +30,10 @@ final class NotificationScheduler {
 
     // Все уведомления планируются разом в момент старта (и после каждой коррекции):
     // «наступна — ваша» и прибытие, плюс по предупреждению на каждую пересадку.
-    static func plan(for trip: ActiveTrip, now: Date) -> [PlannedNotification] {
+    // repeatNudges — будильник включён, а настоящего (AlarmKit) нет: одна вибрация
+    // в беззвучном режиме спящего не будит, поэтому то же предупреждение ещё дважды.
+    static func plan(for trip: ActiveTrip, now: Date,
+                     repeatNudges: Bool = false) -> [PlannedNotification] {
         var requests: [PlannedNotification] = []
 
         // Устаревшее «наступна — ваша» (переплан уже за станцией выхода) не шлём:
@@ -44,9 +47,23 @@ final class NotificationScheduler {
         }
         requests.append(PlannedNotification(
             id: arrivalId,
-            title: trip.destinationName,
+            title: L10n.notifArrivalTitle(trip.destinationName),
             body: L10n.notifArrivalBody,
             date: trip.arrivalDate))
+
+        // Будим в тот же момент, что и будильник (ActiveTrip.wakeDate): повтор
+        // «наступна — ваша», а если она уже позади или совпала со стартом
+        // (маршрут в одну остановку) — повтор прибытия.
+        if repeatNudges, let wake = trip.wakeDate(now: now),
+           let base = requests.first(where: {
+               $0.id == (wake == trip.alertDate ? nextStopId : arrivalId)
+           }) {
+            for k in 1...nudgeCount {
+                requests.append(PlannedNotification(
+                    id: "trip.nudge.\(k)", title: base.title, body: base.body,
+                    date: base.date.addingTimeInterval(TimeInterval(k) * nudgeSpacing)))
+            }
+        }
 
         // Пересадка: предупреждаем на остановке перед станцией выхода.
         for (index, event) in trip.events.enumerated() where event.isTransfer && !event.isStop {
@@ -68,10 +85,15 @@ final class NotificationScheduler {
         return requests
     }
 
-    func schedule(for trip: ActiveTrip, now: Date = Date()) {
+    // Повторы будильника без AlarmKit: 15 секунд — успеть проснуться от первой
+    // вибрации и не дождаться прибытия (стоянка 25 с плюс перегон).
+    static let nudgeCount = 2
+    static let nudgeSpacing: TimeInterval = 15
+
+    func schedule(for trip: ActiveTrip, now: Date = Date(), repeatNudges: Bool = false) {
         cancelAll()
         let center = UNUserNotificationCenter.current()
-        for planned in Self.plan(for: trip, now: now) {
+        for planned in Self.plan(for: trip, now: now, repeatNudges: repeatNudges) {
             let content = UNMutableNotificationContent()
             content.title = planned.title
             content.body = planned.body
@@ -91,6 +113,7 @@ final class NotificationScheduler {
     // удалить уже перепланированные запросы, потому что префикс у них тот же.
     private static var tripIdentifiers: [String] {
         [nextStopId, arrivalId] + (0..<maxTransferSlots).map { "trip.transfer.\($0)" }
+            + (1...nudgeCount).map { "trip.nudge.\($0)" }
     }
 
     // С запасом: самая длинная линия Киева — 18 станций, маршрут с пересадкой короче.

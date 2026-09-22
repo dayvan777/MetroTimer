@@ -96,6 +96,33 @@ final class ExitStore {
         return minA <= -25 && maxA >= 25
     }
 
+    // Які виходи з якого кінця поїзда — ще на пероні, до посадки: вагони в
+    // метро не з'єднані, пересісти можна лише на станції. По одному орієнтиру
+    // на кінець. Глибока станція (див. вище) — порожньо: промовчати краще, ніж
+    // послати людину не в той вагон. Одна порада на всю станцію тут неможлива:
+    // напрямки дозволені лише там, де виходи в ОБОХ кінцях.
+    func boardingSides(for stationId: String,
+                       travellingForward: Bool) -> [(cars: CarPosition, label: String)] {
+        guard directionalHintsAllowed(for: stationId) else { return [] }
+        let rows = ExitRow.build(from: exits(for: stationId), hintsAllowed: true,
+                                 travellingForward: travellingForward)
+        var seen = Set<String>()
+        // Лише голова й хвіст: посередині людина й так стоїть, а третій рядок
+        // у зведенні маршруту перетворює підказку на стіну тексту.
+        let sides: [(cars: CarPosition, label: String)] = [CarPosition.first, .last]
+            .compactMap { position in
+                // Орієнтир, уже названий для іншого кінця, не повторюємо: «ЦУМ»
+                // і попереду, і посередині — це шум, а не підказка.
+                guard let label = rows.first(where: {
+                    $0.cars == position && $0.label.map { !seen.contains($0) } == true
+                })?.label else { return nil }
+                seen.insert(label)
+                return (position, label)
+            }
+        // Один орієнтир з обох кінців — байдуже, куди сідати: мовчимо.
+        return sides.count > 1 && seen.count == 1 ? [] : sides
+    }
+
     // Виходи станції без дублів: у великих вестибюлів по кілька дверей одного
     // виходу — пасажиру потрібен список виходів, а не список дверей.
     func exits(for stationId: String) -> [StationExit] {

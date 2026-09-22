@@ -57,7 +57,9 @@ final class LocationCorrector: NSObject, CLLocationManagerDelegate {
     private func startUpdates() {
         switch manager.authorizationStatus {
         case .notDetermined:
-            manager.requestWhenInUseAuthorization()
+            // Системний запит у вагоні був третім діалогом першої поїздки (ревю
+            // 22.09.2026). Дозвіл тепер пропонує головний екран після поїздки.
+            break
         case .authorizedWhenInUse, .authorizedAlways:
             guard !isRunning else { return }
             isRunning = true

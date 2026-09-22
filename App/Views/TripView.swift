@@ -5,10 +5,13 @@ import UIKit
 struct TripView: View {
     @EnvironmentObject private var engine: TripEngine
     @ObservedObject private var alertService = AlertService.shared
+    @ObservedObject private var wake = WakeAlarm.shared
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     // Одноразовый каскад появления списка станций при открытии экрана.
     @State private var appeared = false
     @State private var showStopConfirm = false
+    // Станция, которую пассажир отметил как «поезд здесь» (ждёт подтверждения).
+    @State private var positionCandidate: Int?
     // Таймер растёт вместе с системным шрифтом, но не съедает экран.
     @ScaledMetric(relativeTo: .largeTitle) private var timerSize: CGFloat = 64
 
@@ -47,6 +50,9 @@ struct TripView: View {
             }
             header(trip: trip, now: now, stopsLeft: stopsLeft, accent: accent)
             if now < trip.arrivalDate {
+                tripActions(trip: trip, accent: accent)
+            }
+            if now < trip.arrivalDate {
                 // Системный самоведущийся прогресс поездки — как таймер, без тикеров.
                 ProgressView(timerInterval: min(trip.startDate, trip.arrivalDate)...trip.arrivalDate,
                              countsDown: false, label: {}, currentValueLabel: {})
@@ -58,6 +64,15 @@ struct TripView: View {
                     .accessibilityHidden(true)
             }
             stationList(trip: trip, nextIndex: nextIndex, accent: accent)
+                .confirmationDialog(positionTitle(trip: trip),
+                                    isPresented: Binding(get: { positionCandidate != nil },
+                                                         set: { if !$0 { positionCandidate = nil } }),
+                                    titleVisibility: .visible,
+                                    presenting: positionCandidate) { index in
+                    positionActions(trip: trip, index: index)
+                } message: { index in
+                    if index < trip.events.count - 1 { Text(L10n.positionBody) }
+                }
             // Виходи показуємо в момент потреби: коли людина ось-ось встане
             // з місця. Раніше — шум, пізніше — вже не треба.
             if stopsLeft <= 1 {
@@ -368,6 +383,11 @@ struct TripView: View {
                             walkMinutes: event.isTransfer && index > 0
                                 ? max(1, Int((event.arrival.timeIntervalSince(
                                     trip.events[index - 1].departure) / 60).rounded()))
+                                : nil,
+                            toward: event.isTransfer && index + 1 < trip.events.count
+                                ? engine.repo.terminus(boardingAt: event.stationId,
+                                                       toward: trip.events[index + 1].stationId)?
+                                    .localizedName
                                 : nil)
                             .id(event.stationId)
                     }
@@ -384,12 +404,41 @@ struct TripView: View {
         }
     }
 
+    // Строка — кнопка «поезд здесь»: название станции пассажир видит в окне
+    // вагона, и это точнее любого расчёта. Подтверждение обязательно: случайный
+    // тап при прокрутке сдвинул бы весь отсчёт.
     private func stationRow(event: StopEvent, index: Int, nextIndex: Int, accent: Color,
-                            walkMinutes: Int?) -> some View {
+                            walkMinutes: Int?, toward: String?) -> some View {
         let passed = index < nextIndex
         let isNext = index == nextIndex
         let lineColor = Color(hex: engine.repo.line(id: event.lineId)?.colorHex ?? "#888888")
-        return HStack {
+        let label = event.isTransfer
+            ? L10n.transferRow(event.displayName, minutes: walkMinutes ?? 0, toward: toward)
+            : event.displayName
+        return Button {
+            UISelectionFeedbackGenerator().selectionChanged()
+            positionCandidate = index
+        } label: {
+            stationRowLabel(event: event, passed: passed, isNext: isNext, accent: accent,
+                            lineColor: lineColor, label: label)
+        }
+        .buttonStyle(.plain)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(label)
+        .accessibilityValue(passed ? L10n.a11yPassed : (isNext ? L10n.a11yNext : ""))
+        .accessibilityHint(L10n.a11yRowHint)
+        .accessibilityAddTraits(.isButton)
+        .opacity(appeared ? (passed ? 0.7 : 1) : 0)
+        .offset(y: appeared || reduceMotion ? 0 : 12)
+        // Каскад: строки въезжают одна за другой, хвост длинных маршрутов — разом.
+        .animation(reduceMotion ? .easeInOut(duration: 0.2)
+                                : .spring(response: 0.5, dampingFraction: 0.8)
+                                    .delay(min(Double(index) * 0.045, 0.5)), value: appeared)
+    }
+
+    private func stationRowLabel(event: StopEvent, passed: Bool, isNext: Bool, accent: Color,
+                                 lineColor: Color, label: String) -> some View {
+        HStack {
             if isNext {
                 PulsingDot(color: accent)
             } else {
@@ -399,9 +448,10 @@ struct TripView: View {
             }
             if event.isTransfer {
                 WalkIcon(active: isNext, color: passed ? .gray : lineColor)
-                Text(L10n.transferRow(event.displayName, minutes: walkMinutes ?? 0))
+                Text(label)
                     .foregroundColor(passed ? .gray : .white)
                     .fontWeight(isNext ? .bold : .regular)
+                    .fixedSize(horizontal: false, vertical: true)
             } else {
                 Text(event.displayName)
                     .foregroundColor(passed ? .gray : .white)
@@ -418,16 +468,82 @@ struct TripView: View {
                 .foregroundColor(passed ? .gray : .secondary)
         }
         .padding(.vertical, 8)
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(event.isTransfer
-            ? L10n.transferRow(event.displayName, minutes: walkMinutes ?? 0) : event.displayName)
-        .accessibilityValue(passed ? L10n.a11yPassed : (isNext ? L10n.a11yNext : ""))
-        .opacity(appeared ? (passed ? 0.7 : 1) : 0)
-        .offset(y: appeared || reduceMotion ? 0 : 12)
-        // Каскад: строки въезжают одна за другой, хвост длинных маршрутов — разом.
-        .animation(reduceMotion ? .easeInOut(duration: 0.2)
-                                : .spring(response: 0.5, dampingFraction: 0.8)
-                                    .delay(min(Double(index) * 0.045, 0.5)), value: appeared)
+        .contentShape(Rectangle())
+    }
+
+    // Заголовок подтверждения зависит от того, что значит станция в маршруте:
+    // на станции посадки и после перехода поезд «рушив», на остальных — «стоїть»,
+    // а на станции выхода это уже не поправка, а прибытие.
+    private func positionTitle(trip: ActiveTrip) -> String {
+        guard let index = positionCandidate, trip.events.indices.contains(index) else { return "" }
+        let event = trip.events[index]
+        if index == trip.events.count - 1 { return L10n.positionDestinationTitle(event.displayName) }
+        if index == 0 || event.isTransfer { return L10n.positionDepartedTitle(event.displayName) }
+        return L10n.positionAtTitle(event.displayName)
+    }
+
+    @ViewBuilder
+    private func positionActions(trip: ActiveTrip, index: Int) -> some View {
+        if index == trip.events.count - 1 {
+            Button(L10n.arrivedAction) { engine.stopByUser(outcome: .arrived) }
+        } else {
+            let departed = index == 0 || trip.events[index].isTransfer
+            Button(departed ? L10n.positionYesDeparted : L10n.positionYes) {
+                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                Task { await engine.confirmPosition(at: index) }
+            }
+        }
+        Button(L10n.cancel, role: .cancel) {}
+    }
+
+    // Под заголовком — две вещи, которые нужны в дороге: сказать встречающему,
+    // когда будешь, и не проспать (будильник, 1.4).
+    private func tripActions(trip: ActiveTrip, accent: Color) -> some View {
+        VStack(spacing: 6) {
+            HStack(spacing: 10) {
+                ShareLink(item: trip.shareArrivalText(repo: engine.repo)) {
+                    actionLabel(L10n.shareArrival, systemImage: "paperplane.fill",
+                                active: false, accent: accent)
+                }
+                Button {
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                    Task { await engine.setWakeAlarm(!wake.isEnabled) }
+                } label: {
+                    actionLabel(wakeTitle, systemImage: wake.isEnabled ? "alarm.fill" : "alarm",
+                                active: wake.isEnabled, accent: accent)
+                }
+                .accessibilityHint(WakeAlarm.isAlarmKitAvailable ? L10n.wakeHint : L10n.wakeHintOldOS)
+            }
+            if wake.isEnabled, wake.isDenied {
+                Text(L10n.wakeDenied)
+                    .font(.caption2)
+                    .foregroundColor(.orange)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .padding(.horizontal)
+        .padding(.bottom, 10)
+        .animation(.easeInOut(duration: 0.25), value: wake.isEnabled)
+    }
+
+    private var wakeTitle: String {
+        if WakeAlarm.isAlarmKitAvailable {
+            return wake.isEnabled ? L10n.wakeOn : L10n.wakeOff
+        }
+        return wake.isEnabled ? L10n.wakeOnOldOS : L10n.wakeOffOldOS
+    }
+
+    private func actionLabel(_ title: String, systemImage: String, active: Bool,
+                             accent: Color) -> some View {
+        Label(title, systemImage: systemImage)
+            .font(.footnote.weight(.semibold))
+            .lineLimit(1)
+            .minimumScaleFactor(0.75)
+            .foregroundColor(active ? .black : .white)
+            .padding(.horizontal, 12)
+            .frame(maxWidth: .infinity, minHeight: 36)
+            .background(Capsule().fill(active ? accent : Color.white.opacity(0.12)))
     }
 
     // Коррекция читается как счётчик у самого числа зупинок — «−1/+1» без

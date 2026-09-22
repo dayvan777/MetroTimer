@@ -9,8 +9,13 @@ struct SelectionView: View {
     @ObservedObject private var locator = StationLocator.shared
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.requestReview) private var requestReview
+    @Environment(\.scenePhase) private var scenePhase
     // Карточка «Як це працює» — один раз на установку: момент старта решает всё.
     @AppStorage("onboardingShown") private var onboardingShown = false
+    // Предложение геолокации — один раз и только после первой поездки (1.4):
+    // системный запрос посреди вагона был третьим диалогом первой поездки.
+    @AppStorage("locationOfferDone") private var locationOfferDone = false
+    @State private var showLocationOffer = false
 
     @State private var selectedLineId = "m1"
     @State private var fromId: String?
@@ -24,6 +29,7 @@ struct SelectionView: View {
     @State private var showCalibration = false
     @State private var showJournal = false
     @State private var showAbout = false
+    @State private var showYear = false
     @State private var showOnboarding = false
     // Направление слайда списка станций при переключении линии.
     @State private var slideEdge: Edge = .trailing
@@ -67,6 +73,9 @@ struct SelectionView: View {
                     // Служебные экраны — в одном меню: заголовок не прыгает, для
                     // пассажира на первом уровне остаётся только выбор маршрута.
                     Menu {
+                        Button { showYear = true } label: {
+                            Label(L10n.yearMenu, systemImage: "sparkles")
+                        }
                         Button { showJournal = true } label: {
                             Label(L10n.journal, systemImage: "list.bullet.rectangle")
                         }
@@ -102,6 +111,7 @@ struct SelectionView: View {
             .sheet(isPresented: $showCalibration) { CalibrationView() }
             .sheet(isPresented: $showJournal) { TripLogView() }
             .sheet(isPresented: $showAbout) { AboutView() }
+            .sheet(isPresented: $showYear) { YearView() }
             .fullScreenCover(isPresented: $showMap) {
                 MetroMapView(fromId: $fromId, toId: $toId) {
                     // Кнопка «Поїхали» на мапі — той самий шлях, що й головна:
@@ -158,16 +168,9 @@ struct SelectionView: View {
                 beacon.refresh()
                 // Чип «ви біля станції»: один фікс, тільки якщо локацію вже дозволено.
                 locator.refresh()
-                // Запрос оценки — здесь, а не в момент нажатия «Я на місці»:
-                // Apple просит не привязывать его к тапу по кнопке, да и
-                // всплывать поверх анимации возврата было бы некрасиво.
-                if engine.shouldRequestReview {
-                    engine.shouldRequestReview = false
-                    Task {
-                        try? await Task.sleep(nanoseconds: 1_200_000_000)
-                        requestReview()
-                    }
-                }
+                showLocationOffer = !locationOfferDone && locator.canAskPermission
+                    && !TripLogStore.shared.entries.isEmpty
+                requestReviewIfDeserved()
                 if !onboardingShown {
                     onboardingShown = true
                     showOnboarding = true
@@ -190,6 +193,24 @@ struct SelectionView: View {
                 }
                 #endif
             }
+            // Поездку могли закончить кнопкой «Я вийшов» на экране блокировки:
+            // экран выбора тогда появился в фоне, и спросить оценку можно лишь
+            // когда человек вернётся в приложение.
+            .onChange(of: scenePhase) { phase in
+                if phase == .active { requestReviewIfDeserved() }
+            }
+        }
+    }
+
+    // Запрос оценки — здесь, а не в момент нажатия «Я на місці»:
+    // Apple просит не привязывать его к тапу по кнопке, да и
+    // всплывать поверх анимации возврата было бы некрасиво.
+    private func requestReviewIfDeserved() {
+        guard engine.shouldRequestReview, scenePhase == .active else { return }
+        engine.shouldRequestReview = false
+        Task {
+            try? await Task.sleep(nanoseconds: 1_200_000_000)
+            requestReview()
         }
     }
 
@@ -298,6 +319,9 @@ struct SelectionView: View {
 
     private var lineStationList: some View {
         List {
+            if showLocationOffer {
+                locationOffer
+            }
             Section(sectionTitle) {
                 if let line = selectedLine {
                     ForEach(repo.stations(of: line)) { station in
@@ -314,6 +338,38 @@ struct SelectionView: View {
         .transition(reduceMotion ? .opacity : .asymmetric(
             insertion: .move(edge: slideEdge).combined(with: .opacity),
             removal: .opacity))
+    }
+
+    // Спокойная минута после первой поездки — лучший момент спросить про
+    // геолокацию: зачем она, видно по чипу «Станція поруч» сразу после ответа.
+    private var locationOffer: some View {
+        Section {
+            VStack(alignment: .leading, spacing: 8) {
+                Label(L10n.locationOfferTitle, systemImage: "location.circle.fill")
+                    .font(.subheadline.weight(.semibold))
+                Text(L10n.locationOfferBody)
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+                HStack(spacing: 10) {
+                    Button(L10n.locationOfferAllow) {
+                        dismissLocationOffer()
+                        locator.requestPermission()
+                    }
+                    .buttonStyle(.borderedProminent)
+                    Button(L10n.locationOfferSkip) { dismissLocationOffer() }
+                        .buttonStyle(.bordered)
+                }
+                .font(.subheadline.weight(.semibold))
+            }
+            .padding(.vertical, 4)
+            .listRowBackground(Color(hex: "#1A1C21"))
+        }
+    }
+
+    private func dismissLocationOffer() {
+        locationOfferDone = true
+        animated { showLocationOffer = false }
     }
 
     // Заголовок не должен «застревать» на шаге, который уже пройден.
@@ -469,10 +525,17 @@ struct SelectionView: View {
                     Text([L10n.routeMinutes(plan.minutes),
                           L10n.routeStops(plan.stops),
                           plan.transfer.map(L10n.routeTransfer),
+                          plan.direction.map(L10n.routeDirection),
                           plan.headway.map(L10n.routeInterval)]
                         .compactMap { $0 }.joined(separator: " · "))
                         .font(.caption)
                         .foregroundColor(.secondary)
+                    if let boarding = plan.boarding {
+                        Label(boarding, systemImage: "figure.walk")
+                            .font(.caption2)
+                            .foregroundColor(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
                     if let issue = plan.serviceIssue {
                         Label(Self.serviceText(issue), systemImage: Self.serviceIcon(issue))
                             .font(.caption2)
@@ -564,7 +627,8 @@ struct SelectionView: View {
 
     // Тот же планировщик, что и при старте: превью не расходится с фактом.
     private func plannedPreview() -> (minutes: Int, stops: Int, transfer: String?, alertImpact: AlertImpact,
-                                      serviceIssue: ServiceIssue?, headway: Int?)? {
+                                      serviceIssue: ServiceIssue?, headway: Int?,
+                                      direction: String?, boarding: String?)? {
         #if DEBUG
         // Сдвиг «зараз» для проверки часов работы: -MTPreviewOffset <секунды>.
         let now = Date().addingTimeInterval(
@@ -583,17 +647,37 @@ struct SelectionView: View {
         // перегін; на маршруті з посадкою прямо на пересадковому вузлі ним
         // виявиться перегін нової лінії, що й треба.
         var headway: Int?
+        // Напрямок — на тому ж першому перегоні: «напрямок «Лісова»», як на
+        // табличці над платформою, — щоб не сісти в поїзд у зворотний бік.
+        var direction: String?
         for (a, b) in zip(trip.events, trip.events.dropFirst())
         where a.lineId == b.lineId && !a.isTransfer && !b.isTransfer {
-            if let forward = repo.isForward(lineId: a.lineId, from: a.stationId, to: b.stationId),
-               let seconds = repo.headwaySeconds(lineId: a.lineId, forward: forward, at: now) {
-                headway = max(1, Int((Double(seconds) / 60).rounded()))
+            if let forward = repo.isForward(lineId: a.lineId, from: a.stationId, to: b.stationId) {
+                if let seconds = repo.headwaySeconds(lineId: a.lineId, forward: forward, at: now) {
+                    headway = max(1, Int((Double(seconds) / 60).rounded()))
+                }
+                direction = repo.terminus(lineId: a.lineId, forward: forward)?.localizedName
             }
             break
         }
         return (minutes, trip.stopsRemaining(at: trip.startDate),
                 trip.events.first(where: \.isTransfer)?.displayName, alertImpact,
-                TripPlanner.serviceIssue(for: trip, repo: repo), headway)
+                TripPlanner.serviceIssue(for: trip, repo: repo), headway,
+                direction, Self.boardingHint(for: trip, repo: repo))
+    }
+
+    // Куди сідати, ще на пероні: які виходи станції призначення з якого кінця
+    // поїзда. Тільки маршрут без пересадки (інакше незрозуміло, про який поїзд
+    // мова) і лише там, де напрямкам можна вірити (ExitStore.boardingSides).
+    static func boardingHint(for trip: ActiveTrip, repo: MetroRepository) -> String? {
+        guard !trip.events.contains(where: \.isTransfer),
+              let last = trip.events.last, last.stationId == trip.toId,
+              trip.events.count >= 2 else { return nil }
+        let prev = trip.events[trip.events.count - 2]
+        guard let forward = repo.isForward(lineId: last.lineId, from: prev.stationId,
+                                           to: last.stationId) else { return nil }
+        let sides = ExitStore.shared.boardingSides(for: last.stationId, travellingForward: forward)
+        return sides.isEmpty ? nil : L10n.boardingSides(sides)
     }
 
     // Часы работы: предупреждаем, но не запрещаем — расписание может измениться,
@@ -774,6 +858,9 @@ private extension View {
 // Одноразовая карточка первого запуска: три шага, главный — момент нажатия.
 struct OnboardingView: View {
     @Environment(\.dismiss) private var dismiss
+    // Дозвіл на сповіщення ще не питали: просимо тут, поки людина читає, навіщо
+    // він, а не на пероні після «Поїхали», коли поїзд уже рушає (1.4).
+    @State private var needsPermission = false
 
     var body: some View {
         VStack(spacing: 24) {
@@ -787,17 +874,29 @@ struct OnboardingView: View {
             }
             Spacer()
             Button {
-                dismiss()
+                guard needsPermission else { dismiss(); return }
+                Task {
+                    await NotificationScheduler.shared.requestAuthorization()
+                    dismiss()
+                }
             } label: {
-                Text(L10n.onboardingGotIt)
+                Text(needsPermission ? L10n.onboardingAllow : L10n.onboardingGotIt)
                     .font(.headline)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 14)
             }
             .buttonStyle(.borderedProminent)
+            if needsPermission {
+                // Відмовитись не менш законно: тоді спитаємо перед першою поїздкою.
+                Button(L10n.onboardingLater) { dismiss() }
+                    .font(.subheadline)
+            }
         }
         .padding(24)
         .background(Color(hex: "#101114").ignoresSafeArea())
+        .task {
+            needsPermission = await NotificationScheduler.shared.authorizationStatus() == .notDetermined
+        }
     }
 
     private func step(_ number: Int, _ text: String) -> some View {
