@@ -569,7 +569,7 @@
     {
       "fromId": "nyvky",
       "toId": "beresteiska",
-      "travelSeconds": 83,
+      "travelSeconds": 80,
       "dwellSeconds": 25,
       "isSuspended": false
     },
@@ -641,7 +641,7 @@
     {
       "fromId": "hidropark",
       "toId": "livoberezhna",
-      "travelSeconds": 133,
+      "travelSeconds": 135,
       "dwellSeconds": 25,
       "isSuspended": false,
       "alertStop": "any"
@@ -687,7 +687,7 @@
     {
       "fromId": "obolon",
       "toId": "pochaina",
-      "travelSeconds": 127,
+      "travelSeconds": 130,
       "dwellSeconds": 25,
       "isSuspended": false
     },
@@ -729,14 +729,14 @@
     {
       "fromId": "ploshcha-ukrainskykh-heroiv",
       "toId": "olimpiiska",
-      "travelSeconds": 87,
+      "travelSeconds": 90,
       "dwellSeconds": 25,
       "isSuspended": false
     },
     {
       "fromId": "olimpiiska",
       "toId": "palats-ukraina",
-      "travelSeconds": 87,
+      "travelSeconds": 85,
       "dwellSeconds": 25,
       "isSuspended": false
     },
@@ -771,7 +771,7 @@
     {
       "fromId": "vasylkivska",
       "toId": "vystavkovyi-tsentr",
-      "travelSeconds": 170,
+      "travelSeconds": 173,
       "dwellSeconds": 25,
       "isSuspended": false
     },
@@ -806,7 +806,7 @@
     {
       "fromId": "lukianivska",
       "toId": "zoloti-vorota",
-      "travelSeconds": 287,
+      "travelSeconds": 290,
       "dwellSeconds": 25,
       "isSuspended": false
     },
@@ -863,7 +863,7 @@
     {
       "fromId": "osokorky",
       "toId": "pozniaky",
-      "travelSeconds": 157,
+      "travelSeconds": 155,
       "dwellSeconds": 25,
       "isSuspended": false
     },

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Генерирует kyiv_metro.json.
 
-Источники данных (вересень 2026: розклад з 10.09.2026, метро працює на годину довше):
+Источники данных (вересень 2026: розклад з 10.09.2026, метро працює на годину довше;
+часи перегонів звірено з порталом відкритих даних 23.09.2026):
 - Координаты станций: OpenStreetMap (node["station"="subway"], Київ).
 - Время проезда линии конечная-конечная: Вікіпедія (инфобоксы линий).
 - Времена перегонов — модель: ходовой бюджет линии (официальное время минус
@@ -113,7 +114,7 @@ OFFICIAL_SEGMENTS = {  # ход + стоянка, сек; медиана офи�
     ("akademmistechko", "zhytomyrska"): 145,  # n=2 [145, 145]
     ("zhytomyrska", "sviatoshyn"): 165,  # n=3 [155, 165, 170]
     ("sviatoshyn", "nyvky"): 110,  # n=4 [105, 110, 110, 120]
-    ("nyvky", "beresteiska"): 108,  # n=4 [105, 105, 110, 115]
+    ("nyvky", "beresteiska"): 105,  # n=3 [105, 105, 115]
     ("beresteiska", "shuliavska"): 180,  # n=4 [175, 175, 185, 190]
     ("shuliavska", "politekhnichnyi-instytut"): 118,  # n=4 [115, 115, 120, 120]
     ("politekhnichnyi-instytut", "vokzalna"): 188,  # n=4 [180, 185, 190, 200]
@@ -123,30 +124,30 @@ OFFICIAL_SEGMENTS = {  # ход + стоянка, сек; медиана офи�
     ("khreshchatyk", "arsenalna"): 158,  # n=4 [150, 155, 160, 175]
     ("arsenalna", "dnipro"): 112,  # n=4 [110, 110, 115, 115]
     ("dnipro", "hidropark"): 168,  # n=4 [155, 165, 170, 175]
-    ("hidropark", "livoberezhna"): 158,  # n=4 [155, 155, 160, 170]
+    ("hidropark", "livoberezhna"): 160,  # n=3 [155, 160, 170]
     ("livoberezhna", "darnytsia"): 140,  # n=3 [140, 140, 155]
     ("darnytsia", "chernihivska"): 142,  # n=4 [135, 140, 145, 145]
     ("chernihivska", "lisova"): 128,  # n=2 [125, 130]
     ("heroiv-dnipra", "minska"): 138,  # n=2 [135, 140]
     ("minska", "obolon"): 118,  # n=4 [110, 115, 120, 125]
-    ("obolon", "pochaina"): 152,  # n=4 [135, 150, 155, 160]
+    ("obolon", "pochaina"): 155,  # n=3 [150, 155, 160]
     ("pochaina", "tarasa-shevchenka"): 192,  # n=4 [180, 190, 195, 210]
     ("tarasa-shevchenka", "kontraktova-ploshcha"): 135,  # n=4 [120, 125, 145, 155]
     ("kontraktova-ploshcha", "poshtova-ploshcha"): 105,  # n=4 [100, 105, 105, 120]
     ("poshtova-ploshcha", "maidan-nezalezhnosti"): 135,  # n=4 [115, 125, 145, 160]  # разброс >40с
     ("maidan-nezalezhnosti", "ploshcha-ukrainskykh-heroiv"): 115,  # n=4 [110, 115, 115, 130]
-    ("ploshcha-ukrainskykh-heroiv", "olimpiiska"): 112,  # n=4 [110, 110, 115, 120]
-    ("olimpiiska", "palats-ukraina"): 112,  # n=4 [105, 110, 115, 120]
+    ("ploshcha-ukrainskykh-heroiv", "olimpiiska"): 115,  # n=4 [110, 115, 115, 120]
+    ("olimpiiska", "palats-ukraina"): 110,  # n=4 [105, 110, 110, 120]
     ("palats-ukraina", "lybidska"): 95,  # n=3 [95, 95, 105]
     ("lybidska", "demiivska"): 110,  # n=3 [105, 110, 125]
     ("demiivska", "holosiivska"): 100,  # n=4 [100, 100, 100, 105]
     ("holosiivska", "vasylkivska"): 140,  # n=4 [135, 135, 145, 155]
-    ("vasylkivska", "vystavkovyi-tsentr"): 195,  # n=3 [185, 195, 200]
+    ("vasylkivska", "vystavkovyi-tsentr"): 198,  # n=2 [195, 200]
     ("vystavkovyi-tsentr", "ipodrom"): 98,  # n=4 [95, 95, 100, 105]
     ("ipodrom", "teremky"): 140,  # n=2 [140, 140]
     ("syrets", "dorohozhychi"): 150,  # n=1 [150]
     ("dorohozhychi", "lukianivska"): 212,  # n=4 [200, 210, 215, 225]
-    ("lukianivska", "zoloti-vorota"): 312,  # n=4 [295, 310, 315, 330]
+    ("lukianivska", "zoloti-vorota"): 315,  # n=3 [310, 315, 330]
     ("zoloti-vorota", "palats-sportu"): 125,  # n=4 [110, 115, 135, 140]
     ("palats-sportu", "klovska"): 125,  # n=4 [115, 120, 130, 135]
     ("klovska", "pecherska"): 130,  # n=4 [125, 130, 130, 135]
@@ -154,7 +155,7 @@ OFFICIAL_SEGMENTS = {  # ход + стоянка, сек; медиана офи�
     ("zvirynetska", "vydubychi"): 162,  # n=4 [160, 160, 165, 170]
     ("vydubychi", "slavutych"): 300,  # n=4 [285, 295, 305, 320]
     ("slavutych", "osokorky"): 100,  # n=4 [95, 95, 105, 110]
-    ("osokorky", "pozniaky"): 182,  # n=4 [170, 180, 185, 195]
+    ("osokorky", "pozniaky"): 180,  # n=3 [170, 180, 195]
     ("pozniaky", "kharkivska"): 218,  # n=4 [200, 215, 220, 235]
     ("kharkivska", "vyrlytsia"): 140,  # n=4 [130, 135, 145, 150]
     ("vyrlytsia", "boryspilska"): 175,  # n=4 [155, 160, 190, 200]  # разброс >40с
